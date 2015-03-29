@@ -92,7 +92,6 @@ public class NewsEventsFragment extends Fragment {
         EventItem event;
         for (int i = 0; i < items.size(); i++) {
             event = items.get(i);
-            Log.d("event", event.getDate());
             if (!monthAlreadyFound) {
                 if (event.getDate().indexOf(current_month) != -1) {
                     monthAlreadyFound = true;

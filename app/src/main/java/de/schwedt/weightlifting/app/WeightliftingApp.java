@@ -27,7 +27,7 @@ import de.schwedt.weightlifting.app.news.News;
 
 public class WeightliftingApp extends Application {
 
-    public static final String TAG = "HPI";
+    public static final String TAG = "Weightlifting";
     public static final String TEAM_NAME = "KG Schwedt-Stralsund";
     public static final int DISPLAY_DELAY = 500;
     public static final int CONNECTION_CHECK_CONNECTED = 30000;
@@ -155,7 +155,7 @@ public class WeightliftingApp extends Application {
                     News newNews = new News();
                     newNews.parseFromString(result, imageLoader);
                     News.addItemsToMark(news, newNews);
-                    MainActivity.navDrawerItems.get(MainActivity.FRAGMENT_NEWS).setCount(News.itemsToMark.size());
+                    MainActivity.navDrawerItems.get(MainActivity.FRAGMENT_NEWS).increaseCount(News.itemsToMark.size());
                     news = newNews;
                     Log.i(TAG, "News updated");
                 } catch (Exception ex) {
@@ -199,8 +199,11 @@ public class WeightliftingApp extends Application {
                         setLoading(false);
                         return;
                     }
-                    events = new Events();
-                    events.parseFromString(result, imageLoader);
+                    Events newEvents = new Events();
+                    newEvents.parseFromString(result, imageLoader);
+                    Events.addItemsToMark(events, newEvents);
+                    MainActivity.navDrawerItems.get(MainActivity.FRAGMENT_NEWS).increaseCount(Events.itemsToMark.size());
+                    events = newEvents;
                     Log.i(TAG, "Events updated");
                 } catch (Exception ex) {
                     Log.e(TAG, "Events update failed");

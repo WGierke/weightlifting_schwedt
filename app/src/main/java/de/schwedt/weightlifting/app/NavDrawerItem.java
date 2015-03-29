@@ -1,18 +1,22 @@
 package de.schwedt.weightlifting.app;
 
+import android.util.Log;
+
 public class NavDrawerItem {
 
     private String title;
     private int icon;
     private int count = 0;
 
-    public NavDrawerItem() {
-
-    }
-
     public NavDrawerItem(String title, int icon) {
         this.title = title;
         this.icon = icon;
+    }
+
+    public NavDrawerItem(String title, int icon, int count) {
+        this.title = title;
+        this.icon = icon;
+        this.count = count;
     }
 
     public String getTitle() {
@@ -37,5 +41,13 @@ public class NavDrawerItem {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public void increaseCount(int size) {
+        count += size;
+    }
+
+    public void decreaseCount(int size) {
+        count -= size;
     }
 }

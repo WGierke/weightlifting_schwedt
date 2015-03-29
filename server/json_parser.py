@@ -85,7 +85,6 @@ def create_events_file():
 
     for i in range(len(months)):
         month = months[i].split('<')[0]
-        print month
         month_events = months[i].split('<p>')[1:]
         month_events = filter(None, month_events)
         for j in range(len(month_events)):

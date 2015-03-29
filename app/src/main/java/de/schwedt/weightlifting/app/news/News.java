@@ -28,17 +28,6 @@ public class News {
         newsItems = new ArrayList<NewsItem>();
     }
 
-    public static void addItemsToMark(News oldNews, News newNews) {
-        ArrayList<NewsItem> oldItems = oldNews.getNewsItems();
-        ArrayList<NewsItem> newItems = newNews.getNewsItems();
-        for (int i = 0; i < newItems.size(); i++) {
-            if (!oldItems.contains(newItems.get(i))) {
-                News.itemsToMark.add(newItems.get(i));
-            }
-        }
-        MainActivity.counter[MainActivity.FRAGMENT_NEWS] = News.itemsToMark.size();
-    }
-
     public long getLastUpdate() {
         return lastUpdate;
     }
@@ -108,5 +97,16 @@ public class News {
             Log.e(WeightliftingApp.TAG, "News parsing failed");
             ex.printStackTrace();
         }
+    }
+
+    public static void addItemsToMark(News oldNews, News newNews) {
+        ArrayList<NewsItem> oldItems = oldNews.getNewsItems();
+        ArrayList<NewsItem> newItems = newNews.getNewsItems();
+        for (int i = 0; i < newItems.size(); i++) {
+            if (!oldItems.contains(newItems.get(i))) {
+                News.itemsToMark.add(newItems.get(i));
+            }
+        }
+        MainActivity.counter[MainActivity.FRAGMENT_NEWS] += News.itemsToMark.size();
     }
 }

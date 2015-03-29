@@ -72,7 +72,7 @@ public class MainActivity extends FragmentActivity {
         navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_home), R.drawable.nav_home));
         navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_news), R.drawable.nav_news));
         navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_buli), R.drawable.nav_buli));
-        navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_gallery), R.drawable.nav_galerie));
+        navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_gallery), R.drawable.nav_gallery));
         navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_faq), R.drawable.nav_help));
         navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_youth), R.drawable.nav_help));
         navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_contact), R.drawable.nav_contact));

@@ -79,10 +79,10 @@ public class NewsFeedListAdapter extends BaseAdapter {
 
         if (News.itemsToMark.contains(items.get(position))) {
             News.itemsToMark.remove(items.get(position));
-            MainActivity.navDrawerItems.get(MainActivity.FRAGMENT_NEWS).setCount(News.itemsToMark.size());
+            MainActivity.navDrawerItems.get(MainActivity.FRAGMENT_NEWS).decreaseCount(1);
             Resources res = activity.getResources();
             ObjectAnimator colorFade = ObjectAnimator.ofObject(view, "backgroundColor", new ArgbEvaluator(), res.getColor(R.color.counter_text_bg), 0xffccc);
-            colorFade.setDuration(5000);
+            colorFade.setDuration(3000);
             colorFade.start();
         }
 

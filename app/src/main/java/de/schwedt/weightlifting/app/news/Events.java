@@ -7,7 +7,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
 import de.schwedt.weightlifting.app.helper.JsonParser;
@@ -19,6 +21,7 @@ public class Events {
 
     // If news not yet ready, try again in 1 second
     public static final long TIMER_RETRY = 30 * 1000;
+    public static ArrayList<EventItem> itemsToMark = new ArrayList<EventItem>();
 
     private long lastUpdate = 0;
     // holds all news items
@@ -98,4 +101,14 @@ public class Events {
         }
     }
 
+    public static void addItemsToMark(Events oldEvents, Events newEvents) {
+        ArrayList<EventItem> oldItems = oldEvents.getEventItems();
+        ArrayList<EventItem> newItems = newEvents.getEventItems();
+        for (int i = 0; i < newItems.size(); i++) {
+            if (!oldItems.contains(newItems.get(i))) {
+                Events.itemsToMark.add(newItems.get(i));
+            }
+        }
+        MainActivity.counter[MainActivity.FRAGMENT_NEWS] += Events.itemsToMark.size();
+    }
 }
