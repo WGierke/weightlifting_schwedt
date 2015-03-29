@@ -52,7 +52,7 @@ public class NewsEventFragment extends Fragment {
     private void showEvent() {
         title.setText(event.getTitle());
         date_location.setText(event.getDate());
-        if(event.getLocation().length() > 0) {
+        if (event.getLocation().length() > 0) {
             date_location.setText(event.getDate() + " in " + event.getLocation());
         }
     }

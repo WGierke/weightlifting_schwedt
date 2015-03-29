@@ -60,7 +60,7 @@ public class NewsEventsListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if (convertView == null) {
-                view = inflater.inflate(R.layout.news_events_item, null);
+            view = inflater.inflate(R.layout.news_events_item, null);
         }
 
         TextView title = (TextView) view.findViewById(R.id.event_title);

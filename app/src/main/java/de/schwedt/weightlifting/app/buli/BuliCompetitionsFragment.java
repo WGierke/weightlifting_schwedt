@@ -14,7 +14,6 @@ import android.widget.ListView;
 import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
-import de.schwedt.weightlifting.app.news.NewsItem;
 
 public class BuliCompetitionsFragment extends Fragment {
 

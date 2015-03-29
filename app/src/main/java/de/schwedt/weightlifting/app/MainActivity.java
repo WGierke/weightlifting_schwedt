@@ -136,7 +136,7 @@ public class MainActivity extends FragmentActivity {
                 return true;
             case R.id.action_refresh:
                 app.checkConnection(false);
-                if(app.isOnline) {
+                if (app.isOnline) {
                     Toast.makeText(getApplicationContext(), R.string.connected, Toast.LENGTH_LONG).show();
                     showFragment(0);
                     item.setVisible(false);

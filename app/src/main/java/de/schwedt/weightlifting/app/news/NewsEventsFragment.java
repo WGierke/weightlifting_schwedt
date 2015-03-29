@@ -1,6 +1,5 @@
 package de.schwedt.weightlifting.app.news;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -8,16 +7,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
-import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 
@@ -45,7 +41,7 @@ public class NewsEventsFragment extends Fragment {
 
         getEvents();
         int nextEvent = getNextEvent();
-        if(nextEvent > 0) nextEvent -= 1; //previous event fades now
+        if (nextEvent > 0) nextEvent -= 1; //previous event fades now
         listViewEvents.setSelection(nextEvent);
 
         return fragment;
@@ -94,10 +90,10 @@ public class NewsEventsFragment extends Fragment {
 
         ArrayList<EventItem> items = events.getEventItems();
         EventItem event;
-        for(int i = 0; i < items.size(); i++) {
+        for (int i = 0; i < items.size(); i++) {
             event = items.get(i);
             Log.d("event", event.getDate());
-            if(!monthAlreadyFound) {
+            if (!monthAlreadyFound) {
                 if (event.getDate().indexOf(current_month) != -1) {
                     monthAlreadyFound = true;
                     if (Integer.valueOf(event.getDate().split("\\.")[0]) >= current_day) {
@@ -109,8 +105,7 @@ public class NewsEventsFragment extends Fragment {
                     if (Integer.valueOf(event.getDate().split("\\.")[0]) >= current_day) {
                         return i;
                     }
-                }
-                else
+                } else
                     return i;
             }
         }

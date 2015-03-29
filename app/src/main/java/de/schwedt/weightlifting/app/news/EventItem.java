@@ -45,11 +45,11 @@ public class EventItem {
         this.date = date;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
     public String getLocation() {
         return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

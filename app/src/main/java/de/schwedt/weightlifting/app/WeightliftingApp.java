@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import java.util.Date;
 
-import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.buli.BuliCompetitions;
 import de.schwedt.weightlifting.app.buli.BuliTable;
 import de.schwedt.weightlifting.app.buli.BuliTeam;
@@ -110,7 +109,7 @@ public class WeightliftingApp extends Application {
             getData();
         }
         isOnline = NetworkHelper.isOnline();
-        if(checkPermanent) {
+        if (checkPermanent) {
             Runnable refreshRunnable = new Runnable() {
                 @Override
                 public void run() {
@@ -131,7 +130,7 @@ public class WeightliftingApp extends Application {
         if (news.needsUpdate() && !isUpdatingNews && isOnline) {
             updateNews();
         }
-        if(!isOnline) {
+        if (!isOnline) {
             Log.d(TAG, "No connection");
         }
         return news;
@@ -147,7 +146,7 @@ public class WeightliftingApp extends Application {
                 try {
                     Bundle data = msg.getData();
                     String result = data.getString("result");
-                    if(result == null) {
+                    if (result == null) {
                         checkConnection(false);
                         isUpdatingNews = false;
                         setLoading(false);
@@ -175,7 +174,7 @@ public class WeightliftingApp extends Application {
         if (events.needsUpdate() && !isUpdatingEvents && isOnline) {
             updateEvents();
         }
-        if(!isOnline) {
+        if (!isOnline) {
             Log.d(TAG, "No connection");
         }
         return events;
@@ -191,7 +190,7 @@ public class WeightliftingApp extends Application {
                 try {
                     Bundle data = msg.getData();
                     String result = data.getString("result");
-                    if(result == null) {
+                    if (result == null) {
                         checkConnection(false);
                         isUpdatingEvents = false;
                         setLoading(false);
@@ -233,7 +232,7 @@ public class WeightliftingApp extends Application {
                 try {
                     Bundle data = msg.getData();
                     String result = data.getString("result");
-                    if(result == null) {
+                    if (result == null) {
                         checkConnection(false);
                         isUpdatingTeam = false;
                         setLoading(false);
@@ -275,7 +274,7 @@ public class WeightliftingApp extends Application {
                 try {
                     Bundle data = msg.getData();
                     String result = data.getString("result");
-                    if(result == null) {
+                    if (result == null) {
                         checkConnection(false);
                         isUpdatingCompetitions = false;
                         setLoading(false);
@@ -317,7 +316,7 @@ public class WeightliftingApp extends Application {
                 try {
                     Bundle data = msg.getData();
                     String result = data.getString("result");
-                    if(result == null) {
+                    if (result == null) {
                         checkConnection(false);
                         isUpdatingTable = false;
                         setLoading(false);
@@ -360,7 +359,7 @@ public class WeightliftingApp extends Application {
                 try {
                     Bundle data = msg.getData();
                     String result = data.getString("result");
-                    if(result == null) {
+                    if (result == null) {
                         checkConnection(false);
                         isUpdatingGalleries = false;
                         setLoading(false);

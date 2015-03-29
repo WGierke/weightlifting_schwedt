@@ -18,7 +18,7 @@ public class Events {
     public static final long TIMER_INVALIDATE = 1800000;
 
     // If news not yet ready, try again in 1 second
-    public static final long TIMER_RETRY = 30*1000;
+    public static final long TIMER_RETRY = 30 * 1000;
 
     private long lastUpdate = 0;
     // holds all news items
