@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Gewichtheben Schwedt</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- Stuff -->
+    <string name="disconnected">Bitte gehen Sie online, um neueste Informationen zum Gewichtheben in Schwedt abrufen zu können.</string>
+    <string name="still_no_connection">Keine Internetverbindung gefunden</string>
+    <string name="connected">Internetverbindung gefunden</string>
+    <string name="placeholder_long">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</string>
+    <string name="placeholder_short">At veroeos si</string>
+
+
+    <!-- Navigation -->
+    <string name="nav_home">Startseite</string>
+    <string name="nav_news">News &amp; Events</string>
+    <string name="nav_buli">Bundesliga</string>
+    <string name="nav_lali">Landesliga</string>
+    <string name="nav_map">Maps</string>
+    <string name="nav_faq">FAQ</string>
+    <string name="nav_youth">Jugend</string>
+    <string name="nav_gallery">Galerie</string>
+    <string name="nav_contact">Kontakt</string>
+
+
+    <!-- Home -->
+    <string name="home_welcome">Willkommen</string>
+    <string name="home_text">Seit 1967 gibt es das Gewichtheben in der Oderstadt. Etwa 120 Mitglieder betätigen sich in unserer Abteilung. Unser Sportangebot umfasst neben dem Wettkampfsport Gewichtheben auch den Freizeitkraftsport.</string>
+
+
+    <!-- News -->
+    <string name="news_loading">Updating news...</string>
+    <string name="news_error_heading">Something went wrong</string>
+    <string name="news_error_content">This shouldn\'t happen, please go back and try again. Restart the app if that doesn\'t solve the issue.</string>
+    <string name="news_feed">Neuigkeiten</string>
+    <string name="news_events">Veranstaltungen</string>
+    <string name="news_article_url">Link zum Artikel</string>
+
+
+    <!-- Bundesliga -->
+    <string name="buli_team">Team</string>
+    <string name="buli_competitions">Wettkämpfe</string>
+    <string name="buli_table">Tabelle</string>
+    <string name="buli_year">Jahrgang</string>
+    <string name="buli_relative_points">Relativpunkte</string>
+    <string name="buli_snatching">Reißen</string>
+    <string name="buli_jerking">Stoßen</string>
+    <string name="buli_place">Platz</string>
+    <string name="buli_max_score">Höchstpunktzahl</string>
+    <string name="buli_points">Punkte</string>
+    <string name="buli_relay">1. Bundesliga Staffel B</string>
+
+    <!-- FAQs -->
+    <string name="faq_off_signal_heading">Ab-Zeichen</string>
+    <string name="faq_off_signal_question">Wann darf das Ab-Zeichen gegeben werden?</string>
+    <string name="faq_off_signal_answer">Der Athlet muss die Last auf ausgestreckten Armen und Beinen halten und dabei vollständig bewegungslos sein. Hat er einen Regelverstoß begangen, wie z.B. beim "Nachdrücken" im Ausstoßen, so wird das Signal ebenfalls gegeben.</string>
+
+    <string name="faq_bad_attempt_jerking_heading">Ungültiger Stoß-Versuch</string>
+    <string name="faq_bad_attempt_jerking_question">Wann ist ein Versuch im Stoßen ungültig?</string>
+    <string name="faq_bad_attempt_jerking_answer">Bei folgenden Bewegungen ist der Stoß-Versuch als ungültig zu bewerten:\n - ein anderes Körperteil als die Füße berühren den Boden\n - die Ellenbogen berühren beim Umsetzen die Knie\n - beim Ausstoßen werden die Arme nicht in einer Bewegung gestreckt ("Nachdrücken")</string>
+
+
+
+    <!-- Youth -->
+    <string name="youth_test">Jugend-Seite</string>
+
+
+    <!-- Contact -->
+    <string name="contact_club">TSV Blau-Weiß 65 Schwedt e.V.</string>
+    <string name="contact_department_chief">Abteilungsleiter Gewichtheben</string>
+    <string name="contact_department_name">Thorsten Teicher</string>
+    <string name="contact_email">Email</string>
+    <string name="contact_department_email">t.teichert@swschwedt.de</string>
+    <string name="contact_competition_site_headline">Trainings- und Wettkampfstätte</string>
+    <string name="contact_competition_site_address">Sport- und Freizeitzentrum Külzviertel\nDr.-W.-Külzviertel 2b\n16303 Schwedt/Oder\nTel./Fax (03332) 419967</string>
+    <string name="contact_competition_email">info@gewichtheben-schwedt.de</string>
+    <string name="contact_app_developer">App-Developer</string>
+    <string name="contact_app_developer_name">Willi Gierke</string>
+    <string name="contact_app_developer_email">willi.gierke@student.hpi.de</string>
+
+</resources>

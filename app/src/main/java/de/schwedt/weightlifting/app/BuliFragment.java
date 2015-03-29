@@ -1,0 +1,101 @@
+package de.schwedt.weightlifting.app;
+
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import de.schwedt.weightlifting.app.buli.BuliCompetitionsFragment;
+import de.schwedt.weightlifting.app.buli.BuliTableFragment;
+import de.schwedt.weightlifting.app.buli.BuliTeamFragment;
+
+public class BuliFragment extends Fragment {
+
+    private static final int FRAGMENT_TEAM = 0;
+    private static final int FRAGMENT_COMPETITIONS = 1;
+    private static final int FRAGMENT_TABLE = 2;
+    private BuliCollectionPagerAdapter mBuliCollectionPagerAdapter;
+    private ViewPager mViewPager;
+    private WeightliftingApp app;
+    private View fragment;
+    private long lastUpdaDate = 0;
+
+    public BuliFragment() {
+        super();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d(WeightliftingApp.TAG, "Showing Buli fragment");
+
+        fragment = inflater.inflate(R.layout.buli, container, false);
+        app = (WeightliftingApp) getActivity().getApplicationContext();
+
+        mBuliCollectionPagerAdapter = new BuliCollectionPagerAdapter(getActivity().getSupportFragmentManager());
+        mViewPager = (ViewPager) fragment.findViewById(R.id.buli_pager);
+        mViewPager.setAdapter(mBuliCollectionPagerAdapter);
+
+        return fragment;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    public class BuliCollectionPagerAdapter extends FragmentStatePagerAdapter {
+        public BuliCollectionPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            Fragment fragment = null;
+
+            switch (position) {
+                case FRAGMENT_TEAM:
+                    fragment = new BuliTeamFragment();
+                    break;
+                case FRAGMENT_COMPETITIONS:
+                    fragment = new BuliCompetitionsFragment();
+                    break;
+                case FRAGMENT_TABLE:
+                    fragment = new BuliTableFragment();
+                    break;
+                default:
+                    fragment = null;
+                    break;
+            }
+            return fragment;
+        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            String title;
+            switch (position) {
+                case FRAGMENT_TEAM:
+                    title = getString(R.string.buli_team);
+                    break;
+                case FRAGMENT_COMPETITIONS:
+                    title = getString(R.string.buli_competitions);
+                    break;
+                case FRAGMENT_TABLE:
+                    title = getString(R.string.buli_table);
+                    break;
+                default:
+                    title = getString(R.string.nav_buli);
+            }
+            return title;
+        }
+    }
+}

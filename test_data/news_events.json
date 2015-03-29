@@ -1,0 +1,47 @@
+[
+   {
+      "articles":[
+         {
+            "heading":"Überraschungssieg beim Berliner TSC",
+            "date":"25. Januar 2015",
+            "image":"http://gewichtheben.blauweiss65-schwedt.de/wp-content/gallery/tsc_ost/IMG_0985.JPG",
+            "content":"Ein 3:0 Erfolg und damit eine kleine Überraschung gelang dem ODER-SUND-TEAM Gewichtheben beim Berliner TSC. Mit 666,2 Relativpunkten erzielten die Gäste ihr zweitbestes Saisonergebnis.",
+            "url":"http://gewichtheben.blauweiss65-schwedt.de/?p=6520"
+         },
+         {
+            "heading":"Bericht zum Wettkampf gegen Samswegen",
+            "date":"26. Dezember 2014",
+            "image":"http://gewichtheben.blauweiss65-schwedt.de/wp-content/uploads/2009/02/Oder-Sund-Team-2013-e1413153463576.jpg",
+            "content":"Am Sonnabend stand die Mannschaft von Oder und Sund vor der nächsten Herausforderung in der 1. Bundesliga der Gewichtheber.",
+            "url":"http://gewichtheben.blauweiss65-schwedt.de/?p=6509"
+         },
+         {
+            "heading":"Nahe dran an 700er-Marke",
+            "date":"11. Dezember 2014",
+            "image":"",
+            "content":"Schwedt (MOZ) Mit einem starken Heimwettkampf haben die Athleten des Oder-Sund-Teams Schwedt-Stralsund ihren ersten Saisonsieg in der 1. Gewichtheber-Bundesliga eingefahren.",
+            "url":"http://gewichtheben.blauweiss65-schwedt.de/?p=6499"
+         }
+      ],
+      "events":[
+         {
+            "date":"25. Januar 2015",
+            "title":"Athletikliga 1. Durchgang",
+            "location":"Frankfurt",
+            "description":"1. Durchgang der Athletikliga in Frankfurt"
+         },
+         {
+            "date":"1. März 2015",
+            "title":"Athletikliga 2. Durchgang",
+            "location":"Schwedt",
+            "description":"2. Durchgang der Athletikliga in Schwedt"
+         },
+         {
+            "date":"15. Juni 2015",
+            "title":"Athletikliga 3. Durchgang",
+            "location":"Angermünde",
+            "description":"3. Durchgang der Athletikliga in Angermünde"
+         }
+      ]
+   }
+]

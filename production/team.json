@@ -1,0 +1,78 @@
+[
+   {
+      "team":[
+         {
+            "name":"Gina Holzäpfel",
+            "year":"1995",
+            "snatching":"73",
+            "jerking":"82",
+            "max_score":"100",
+            "image": "http://gewichtheben.blauweiss65-schwedt.de/wp-content/uploads/2009/02/PicsArt_1356893928449-Kopie1-300x145.jpg"
+         },
+         {
+            "name":"Lisa Marie Schweizer",
+            "year":"1995",
+            "snatching":"78",
+            "jerking":"91",
+            "max_score":"113",
+            "image": "http://gewichtheben.blauweiss65-schwedt.de/wp-content/uploads/2013/09/IMG_5692.jpg"
+         },
+         {
+            "name":"Yasin Yüksel",
+            "year":"1991",
+            "snatching":"150",
+            "jerking":"182",
+            "max_score":"136",
+            "image": "http://gewichtheben.blauweiss65-schwedt.de/wp-content/uploads/2014/12/IMG_1541-500x333.jpg"
+         },
+         {
+            "name":"Jon-Luke Mau",
+            "year":"1998",
+            "snatching":"86",
+            "jerking":"112",
+            "max_score":"114",
+            "image": "http://gewichtheben.blauweiss65-schwedt.de/wp-content/gallery/tsc_ost/IMG_1028.JPG"
+         },
+         {
+            "name":"Ken Fischer",
+            "year":"1997",
+            "snatching":"98",
+            "jerking":"128",
+            "max_score":"85",
+            "image": "http://gewichtheben.blauweiss65-schwedt.de/wp-content/gallery/tsc_ost/IMG_0997.JPG"
+         },
+         {
+            "name":"Karl Waldemar Schiffer",
+            "year":"1998",
+            "snatching":"90",
+            "jerking":"115",
+            "max_score":"84",
+            "image": ""
+         },
+         {
+            "name":"Thomas Rosol",
+            "year":"1989",
+            "snatching":"120",
+            "jerking":"145",
+            "max_score":"135",
+            "image": "http://gewichtheben.blauweiss65-schwedt.de/wp-content/gallery/tsc_ost/IMG_1033.JPG"
+         },
+         {
+            "name":"Arkadiusz Michalski",
+            "year":"1990",
+            "snatching":"175",
+            "jerking":"222",
+            "max_score":"193",
+            "image": "http://gewichtheben.blauweiss65-schwedt.de/wp-content/gallery/tsc_ost/IMG_1039.JPG"
+         },
+         {
+            "name":"Eik Lessing",
+            "year":"1992",
+            "snatching":"115",
+            "jerking":"147",
+            "max_score":"102",
+            "image": "http://gewichtheben.blauweiss65-schwedt.de/wp-content/gallery/tsc_ost/IMG_1002.JPG"
+         }
+      ]
+   }
+]

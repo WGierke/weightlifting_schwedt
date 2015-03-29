@@ -1,0 +1,87 @@
+[
+   {
+      "team":[
+         {
+            "name":"Lisa Marie Schweizer",
+            "birthday":"20.05.1995",
+            "snatching":"80",
+            "jerking":"90",
+            "max_score":"110",
+            "image": "http://gewichtheben.blauweiss65-schwedt.de/wp-content/uploads/2013/09/IMG_5692.jpg"
+         },
+         {
+            "name":"Franz Gierke",
+            "birthday":"12.08.1998",
+            "snatching":"85",
+            "jerking":"105",
+            "max_score":"70",
+            "image": "http://gewichtheben.blauweiss65-schwedt.de/wp-content/uploads/2009/06/CIMG31592.jpg"
+         },
+         {
+            "name":"Gina Holzäpfel",
+            "birthday":"19.05.1995",
+            "snatching":"80",
+            "jerking":"90",
+            "max_score":"110",
+            "image": "http://gewichtheben.blauweiss65-schwedt.de/wp-content/gallery/bundesliga-15-12-2012/img_4737.jpg"
+         }
+      ],
+      "past_competitions":[
+         {
+            "location":"Schwedt/Stralsund",
+            "date":"07.03.2015",
+            "home":"KG Schwedt-Stralsund",
+            "guest":"KG Görlitz-Zittau",
+            "score":"645.4 : 409.8",
+            "url":"https://www.iat.uni-leipzig.de/datenbanken/blgew1415/start.php?pid=%27123%27&protokoll=1&wkid=B81A1F41D38F4E1295BF8FACCB9F1321"
+         },
+         {
+            "location":"Görlitz",
+            "date":"21.02.2015",
+            "home":"KG Görlitz-Zittau",
+            "guest":"Chemnitzer AC",
+            "score":"483.3 : 655.08",
+            "url":"https://www.iat.uni-leipzig.de/datenbanken/blgew1415/start.php?pid=%27123%27&protokoll=1&wkid=FDC8F9D6235743EAB1C96F6C30818CDE"
+         },
+         {
+            "location":"Berlin",
+            "date":"11.10.2014",
+            "home":"Berliner TSC",
+            "guest":"AC Meißen",
+            "score":"611.0 : 491.0",
+            "url":"https://www.iat.uni-leipzig.de/datenbanken/blgew1415/start.php?pid=%27123%27&protokoll=1&wkid=186710279C484EF3915ECCA1D542A686"
+         },
+         {
+            "location":"Meißen",
+            "date":"11.10.2014",
+            "home":"AC Meißen",
+            "guest":"KG Schwedt-Stralsund",
+            "score":"611.0 : 491.0",
+            "url":"https://www.iat.uni-leipzig.de/datenbanken/blgew1415/start.php?pid=%27123%27&protokoll=1&wkid=186710279C484EF3915ECCA1D542A686"
+         }
+      ],
+      "table":[
+         {
+            "place":"1",
+            "club":"AC Chemnitz",
+            "score":"4319.8 : 3244.7",
+            "max_score":"890.0",
+            "cardinal_points":"18 : 0"
+         },
+         {
+            "place":"2",
+            "club":"SSV Samswegen",
+            "score":"4074 : 3822.4",
+            "max_score":"732.2",
+            "cardinal_points":"12 : 6"
+         },
+         {
+            "place":"3",
+            "club":"KG Schwedt-Stralsund",
+            "score":"3802 : 3777.8",
+            "max_score":"690.6",
+            "cardinal_points":"12 : 6"
+         }
+      ]
+   }
+]
