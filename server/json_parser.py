@@ -106,6 +106,13 @@ def create_events_file():
     f.write(events_dict)
     f.close()
 
+def get_competitions_array(array):
+    array = array.split("}, ")
+    array[0] = array[0].split('"past_competitions": [')[1]
+    array[-1] = array[-1].split("}")[0]
+    return array
+
+
 def create_competitions_file():
     global iat_url
     global error_occured
@@ -134,12 +141,22 @@ def create_competitions_file():
 
         final_competitions.append(entry)
 
+    #handle swapping of competitions due to IAT database
+    f = open("../production/past_competitions.json", "r")
+    old_competitions = f.read()
+    f.close()
+    old_competitions = get_competitions_array(old_competitions)
+
     competitions_dict["past_competitions"] = final_competitions
     json_competitions = json.dumps(competitions_dict, encoding='latin1')
     json_competitions = "[" + json_competitions + "]"
-    f = open("../production/past_competitions.json", "w")
-    f.write(json_competitions)
-    f.close()
+
+    new_competitions = get_competitions_array(json_competitions)
+    if sorted(new_competitions) != sorted(old_competitions):
+        f = open("../production/past_competitions.json", "w")
+        f.write(json_competitions)
+        f.close()
+        print "Competitions: Change detected"
 
 def create_table_file():
     global iat_url
@@ -217,6 +234,7 @@ def add_gallery_images(gallery_entry):
 def create_galleries_file():
     global error_occured
     try:
+        print "Parsing galleries ..."
         page = urllib2.urlopen("http://www.gewichtheben-schwedt.de").read().split('class="page_item page-item-28 page_item_has_children">')[1].split("javascript:void(0);")[0]
         re_gallery_link = re.compile(ur'(?<=href=").*(?=<\/a>)')
 
@@ -227,8 +245,9 @@ def create_galleries_file():
 
         for i in range(len(gallery_links)):
             gallery_entry = {}
+            print gallery_links[i]
             gallery_entry["url"] = gallery_links[i].split('">')[0]
-            gallery_entry["title"] = gallery_links[i].split('">')[1]
+            gallery_entry["title"] = gallery_links[i].split('">')[1].replace('&#8211;', '-')
             print gallery_entry["title"]
             first_page_url = "http://gewichtheben.blauweiss65-schwedt.de/index.php/nggallery/page/1?" + gallery_entry["url"].split("?")[1]
             gallery_entry["url"] = first_page_url
@@ -238,7 +257,7 @@ def create_galleries_file():
             final_entries.append(gallery_entry)
 
             gallery_dict["galleries"] = final_entries
-            json_galleries = json.dumps(gallery_dict, encoding='latin1')
+            json_galleries = json.dumps(gallery_dict)
             json_galleries = "[" + json_galleries + "]"
             f = open("../production/galleries.json", "w")
             f.write(json_galleries)
@@ -254,5 +273,7 @@ if not error_occured:
     create_events_file()
 if not error_occured:
     create_competitions_file()
+if not error_occured:
+    create_galleries_file()
 if not error_occured:
     create_table_file()
