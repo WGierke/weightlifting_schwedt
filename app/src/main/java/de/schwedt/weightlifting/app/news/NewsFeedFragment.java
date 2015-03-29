@@ -16,9 +16,9 @@ import de.schwedt.weightlifting.app.WeightliftingApp;
 
 public class NewsFeedFragment extends Fragment {
 
+    public News news;
     private WeightliftingApp app;
     private View fragment;
-    private News news;
     private ListView listViewNews;
 
     private long lastUpdaDate = 0;
@@ -93,6 +93,5 @@ public class NewsFeedFragment extends Fragment {
             }
         }
     }
-
 
 }

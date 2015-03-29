@@ -16,15 +16,25 @@ public class News {
 
     // Refresh if older than 30 minutes
     public static final long TIMER_INVALIDATE = 1800000;
-
     // If news not yet ready, try again in 1 second
     public static final long TIMER_RETRY = 30 * 1000;
+    public static ArrayList<NewsItem> itemsToMark = new ArrayList<NewsItem>();
     private long lastUpdate = 0;
     // holds all news items
     private ArrayList<NewsItem> newsItems;
 
     public News() {
         newsItems = new ArrayList<NewsItem>();
+    }
+
+    public static void addItemsToMark(News oldNews, News newNews) {
+        ArrayList<NewsItem> oldItems = oldNews.getNewsItems();
+        ArrayList<NewsItem> newItems = newNews.getNewsItems();
+        for (int i = 0; i < newItems.size(); i++) {
+            if (!oldItems.contains(newItems.get(i))) {
+                News.itemsToMark.add(newItems.get(i));
+            }
+        }
     }
 
     public long getLastUpdate() {
@@ -97,5 +107,4 @@ public class News {
             ex.printStackTrace();
         }
     }
-
 }

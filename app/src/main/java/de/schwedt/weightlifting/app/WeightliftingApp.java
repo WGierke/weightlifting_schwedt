@@ -152,8 +152,10 @@ public class WeightliftingApp extends Application {
                         setLoading(false);
                         return;
                     }
-                    news = new News();
-                    news.parseFromString(result, imageLoader);
+                    News newNews = new News();
+                    newNews.parseFromString(result, imageLoader);
+                    News.addItemsToMark(news, newNews);
+                    news = newNews;
                     Log.i(TAG, "News updated");
                 } catch (Exception ex) {
                     Log.e(TAG, "News update failed");

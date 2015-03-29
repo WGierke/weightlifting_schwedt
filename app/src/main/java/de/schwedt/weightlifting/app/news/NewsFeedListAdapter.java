@@ -1,7 +1,10 @@
 package de.schwedt.weightlifting.app.news;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +75,14 @@ public class NewsFeedListAdapter extends BaseAdapter {
 
         TextView date = (TextView) view.findViewById(R.id.event_date);
         date.setText(items.get(position).getDate());
+
+        if (News.itemsToMark.contains(items.get(position))) {
+            News.itemsToMark.remove(items.get(position));
+            Resources res = activity.getResources();
+            ObjectAnimator colorFade = ObjectAnimator.ofObject(view, "backgroundColor", new ArgbEvaluator(), res.getColor(R.color.counter_text_bg), 0xffccc);
+            colorFade.setDuration(5000);
+            colorFade.start();
+        }
 
         ImageView icon = (ImageView) view.findViewById(R.id.news_icon);
         if (items.get(position).getImage() != null) {

@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Corporate colors -->
-    <color name="hpi_yellow">#f6a800</color>
-    <color name="hpi_red">#af0039</color>
-    <color name="hpi_orange">#dd630d</color>
     <color name="tsv_blue">#153387</color>
     <color name="tsv_middle_blue">#385299</color>
     <color name="tsv_light_blue">#ADB8D5</color>
 
     <!-- Stuff -->
     <color name="text_heading">@color/tsv_blue</color>
-    <color name="text_subheading">@color/hpi_red</color>
+    <color name="text_subheading">#af0039</color>
     <color name="text_content">#333</color>
 
     <!-- Navigation -->
@@ -24,6 +21,5 @@
 
     <!-- Galleries -->
     <color name="white">#ffffff</color>
-    <color name="light_grey_tint">#88666666</color>
 
 </resources>
