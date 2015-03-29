@@ -8,7 +8,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Date;
 
-import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
 import de.schwedt.weightlifting.app.helper.JsonParser;
@@ -97,16 +96,5 @@ public class News {
             Log.e(WeightliftingApp.TAG, "News parsing failed");
             ex.printStackTrace();
         }
-    }
-
-    public static void addItemsToMark(News oldNews, News newNews) {
-        ArrayList<NewsItem> oldItems = oldNews.getNewsItems();
-        ArrayList<NewsItem> newItems = newNews.getNewsItems();
-        for (int i = 0; i < newItems.size(); i++) {
-            if (!oldItems.contains(newItems.get(i))) {
-                News.itemsToMark.add(newItems.get(i));
-            }
-        }
-        MainActivity.counter[MainActivity.FRAGMENT_NEWS] += News.itemsToMark.size();
     }
 }

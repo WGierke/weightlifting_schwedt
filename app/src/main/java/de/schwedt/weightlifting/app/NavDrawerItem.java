@@ -1,7 +1,5 @@
 package de.schwedt.weightlifting.app;
 
-import android.util.Log;
-
 public class NavDrawerItem {
 
     private String title;

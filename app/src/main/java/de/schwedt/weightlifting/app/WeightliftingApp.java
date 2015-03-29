@@ -10,6 +10,7 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import de.schwedt.weightlifting.app.buli.BuliCompetitions;
@@ -154,8 +155,7 @@ public class WeightliftingApp extends Application {
                     }
                     News newNews = new News();
                     newNews.parseFromString(result, imageLoader);
-                    News.addItemsToMark(news, newNews);
-                    MainActivity.navDrawerItems.get(MainActivity.FRAGMENT_NEWS).increaseCount(News.itemsToMark.size());
+                    markNewItems((ArrayList) news.getNewsItems(), (ArrayList) newNews.getNewsItems(), (ArrayList) News.itemsToMark, MainActivity.FRAGMENT_NEWS);
                     news = newNews;
                     Log.i(TAG, "News updated");
                 } catch (Exception ex) {
@@ -201,8 +201,7 @@ public class WeightliftingApp extends Application {
                     }
                     Events newEvents = new Events();
                     newEvents.parseFromString(result, imageLoader);
-                    Events.addItemsToMark(events, newEvents);
-                    MainActivity.navDrawerItems.get(MainActivity.FRAGMENT_NEWS).increaseCount(Events.itemsToMark.size());
+                    markNewItems((ArrayList) events.getEventItems(), (ArrayList) newEvents.getEventItems(), (ArrayList) Events.itemsToMark, MainActivity.FRAGMENT_NEWS);
                     events = newEvents;
                     Log.i(TAG, "Events updated");
                 } catch (Exception ex) {
@@ -246,6 +245,10 @@ public class WeightliftingApp extends Application {
                     }
                     buliTeam = new BuliTeam();
                     buliTeam.parseFromString(result, imageLoader);
+                    BuliTeam newTeam = new BuliTeam();
+                    newTeam.parseFromString(result, imageLoader);
+                    markNewItems((ArrayList) buliTeam.getBuliTeamMembers(), (ArrayList) newTeam.getBuliTeamMembers(), (ArrayList) BuliTeam.itemsToMark, MainActivity.FRAGMENT_BULI);
+                    buliTeam = newTeam;
                     Log.i(TAG, "BuliTeam updated");
                 } catch (Exception ex) {
                     Log.e(TAG, "BuliTeam update failed");
@@ -383,6 +386,16 @@ public class WeightliftingApp extends Application {
             }
         };
         NetworkHelper.getWebRequest(NetworkHelper.URL_GALLERY, callBackHandler);
+    }
+
+    private void markNewItems(ArrayList<Object> oldItems, ArrayList<Object> newItems, ArrayList<Object> itemsToMark, int navigationPosition) {
+        for (int i = 0; i < newItems.size(); i++) {
+            if (!oldItems.contains(newItems.get(i))) {
+                itemsToMark.add(newItems.get(i));
+            }
+        }
+        MainActivity.counter[navigationPosition] += itemsToMark.size();
+        MainActivity.navDrawerItems.get(navigationPosition).increaseCount(itemsToMark.size());
     }
 
 

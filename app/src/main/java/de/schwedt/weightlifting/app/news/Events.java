@@ -7,9 +7,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
 import de.schwedt.weightlifting.app.helper.JsonParser;
@@ -99,16 +97,5 @@ public class Events {
             Log.e(WeightliftingApp.TAG, "Event parsing failed");
             ex.printStackTrace();
         }
-    }
-
-    public static void addItemsToMark(Events oldEvents, Events newEvents) {
-        ArrayList<EventItem> oldItems = oldEvents.getEventItems();
-        ArrayList<EventItem> newItems = newEvents.getEventItems();
-        for (int i = 0; i < newItems.size(); i++) {
-            if (!oldItems.contains(newItems.get(i))) {
-                Events.itemsToMark.add(newItems.get(i));
-            }
-        }
-        MainActivity.counter[MainActivity.FRAGMENT_NEWS] += Events.itemsToMark.size();
     }
 }

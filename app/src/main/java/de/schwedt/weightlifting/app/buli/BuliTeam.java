@@ -19,6 +19,7 @@ public class BuliTeam {
 
     // If team not yet ready, try again in 30 seconds
     public static final long TIMER_RETRY = 30000;
+    public static ArrayList<BuliTeamMember> itemsToMark = new ArrayList<BuliTeamMember>();
 
     private long lastUpdate = 0;
 
