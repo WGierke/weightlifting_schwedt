@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 
@@ -78,6 +79,7 @@ public class NewsFeedListAdapter extends BaseAdapter {
 
         if (News.itemsToMark.contains(items.get(position))) {
             News.itemsToMark.remove(items.get(position));
+            MainActivity.navDrawerItems.get(MainActivity.FRAGMENT_NEWS).setCount(News.itemsToMark.size());
             Resources res = activity.getResources();
             ObjectAnimator colorFade = ObjectAnimator.ofObject(view, "backgroundColor", new ArgbEvaluator(), res.getColor(R.color.counter_text_bg), 0xffccc);
             colorFade.setDuration(5000);

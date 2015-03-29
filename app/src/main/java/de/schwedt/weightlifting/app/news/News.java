@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Date;
 
+import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
 import de.schwedt.weightlifting.app.helper.JsonParser;
@@ -35,6 +36,7 @@ public class News {
                 News.itemsToMark.add(newItems.get(i));
             }
         }
+        MainActivity.counter[MainActivity.FRAGMENT_NEWS] = News.itemsToMark.size();
     }
 
     public long getLastUpdate() {

@@ -28,22 +28,18 @@ public class MainActivity extends FragmentActivity {
     public static final int FRAGMENT_FAQ = 4;
     public static final int FRAGMENT_YOUTH = 5;
     public static final int FRAGMENT_CONTACT = 6;
+    public static int counter[] = {0, 0, 0, 0, 0, 0, 0};
+    public static ArrayList<NavDrawerItem> navDrawerItems = new ArrayList<NavDrawerItem>();
     private WeightliftingApp app;
-
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-
     // nav drawer title
     private CharSequence mDrawerTitle;
-
     // used to store app title
     private CharSequence mTitle;
-
     // store current fragment
     private int mCurFragment;
-
-    private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
 
     @Override
@@ -73,8 +69,8 @@ public class MainActivity extends FragmentActivity {
         navDrawerItems = new ArrayList<NavDrawerItem>();
 
         // adding nav drawer items to array
-        navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_home), R.drawable.nav_home, true, "1"));
-        navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_news), R.drawable.nav_news, true, "5"));
+        navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_home), R.drawable.nav_home));
+        navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_news), R.drawable.nav_news));
         navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_buli), R.drawable.nav_buli));
         navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_gallery), R.drawable.nav_galerie));
         navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_faq), R.drawable.nav_help));

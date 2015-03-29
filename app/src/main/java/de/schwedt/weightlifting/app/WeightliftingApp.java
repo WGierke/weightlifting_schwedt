@@ -155,6 +155,7 @@ public class WeightliftingApp extends Application {
                     News newNews = new News();
                     newNews.parseFromString(result, imageLoader);
                     News.addItemsToMark(news, newNews);
+                    MainActivity.navDrawerItems.get(MainActivity.FRAGMENT_NEWS).setCount(News.itemsToMark.size());
                     news = newNews;
                     Log.i(TAG, "News updated");
                 } catch (Exception ex) {

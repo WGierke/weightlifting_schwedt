@@ -1,9 +1,5 @@
 package de.schwedt.weightlifting.app;
 
-/**
- * Created by Steppschuh Zenbook on 12/20/13.
- */
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -56,8 +52,8 @@ public class NavDrawerListAdapter extends BaseAdapter {
         txtTitle.setText(navDrawerItems.get(position).getTitle());
 
         // displaying count
-        if (navDrawerItems.get(position).getCounterVisibility()) {
-            txtCount.setText(navDrawerItems.get(position).getCount());
+        if (navDrawerItems.get(position).getCount() > 0) {
+            txtCount.setText("" + navDrawerItems.get(position).getCount());
         } else {
             txtCount.setVisibility(View.GONE);
         }
