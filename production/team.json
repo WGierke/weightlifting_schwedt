@@ -15,7 +15,7 @@
             "snatching":"78",
             "jerking":"91",
             "max_score":"113",
-            "image": "http://gewichtheben.blauweiss65-schwedt.de/wp-content/uploads/2013/09/IMG_5692.jpg"
+            "image": "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/master/production/team_pictures/Lisa.jpg"
          },
          {
             "name":"Yasin Yüksel",
@@ -31,7 +31,7 @@
             "snatching":"86",
             "jerking":"112",
             "max_score":"114",
-            "image": "http://gewichtheben.blauweiss65-schwedt.de/wp-content/gallery/tsc_ost/IMG_1028.JPG"
+            "image": "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/master/production/team_pictures/Jon.jpg"
          },
          {
             "name":"Ken Fischer",
@@ -39,7 +39,7 @@
             "snatching":"98",
             "jerking":"128",
             "max_score":"85",
-            "image": "http://gewichtheben.blauweiss65-schwedt.de/wp-content/gallery/tsc_ost/IMG_0997.JPG"
+            "image": "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/master/production/team_pictures/Ken.jpg"
          },
          {
             "name":"Karl Waldemar Schiffer",
@@ -55,7 +55,7 @@
             "snatching":"120",
             "jerking":"145",
             "max_score":"135",
-            "image": "http://gewichtheben.blauweiss65-schwedt.de/wp-content/gallery/tsc_ost/IMG_1033.JPG"
+            "image": "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/master/production/team_pictures/Thomas.jpg"
          },
          {
             "name":"Arkadiusz Michalski",
@@ -63,7 +63,7 @@
             "snatching":"175",
             "jerking":"222",
             "max_score":"193",
-            "image": "http://gewichtheben.blauweiss65-schwedt.de/wp-content/gallery/tsc_ost/IMG_1039.JPG"
+            "image": "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/master/production/team_pictures/Arkadiusz.jpg"
          },
          {
             "name":"Eik Lessing",
@@ -71,7 +71,7 @@
             "snatching":"115",
             "jerking":"147",
             "max_score":"102",
-            "image": "http://gewichtheben.blauweiss65-schwedt.de/wp-content/gallery/tsc_ost/IMG_1002.JPG"
+            "image": "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/master/production/team_pictures/Eik.jpg"
          }
       ]
    }
