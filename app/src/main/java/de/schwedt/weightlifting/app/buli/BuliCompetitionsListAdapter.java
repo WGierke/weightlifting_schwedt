@@ -11,8 +11,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
+import de.schwedt.weightlifting.app.helper.UiHelper;
 
 public class BuliCompetitionsListAdapter extends BaseAdapter {
 
@@ -82,6 +84,12 @@ public class BuliCompetitionsListAdapter extends BaseAdapter {
 
         TextView location = (TextView) view.findViewById(R.id.buli_competition_location);
         location.setText(items.get(position).getLocation());
+
+        if (BuliCompetitions.itemsToMark.contains(items.get(position))) {
+            UiHelper.colorFade(view, activity.getResources());
+            BuliCompetitions.itemsToMark.remove(items.get(position));
+            UiHelper.refreshCounterNav(MainActivity.FRAGMENT_BULI, 1, BuliCompetitions.itemsToMark.size());
+        }
 
         return view;
     }

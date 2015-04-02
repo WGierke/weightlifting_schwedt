@@ -28,7 +28,8 @@ public class MainActivity extends FragmentActivity {
     public static final int FRAGMENT_FAQ = 4;
     public static final int FRAGMENT_YOUTH = 5;
     public static final int FRAGMENT_CONTACT = 6;
-    public static int counter[] = {0, 0, 0, 0, 0, 0, 0};
+    //home, (news, events), (team, competitions, table), (gallery)
+    public static int counter[][] = {{}, {0, 0}, {0, 0, 0}, {0}, {}, {}, {}};
     public static ArrayList<NavDrawerItem> navDrawerItems = new ArrayList<NavDrawerItem>();
     private WeightliftingApp app;
     private DrawerLayout mDrawerLayout;

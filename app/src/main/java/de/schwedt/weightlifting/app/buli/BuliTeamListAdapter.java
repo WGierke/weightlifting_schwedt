@@ -1,7 +1,5 @@
 package de.schwedt.weightlifting.app.buli;
 
-import android.animation.ArgbEvaluator;
-import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
@@ -17,6 +15,7 @@ import java.util.ArrayList;
 import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
+import de.schwedt.weightlifting.app.helper.UiHelper;
 
 public class BuliTeamListAdapter extends BaseAdapter {
 
@@ -86,11 +85,9 @@ public class BuliTeamListAdapter extends BaseAdapter {
         maxPoints.setText(res.getString(R.string.buli_relative_points) + ": " + items.get(position).getMaxScore());
 
         if (BuliTeam.itemsToMark.contains(items.get(position))) {
+            UiHelper.colorFade(view, res);
             BuliTeam.itemsToMark.remove(items.get(position));
-            MainActivity.navDrawerItems.get(MainActivity.FRAGMENT_BULI).decreaseCount(1);
-            ObjectAnimator colorFade = ObjectAnimator.ofObject(view, "backgroundColor", new ArgbEvaluator(), res.getColor(R.color.counter_text_bg), 0xffccc);
-            colorFade.setDuration(3000);
-            colorFade.start();
+            UiHelper.refreshCounterNav(MainActivity.FRAGMENT_BULI, 0, BuliTeam.itemsToMark.size());
         }
 
         ImageView icon = (ImageView) view.findViewById(R.id.buli_member_image);

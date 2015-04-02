@@ -158,4 +158,12 @@ public class DataHelper {
         Boolean storedPreference = sharedPref.getBoolean(prev_name, prev_default);
         return storedPreference;
     }
+
+    public static int sumOfArray(int[] array) {
+        int n = 0;
+        for (int i = 0; i < array.length; i++) {
+            n += array[i];
+        }
+        return n;
+    }
 }

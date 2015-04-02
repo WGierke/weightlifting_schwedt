@@ -21,6 +21,7 @@ import de.schwedt.weightlifting.app.gallery.Galleries;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
 import de.schwedt.weightlifting.app.helper.MemoryCache;
 import de.schwedt.weightlifting.app.helper.NetworkHelper;
+import de.schwedt.weightlifting.app.helper.UiHelper;
 import de.schwedt.weightlifting.app.news.Events;
 import de.schwedt.weightlifting.app.news.News;
 
@@ -155,7 +156,7 @@ public class WeightliftingApp extends Application {
                     }
                     News newNews = new News();
                     newNews.parseFromString(result, imageLoader);
-                    markNewItems((ArrayList) news.getNewsItems(), (ArrayList) newNews.getNewsItems(), (ArrayList) News.itemsToMark, MainActivity.FRAGMENT_NEWS);
+                    markNewItems((ArrayList) news.getNewsItems(), (ArrayList) newNews.getNewsItems(), (ArrayList) News.itemsToMark, MainActivity.FRAGMENT_NEWS, 0);
                     news = newNews;
                     Log.i(TAG, "News updated");
                 } catch (Exception ex) {
@@ -201,7 +202,7 @@ public class WeightliftingApp extends Application {
                     }
                     Events newEvents = new Events();
                     newEvents.parseFromString(result, imageLoader);
-                    markNewItems((ArrayList) events.getEventItems(), (ArrayList) newEvents.getEventItems(), (ArrayList) Events.itemsToMark, MainActivity.FRAGMENT_NEWS);
+                    markNewItems((ArrayList) events.getEventItems(), (ArrayList) newEvents.getEventItems(), (ArrayList) Events.itemsToMark, MainActivity.FRAGMENT_NEWS, 1);
                     events = newEvents;
                     Log.i(TAG, "Events updated");
                 } catch (Exception ex) {
@@ -247,7 +248,7 @@ public class WeightliftingApp extends Application {
                     buliTeam.parseFromString(result, imageLoader);
                     BuliTeam newTeam = new BuliTeam();
                     newTeam.parseFromString(result, imageLoader);
-                    markNewItems((ArrayList) buliTeam.getBuliTeamMembers(), (ArrayList) newTeam.getBuliTeamMembers(), (ArrayList) BuliTeam.itemsToMark, MainActivity.FRAGMENT_BULI);
+                    markNewItems((ArrayList) buliTeam.getBuliTeamMembers(), (ArrayList) newTeam.getBuliTeamMembers(), (ArrayList) BuliTeam.itemsToMark, MainActivity.FRAGMENT_BULI, 0);
                     buliTeam = newTeam;
                     Log.i(TAG, "BuliTeam updated");
                 } catch (Exception ex) {
@@ -289,8 +290,10 @@ public class WeightliftingApp extends Application {
                         setLoading(false);
                         return;
                     }
-                    buliCompetitions = new BuliCompetitions();
-                    buliCompetitions.parseFromString(result, imageLoader);
+                    BuliCompetitions newCompetitions = new BuliCompetitions();
+                    newCompetitions.parseFromString(result, imageLoader);
+                    markNewItems((ArrayList) buliCompetitions.getBuliPastCompetitions(), (ArrayList) newCompetitions.getBuliPastCompetitions(), (ArrayList) BuliCompetitions.itemsToMark, MainActivity.FRAGMENT_BULI, 1);
+                    buliCompetitions = newCompetitions;
                     Log.i(TAG, "BuliCompetitions updated");
                 } catch (Exception ex) {
                     Log.e(TAG, "BuliCompetitions update failed");
@@ -388,14 +391,13 @@ public class WeightliftingApp extends Application {
         NetworkHelper.getWebRequest(NetworkHelper.URL_GALLERY, callBackHandler);
     }
 
-    private void markNewItems(ArrayList<Object> oldItems, ArrayList<Object> newItems, ArrayList<Object> itemsToMark, int navigationPosition) {
+    private void markNewItems(ArrayList<Object> oldItems, ArrayList<Object> newItems, ArrayList<Object> itemsToMark, int navigationPosition, int subPosition) {
         for (int i = 0; i < newItems.size(); i++) {
             if (!oldItems.contains(newItems.get(i))) {
                 itemsToMark.add(newItems.get(i));
             }
         }
-        MainActivity.counter[navigationPosition] += itemsToMark.size();
-        MainActivity.navDrawerItems.get(navigationPosition).increaseCount(itemsToMark.size());
+        UiHelper.refreshCounterNav(navigationPosition, subPosition, itemsToMark.size());
     }
 
 
@@ -406,5 +408,4 @@ public class WeightliftingApp extends Application {
             // Not supported. Wayne.
         }
     }
-
 }

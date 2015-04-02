@@ -40,12 +40,4 @@ public class NavDrawerItem {
     public void setCount(int count) {
         this.count = count;
     }
-
-    public void increaseCount(int size) {
-        count += size;
-    }
-
-    public void decreaseCount(int size) {
-        count -= size;
-    }
 }

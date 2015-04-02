@@ -20,6 +20,8 @@ public class BuliCompetitions {
     // If news not yet ready, try again in 30 seconds
     public static final long TIMER_RETRY = 30000;
 
+    public static ArrayList<BuliPastCompetition> itemsToMark = new ArrayList<BuliPastCompetition>();
+
     private long lastUpdate = 0;
 
     // holds all past competitions

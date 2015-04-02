@@ -1,8 +1,11 @@
 package de.schwedt.weightlifting.app.helper;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -15,6 +18,9 @@ import android.os.Handler;
 import android.os.Vibrator;
 import android.view.View;
 import android.widget.Toast;
+
+import de.schwedt.weightlifting.app.MainActivity;
+import de.schwedt.weightlifting.app.R;
 
 public class UiHelper {
 
@@ -101,5 +107,16 @@ public class UiHelper {
         canvas.drawBitmap(bitmap, rect, rect, paint);
 
         return output;
+    }
+
+    public static void colorFade(View view, Resources res) {
+        ObjectAnimator colorFade = ObjectAnimator.ofObject(view, "backgroundColor", new ArgbEvaluator(), res.getColor(R.color.counter_text_bg), 0xffccc);
+        colorFade.setDuration(3000);
+        colorFade.start();
+    }
+
+    public static void refreshCounterNav(int mainNavPosition, int subNavPosition, int newValue) {
+        MainActivity.counter[mainNavPosition][subNavPosition] = newValue;
+        MainActivity.navDrawerItems.get(mainNavPosition).setCount(DataHelper.sumOfArray(MainActivity.counter[mainNavPosition]));
     }
 }

@@ -1,10 +1,7 @@
 package de.schwedt.weightlifting.app.news;
 
-import android.animation.ArgbEvaluator;
-import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +12,7 @@ import java.util.ArrayList;
 
 import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.R;
+import de.schwedt.weightlifting.app.helper.UiHelper;
 
 public class NewsEventsListAdapter extends BaseAdapter {
 
@@ -77,12 +75,9 @@ public class NewsEventsListAdapter extends BaseAdapter {
         location.setText(items.get(position).getLocation());
 
         if (Events.itemsToMark.contains(items.get(position))) {
+            UiHelper.colorFade(view, activity.getResources());
             Events.itemsToMark.remove(items.get(position));
-            MainActivity.navDrawerItems.get(MainActivity.FRAGMENT_NEWS).decreaseCount(1);
-            Resources res = activity.getResources();
-            ObjectAnimator colorFade = ObjectAnimator.ofObject(view, "backgroundColor", new ArgbEvaluator(), res.getColor(R.color.counter_text_bg), 0xffccc);
-            colorFade.setDuration(3000);
-            colorFade.start();
+            UiHelper.refreshCounterNav(MainActivity.FRAGMENT_NEWS, 1, Events.itemsToMark.size());
         }
 
         return view;
