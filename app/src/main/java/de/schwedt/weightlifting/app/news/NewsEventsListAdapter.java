@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.R;
+import de.schwedt.weightlifting.app.UpdateableItem;
 import de.schwedt.weightlifting.app.helper.UiHelper;
 
 public class NewsEventsListAdapter extends BaseAdapter {
@@ -19,10 +20,9 @@ public class NewsEventsListAdapter extends BaseAdapter {
     private ArrayList<EventItem> items;
     private Activity activity;
     private LayoutInflater inflater;
-    private int type;
 
-    public NewsEventsListAdapter(ArrayList<EventItem> items, Activity activity) {
-        this.items = items;
+    public NewsEventsListAdapter(ArrayList<UpdateableItem> items, Activity activity) {
+        this.items = Events.casteArray(items);
         this.activity = activity;
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }

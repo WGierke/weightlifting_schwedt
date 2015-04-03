@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import de.schwedt.weightlifting.app.R;
+import de.schwedt.weightlifting.app.UpdateableItem;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 
 public class NewsEventFragment extends Fragment {
@@ -40,7 +41,7 @@ public class NewsEventFragment extends Fragment {
         try {
             Bundle bundle = this.getArguments();
             int position = bundle.getInt("item");
-            event = app.getEvents().getEventItem(position);
+            event = (EventItem) app.getEvents().getItem(position);
             showEvent();
         } catch (Exception ex) {
             ex.printStackTrace();

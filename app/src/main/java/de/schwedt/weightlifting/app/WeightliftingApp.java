@@ -184,6 +184,38 @@ public class WeightliftingApp extends Application {
         return events;
     }
 
+    public void update(String name, boolean updatingVariable) {
+        Log.i(TAG, "Updating events...");
+        isUpdatingEvents = true;
+        setLoading(true);
+        Handler callBackHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                try {
+                    Bundle data = msg.getData();
+                    String result = data.getString("result");
+                    if (result == null) {
+                        checkConnection(false);
+                        isUpdatingEvents = false;
+                        setLoading(false);
+                        return;
+                    }
+                    Events newEvents = new Events();
+                    newEvents.parseFromString(result, imageLoader);
+                    markNewItems((ArrayList) events.getItems(), (ArrayList) newEvents.getItems(), (ArrayList) Events.itemsToMark, MainActivity.FRAGMENT_NEWS, 1);
+                    events = newEvents;
+                    Log.i(TAG, "Events updated");
+                } catch (Exception ex) {
+                    Log.e(TAG, "Events update failed");
+                    ex.printStackTrace();
+                }
+                isUpdatingEvents = false;
+                setLoading(false);
+            }
+        };
+        NetworkHelper.getWebRequest(NetworkHelper.URL_EVENTS, callBackHandler);
+    }
+
     public void updateEvents() {
         Log.i(TAG, "Updating events...");
         isUpdatingEvents = true;
@@ -202,7 +234,7 @@ public class WeightliftingApp extends Application {
                     }
                     Events newEvents = new Events();
                     newEvents.parseFromString(result, imageLoader);
-                    markNewItems((ArrayList) events.getEventItems(), (ArrayList) newEvents.getEventItems(), (ArrayList) Events.itemsToMark, MainActivity.FRAGMENT_NEWS, 1);
+                    markNewItems((ArrayList) events.getItems(), (ArrayList) newEvents.getItems(), (ArrayList) Events.itemsToMark, MainActivity.FRAGMENT_NEWS, 1);
                     events = newEvents;
                     Log.i(TAG, "Events updated");
                 } catch (Exception ex) {
@@ -395,7 +427,7 @@ public class WeightliftingApp extends Application {
         NetworkHelper.getWebRequest(NetworkHelper.URL_GALLERY, callBackHandler);
     }
 
-    private void markNewItems(ArrayList<Object> oldItems, ArrayList<Object> newItems, ArrayList<Object> itemsToMark, int navigationPosition, int subPosition) {
+    private void markNewItems(ArrayList<UpdateableItem> oldItems, ArrayList<UpdateableItem> newItems, ArrayList<UpdateableItem> itemsToMark, int navigationPosition, int subPosition) {
         for (int i = 0; i < newItems.size(); i++) {
             if (!oldItems.contains(newItems.get(i))) {
                 itemsToMark.add(newItems.get(i));

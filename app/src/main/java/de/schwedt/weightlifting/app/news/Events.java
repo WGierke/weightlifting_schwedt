@@ -8,12 +8,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Date;
 
+import de.schwedt.weightlifting.app.UpdateableItem;
+import de.schwedt.weightlifting.app.UpdateableWrapper;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
 import de.schwedt.weightlifting.app.helper.JsonParser;
 
-public class Events {
-
+public class Events extends UpdateableWrapper{
+/*
     // Refresh if older than 30 minutes
     public static final long TIMER_INVALIDATE = 1800000;
 
@@ -63,12 +65,12 @@ public class Events {
             return false;
         }
     }
-
+*/
     public void
     parseFromString(String jsonString, ImageLoader imageLoader) {
         Log.d(WeightliftingApp.TAG, "Parsing events JSON...");
         try {
-            eventItems = new ArrayList<EventItem>();
+            ArrayList<UpdateableItem>  newItems = new ArrayList<UpdateableItem>();
 
             JsonParser jsonParser = new JsonParser();
             jsonParser.getJsonFromString(jsonString);
@@ -83,19 +85,27 @@ public class Events {
                     item.setTitle(event.getString("title"));
                     item.setDate(event.getString("date"));
                     item.setLocation(event.getString("location"));
-                    eventItems.add(item);
+                    newItems.add(item);
                 } catch (Exception ex) {
                     Log.e(WeightliftingApp.TAG, "Error while parsing event item #" + i);
                     //ex.printStackTrace();
                     Log.e(WeightliftingApp.TAG, ex.getMessage());
                 }
             }
-            setEventItems(eventItems);
+            setItems(newItems);
             setLastUpdate((new Date()).getTime());
-            Log.i(WeightliftingApp.TAG, "Events parsed, " + eventItems.size() + " items found");
+            Log.i(WeightliftingApp.TAG, "Events parsed, " + newItems.size() + " items found");
         } catch (Exception ex) {
             Log.e(WeightliftingApp.TAG, "Event parsing failed");
             ex.printStackTrace();
         }
+    }
+
+    public static ArrayList<EventItem> casteArray(ArrayList<UpdateableItem> array) {
+        ArrayList<EventItem> convertedItems = new ArrayList<EventItem>();
+        for (int i = 0; i < array.size(); i++) {
+            convertedItems.add((EventItem) array.get(i));
+        }
+        return convertedItems;
     }
 }

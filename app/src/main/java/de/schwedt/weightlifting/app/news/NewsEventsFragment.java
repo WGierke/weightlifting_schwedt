@@ -54,7 +54,7 @@ public class NewsEventsFragment extends Fragment {
 
     private void getEvents() {
         events = app.getEvents();
-        if (events.getEventItems().size() == 0) {
+        if (events.getItems().size() == 0) {
             // No events items yet
             app.setLoading(true);
             Log.d(WeightliftingApp.TAG, "Waiting for events...");
@@ -72,7 +72,7 @@ public class NewsEventsFragment extends Fragment {
             // We have events items to display
             app.setLoading(false);
             try {
-                NewsEventsListAdapter adapter = new NewsEventsListAdapter(events.getEventItems(), getActivity());
+                NewsEventsListAdapter adapter = new NewsEventsListAdapter(events.getItems(), getActivity());
                 listViewEvents.setAdapter(adapter);
             } catch (Exception ex) {
                 Log.e(WeightliftingApp.TAG, "Showing events failed");
@@ -88,7 +88,7 @@ public class NewsEventsFragment extends Fragment {
         String current_month = df.format(now.getTime());
         Boolean monthAlreadyFound = false;
 
-        ArrayList<EventItem> items = events.getEventItems();
+        ArrayList<EventItem> items = Events.casteArray(events.getItems());
         EventItem event;
         for (int i = 0; i < items.size(); i++) {
             event = items.get(i);
