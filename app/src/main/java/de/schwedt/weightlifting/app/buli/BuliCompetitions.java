@@ -8,66 +8,28 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Date;
 
+import de.schwedt.weightlifting.app.UpdateableItem;
+import de.schwedt.weightlifting.app.UpdateableWrapper;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
 import de.schwedt.weightlifting.app.helper.JsonParser;
 
-public class BuliCompetitions {
-
-    // Refresh if older than 30 minutes
-    public static final long TIMER_INVALIDATE = 1800000;
-
-    // If news not yet ready, try again in 30 seconds
-    public static final long TIMER_RETRY = 30000;
+public class BuliCompetitions extends UpdateableWrapper {
 
     public static ArrayList<BuliPastCompetition> itemsToMark = new ArrayList<BuliPastCompetition>();
 
-    private long lastUpdate = 0;
-
-    // holds all past competitions
-    private ArrayList<BuliPastCompetition> buliPastCompetitions;
-
-
-    public BuliCompetitions() {
-        buliPastCompetitions = new ArrayList<BuliPastCompetition>();
-    }
-
-    public long getLastUpdate() {
-        return lastUpdate;
-    }
-
-    public void setLastUpdate(long lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
-
-    public ArrayList<BuliPastCompetition> getBuliPastCompetitions() {
-        return buliPastCompetitions;
-    }
-
-    public void setBuliCompetitions(ArrayList<BuliPastCompetition> buliCompetitions) {
-        this.buliPastCompetitions = buliCompetitions;
-    }
-
-    public BuliPastCompetition getCompetition(int position) {
-        return buliPastCompetitions.get(position);
-    }
-
-    public boolean needsUpdate() {
-        // Update only if last refresh is older than 30 minutes
-
-        long now = new Date().getTime();
-
-        if ((lastUpdate < now - TIMER_INVALIDATE)) {
-            return true;
-        } else {
-            return false;
+    public static ArrayList<BuliPastCompetition> casteArray(ArrayList<UpdateableItem> array) {
+        ArrayList<BuliPastCompetition> convertedItems = new ArrayList<BuliPastCompetition>();
+        for (int i = 0; i < array.size(); i++) {
+            convertedItems.add((BuliPastCompetition) array.get(i));
         }
+        return convertedItems;
     }
 
     public void parseFromString(String jsonString, ImageLoader imageLoader) {
         Log.d(WeightliftingApp.TAG, "Parsing competitions JSON...");
         try {
-            buliPastCompetitions = new ArrayList<BuliPastCompetition>();
+            ArrayList<UpdateableItem> newItems = new ArrayList<UpdateableItem>();
 
             JsonParser jsonParser = new JsonParser();
             jsonParser.getJsonFromString(jsonString);
@@ -86,15 +48,15 @@ public class BuliCompetitions {
                     competition.setScore(jsonCompoetition.getString("score"));
                     competition.setUrl(jsonCompoetition.getString("url"));
 
-                    this.buliPastCompetitions.add(competition);
+                    newItems.add(competition);
                 } catch (Exception ex) {
                     Log.e(WeightliftingApp.TAG, "Error while parsing competition #" + i);
                     ex.printStackTrace();
                 }
             }
-            setBuliCompetitions(buliPastCompetitions);
+            setItems(newItems);
             setLastUpdate((new Date()).getTime());
-            Log.i(WeightliftingApp.TAG, "BuliCompetition items parsed, " + buliPastCompetitions.size() + " items found");
+            Log.i(WeightliftingApp.TAG, "BuliCompetition items parsed, " + newItems.size() + " items found");
         } catch (Exception ex) {
             Log.e(WeightliftingApp.TAG, "Error while parsing competitions");
             ex.printStackTrace();

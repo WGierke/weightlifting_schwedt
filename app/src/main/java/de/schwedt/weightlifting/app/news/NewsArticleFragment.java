@@ -52,7 +52,7 @@ public class NewsArticleFragment extends Fragment {
         try {
             Bundle bundle = this.getArguments();
             int position = bundle.getInt("item");
-            article = app.getNews().getNewsItem(position);
+            article = (NewsItem) app.getNews().getItem(position);
             showArticle();
         } catch (Exception ex) {
             ex.printStackTrace();

@@ -1,6 +1,8 @@
 package de.schwedt.weightlifting.app.buli;
 
-public class BuliTableEntry {
+import de.schwedt.weightlifting.app.UpdateableItem;
+
+public class BuliTableEntry extends UpdateableItem {
 
     private String place;
     private String club;

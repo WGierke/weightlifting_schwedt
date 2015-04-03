@@ -8,65 +8,28 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Date;
 
+import de.schwedt.weightlifting.app.UpdateableItem;
+import de.schwedt.weightlifting.app.UpdateableWrapper;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
 import de.schwedt.weightlifting.app.helper.JsonParser;
 
-public class BuliTeam {
+public class BuliTeam extends UpdateableWrapper {
 
-    // Refresh if older than 30 minutes
-    public static final long TIMER_INVALIDATE = 1800000;
-
-    // If team not yet ready, try again in 30 seconds
-    public static final long TIMER_RETRY = 30000;
     public static ArrayList<BuliTeamMember> itemsToMark = new ArrayList<BuliTeamMember>();
 
-    private long lastUpdate = 0;
-
-    // holds all team members
-    private ArrayList<BuliTeamMember> buliTeamMembers;
-
-
-    public BuliTeam() {
-        buliTeamMembers = new ArrayList<BuliTeamMember>();
-    }
-
-    public long getLastUpdate() {
-        return lastUpdate;
-    }
-
-    public void setLastUpdate(long lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
-
-    public ArrayList<BuliTeamMember> getBuliTeamMembers() {
-        return buliTeamMembers;
-    }
-
-    public void setBuliTeamMembers(ArrayList<BuliTeamMember> buliTeamMembers) {
-        this.buliTeamMembers = buliTeamMembers;
-    }
-
-    public BuliTeamMember getTeamMember(int position) {
-        return buliTeamMembers.get(position);
-    }
-
-    public boolean needsUpdate() {
-        // Update only if last refresh is older than 30 minutes
-
-        long now = new Date().getTime();
-
-        if ((lastUpdate < now - TIMER_INVALIDATE)) {
-            return true;
-        } else {
-            return false;
+    public static ArrayList<BuliTeamMember> casteArray(ArrayList<UpdateableItem> array) {
+        ArrayList<BuliTeamMember> convertedItems = new ArrayList<BuliTeamMember>();
+        for (int i = 0; i < array.size(); i++) {
+            convertedItems.add((BuliTeamMember) array.get(i));
         }
+        return convertedItems;
     }
 
     public void parseFromString(String jsonString, ImageLoader imageLoader) {
         Log.d(WeightliftingApp.TAG, "Parsing buliTeam JSON...");
         try {
-            buliTeamMembers = new ArrayList<BuliTeamMember>();
+            ArrayList<UpdateableItem> newItems = new ArrayList<UpdateableItem>();
 
             JsonParser jsonParser = new JsonParser();
             jsonParser.getJsonFromString(jsonString);
@@ -86,15 +49,15 @@ public class BuliTeam {
                     member.setImageURL(jsonMember.getString("image"));
 
                     imageLoader.preloadImage(member.getImageURL());
-                    this.buliTeamMembers.add(member);
+                    newItems.add(member);
                 } catch (Exception ex) {
                     Log.e(WeightliftingApp.TAG, "Error while parsing buli team member #" + i);
                     ex.printStackTrace();
                 }
             }
-            setBuliTeamMembers(buliTeamMembers);
+            setItems(newItems);
             setLastUpdate((new Date()).getTime());
-            Log.i(WeightliftingApp.TAG, "BuliTeam items parsed, " + buliTeamMembers.size() + " items found");
+            Log.i(WeightliftingApp.TAG, "BuliTeam items parsed, " + newItems.size() + " items found");
         } catch (Exception ex) {
             Log.e(WeightliftingApp.TAG, "Error while parsing buli team");
             ex.printStackTrace();

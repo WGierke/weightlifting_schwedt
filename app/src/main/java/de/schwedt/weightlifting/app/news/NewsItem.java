@@ -2,9 +2,10 @@ package de.schwedt.weightlifting.app.news;
 
 import android.graphics.drawable.Drawable;
 
+import de.schwedt.weightlifting.app.UpdateableItem;
 import de.schwedt.weightlifting.app.helper.DataHelper;
 
-public class NewsItem {
+public class NewsItem extends UpdateableItem {
 
     private String heading;
     private String content;

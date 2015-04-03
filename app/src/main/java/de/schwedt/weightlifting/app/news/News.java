@@ -8,61 +8,29 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Date;
 
+import de.schwedt.weightlifting.app.UpdateableItem;
+import de.schwedt.weightlifting.app.UpdateableWrapper;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
 import de.schwedt.weightlifting.app.helper.JsonParser;
 
-public class News {
+public class News extends UpdateableWrapper {
 
-    // Refresh if older than 30 minutes
-    public static final long TIMER_INVALIDATE = 1800000;
-    // If news not yet ready, try again in 1 second
-    public static final long TIMER_RETRY = 30 * 1000;
     public static ArrayList<NewsItem> itemsToMark = new ArrayList<NewsItem>();
-    private long lastUpdate = 0;
-    // holds all news items
-    private ArrayList<NewsItem> newsItems;
 
-    public News() {
-        newsItems = new ArrayList<NewsItem>();
-    }
-
-    public long getLastUpdate() {
-        return lastUpdate;
-    }
-
-    public void setLastUpdate(long lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
-
-    public ArrayList<NewsItem> getNewsItems() {
-        return newsItems;
-    }
-
-    public void setNewsItems(ArrayList<NewsItem> newsItems) {
-        this.newsItems = newsItems;
-    }
-
-    public NewsItem getNewsItem(int position) {
-        return newsItems.get(position);
-    }
-
-    public boolean needsUpdate() {
-        // Update only if last refresh is older than 30 minutes
-        long now = new Date().getTime();
-
-        if ((lastUpdate < now - TIMER_INVALIDATE)) {
-            return true;
-        } else {
-            return false;
+    public static ArrayList<NewsItem> casteArray(ArrayList<UpdateableItem> array) {
+        ArrayList<NewsItem> convertedItems = new ArrayList<NewsItem>();
+        for (int i = 0; i < array.size(); i++) {
+            convertedItems.add((NewsItem) array.get(i));
         }
+        return convertedItems;
     }
 
     public void
     parseFromString(String jsonString, ImageLoader imageLoader) {
         Log.d(WeightliftingApp.TAG, "Parsing news JSON...");
         try {
-            newsItems = new ArrayList<NewsItem>();
+            ArrayList<UpdateableItem> newItems = new ArrayList<UpdateableItem>();
 
             JsonParser jsonParser = new JsonParser();
             jsonParser.getJsonFromString(jsonString);
@@ -81,7 +49,7 @@ public class News {
                     item.setImageURL(article.getString("image"));
 
                     imageLoader.preloadImage(item.getImageURL());
-                    newsItems.add(item);
+                    newItems.add(item);
                 } catch (Exception ex) {
                     Log.e(WeightliftingApp.TAG, "Error while parsing feed item #" + i);
                     //ex.printStackTrace();
@@ -89,9 +57,9 @@ public class News {
                 }
             }
 
-            setNewsItems(newsItems);
+            setItems(newItems);
             setLastUpdate((new Date()).getTime());
-            Log.i(WeightliftingApp.TAG, "News parsed, " + newsItems.size() + " items found");
+            Log.i(WeightliftingApp.TAG, "News parsed, " + newItems.size() + " items found");
         } catch (Exception ex) {
             Log.e(WeightliftingApp.TAG, "News parsing failed");
             ex.printStackTrace();

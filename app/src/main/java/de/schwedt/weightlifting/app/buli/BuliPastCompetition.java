@@ -1,6 +1,8 @@
 package de.schwedt.weightlifting.app.buli;
 
-public class BuliPastCompetition {
+import de.schwedt.weightlifting.app.UpdateableItem;
+
+public class BuliPastCompetition extends UpdateableItem {
 
     private String location;
     private String date;

@@ -56,7 +56,7 @@ public class BuliTeamFragment extends Fragment {
 
     private void getTeam() {
         buliTeam = app.getBuliTeam();
-        if (buliTeam.getBuliTeamMembers().size() == 0) {
+        if (buliTeam.getItems().size() == 0) {
             // No news items yet
             app.setLoading(true);
             Log.d(WeightliftingApp.TAG, "Waiting for buli team...");
@@ -75,7 +75,7 @@ public class BuliTeamFragment extends Fragment {
             app.setLoading(false);
             try {
                 //ListView listViewNews = (ListView) fragment.findViewById(R.id.listView_Buli);
-                BuliTeamListAdapter adapter = new BuliTeamListAdapter(buliTeam.getBuliTeamMembers(), getActivity());
+                BuliTeamListAdapter adapter = new BuliTeamListAdapter(BuliTeam.casteArray(buliTeam.getItems()), getActivity());
                 listViewTeam.setAdapter(adapter);
 
             } catch (Exception ex) {

@@ -48,7 +48,7 @@ public class BuliCompetitionsFragment extends Fragment {
 
     private void getBuliCompetitions() {
         buliCompetitions = app.getBuliCompetitions();
-        if (buliCompetitions.getBuliPastCompetitions().size() == 0) {
+        if (buliCompetitions.getItems().size() == 0) {
             // No news items yet
             app.setLoading(true);
             Log.d(WeightliftingApp.TAG, "Waiting for buliCompetitions...");
@@ -66,7 +66,7 @@ public class BuliCompetitionsFragment extends Fragment {
             // We have competitions to display
             app.setLoading(false);
             try {
-                BuliCompetitionsListAdapter adapter = new BuliCompetitionsListAdapter(buliCompetitions.getBuliPastCompetitions(), getActivity());
+                BuliCompetitionsListAdapter adapter = new BuliCompetitionsListAdapter(BuliCompetitions.casteArray(buliCompetitions.getItems()), getActivity());
                 listViewCompetitions.setAdapter(adapter);
                 listViewCompetitions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override

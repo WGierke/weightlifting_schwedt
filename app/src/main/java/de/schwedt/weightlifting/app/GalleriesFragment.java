@@ -52,7 +52,7 @@ public class GalleriesFragment extends Fragment {
 
     private void getGalleries() {
         galleries = app.getGalleries();
-        if (galleries.getGalleries().size() == 0) {
+        if (galleries.getItems().size() == 0) {
             // No news items yet
             app.setLoading(true);
             Log.d(WeightliftingApp.TAG, "Waiting for galleries...");
@@ -71,7 +71,7 @@ public class GalleriesFragment extends Fragment {
             app.setLoading(false);
             try {
                 ListView listViewGalleries = (ListView) fragment.findViewById(R.id.listView_galleries);
-                GalleryOverviewAdapter adapter = new GalleryOverviewAdapter(galleries.getGalleries(), getActivity());
+                GalleryOverviewAdapter adapter = new GalleryOverviewAdapter(Galleries.casteArray(galleries.getItems()), getActivity());
                 listViewGalleries.setAdapter(adapter);
                 listViewGalleries.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override

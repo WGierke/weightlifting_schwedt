@@ -1,7 +1,9 @@
 package de.schwedt.weightlifting.app.gallery;
 
 
-public class GalleryItem {
+import de.schwedt.weightlifting.app.UpdateableItem;
+
+public class GalleryItem extends UpdateableItem {
 
     private String title;
     private String[] imageUrls;

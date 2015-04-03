@@ -14,63 +14,23 @@ import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
 import de.schwedt.weightlifting.app.helper.JsonParser;
 
-public class Events extends UpdateableWrapper{
-/*
-    // Refresh if older than 30 minutes
-    public static final long TIMER_INVALIDATE = 1800000;
+public class Events extends UpdateableWrapper {
 
-    // If news not yet ready, try again in 1 second
-    public static final long TIMER_RETRY = 30 * 1000;
     public static ArrayList<EventItem> itemsToMark = new ArrayList<EventItem>();
 
-    private long lastUpdate = 0;
-    // holds all news items
-    private ArrayList<EventItem> eventItems;
-
-    public Events() {
-        eventItems = new ArrayList<EventItem>();
-    }
-
-    public long getLastUpdate() {
-        return lastUpdate;
-    }
-
-    public void setLastUpdate(long lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
-
-    public ArrayList<EventItem> getEventItems() {
-        return eventItems;
-    }
-
-    public void setEventItems(ArrayList<EventItem> eventItems) {
-        this.eventItems = eventItems;
-    }
-
-    public EventItem getNewsItem(int position) {
-        return eventItems.get(position);
-    }
-
-    public EventItem getEventItem(int position) {
-        return eventItems.get(position);
-    }
-
-    public boolean needsUpdate() {
-        // Update only if last refresh is older than 30 minutes
-        long now = new Date().getTime();
-
-        if ((lastUpdate < now - TIMER_INVALIDATE)) {
-            return true;
-        } else {
-            return false;
+    public static ArrayList<EventItem> casteArray(ArrayList<UpdateableItem> array) {
+        ArrayList<EventItem> convertedItems = new ArrayList<EventItem>();
+        for (int i = 0; i < array.size(); i++) {
+            convertedItems.add((EventItem) array.get(i));
         }
+        return convertedItems;
     }
-*/
+
     public void
     parseFromString(String jsonString, ImageLoader imageLoader) {
         Log.d(WeightliftingApp.TAG, "Parsing events JSON...");
         try {
-            ArrayList<UpdateableItem>  newItems = new ArrayList<UpdateableItem>();
+            ArrayList<UpdateableItem> newItems = new ArrayList<UpdateableItem>();
 
             JsonParser jsonParser = new JsonParser();
             jsonParser.getJsonFromString(jsonString);
@@ -99,13 +59,5 @@ public class Events extends UpdateableWrapper{
             Log.e(WeightliftingApp.TAG, "Event parsing failed");
             ex.printStackTrace();
         }
-    }
-
-    public static ArrayList<EventItem> casteArray(ArrayList<UpdateableItem> array) {
-        ArrayList<EventItem> convertedItems = new ArrayList<EventItem>();
-        for (int i = 0; i < array.size(); i++) {
-            convertedItems.add((EventItem) array.get(i));
-        }
-        return convertedItems;
     }
 }

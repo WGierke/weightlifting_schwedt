@@ -43,7 +43,7 @@ public class GalleryPicturesRowFragment extends Fragment {
 
     private void getPhotos() {
         galleries = app.getGalleries();
-        if (galleries.getGalleries().size() == 0) {
+        if (galleries.getItems().size() == 0) {
             // No news items yet
             app.setLoading(true);
             Log.d(WeightliftingApp.TAG, "Waiting for galleries...");
@@ -67,11 +67,11 @@ public class GalleryPicturesRowFragment extends Fragment {
 
                 Bundle bundle = this.getArguments();
                 int position = bundle.getInt("item");
-                for (int i = 0; i < galleries.getGalleries().get(position).getImageUrls().length; i += 2) {
+                for (int i = 0; i < Galleries.casteArray(galleries.getItems()).get(position).getImageUrls().length; i += 2) {
                     GalleryPicturesRow row = new GalleryPicturesRow();
 
-                    row.addGalleryPicture(galleries.getGalleries().get(position).getImageUrl(i));
-                    row.addGalleryPicture(galleries.getGalleries().get(position).getImageUrl(i + 1));
+                    row.addGalleryPicture(Galleries.casteArray(galleries.getItems()).get(position).getImageUrl(i));
+                    row.addGalleryPicture(Galleries.casteArray(galleries.getItems()).get(position).getImageUrl(i + 1));
 
                     rows.add(row);
                 }

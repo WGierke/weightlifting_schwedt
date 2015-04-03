@@ -3,7 +3,7 @@ package de.schwedt.weightlifting.app.news;
 import de.schwedt.weightlifting.app.UpdateableItem;
 import de.schwedt.weightlifting.app.helper.DataHelper;
 
-public class EventItem extends UpdateableItem{
+public class EventItem extends UpdateableItem {
 
     private String title;
     private String date;

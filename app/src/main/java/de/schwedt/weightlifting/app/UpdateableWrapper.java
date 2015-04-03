@@ -2,15 +2,10 @@ package de.schwedt.weightlifting.app;
 
 import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Date;
 
 import de.schwedt.weightlifting.app.helper.ImageLoader;
-import de.schwedt.weightlifting.app.helper.JsonParser;
-import de.schwedt.weightlifting.app.news.EventItem;
 
 public abstract class UpdateableWrapper {
 
@@ -22,7 +17,7 @@ public abstract class UpdateableWrapper {
     public static final long TIMER_RETRY = 30 * 1000;
     public static ArrayList<UpdateableItem> itemsToMark = new ArrayList<UpdateableItem>();
 
-    private long lastUpdate = 0;
+    protected long lastUpdate = 0;
     // holds all news items
     protected ArrayList<UpdateableItem> items;
 

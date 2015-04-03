@@ -9,61 +9,28 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import de.schwedt.weightlifting.app.UpdateableItem;
+import de.schwedt.weightlifting.app.UpdateableWrapper;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
 import de.schwedt.weightlifting.app.helper.JsonParser;
 
-public class Galleries {
-
-    // Refresh if older than 30 minutes
-    public static final long TIMER_INVALIDATE = 1800000;
-
-    // If news not yet ready, try again in 3 seconds
-    public static final long TIMER_RETRY = 3000;
+public class Galleries extends UpdateableWrapper {
 
     public static ArrayList<GalleryItem> itemsToMark = new ArrayList<GalleryItem>();
 
-    private long lastUpdate = 0;
-
-    // holds all news items
-    private ArrayList<GalleryItem> galleries;
-
-    public Galleries() {
-        galleries = new ArrayList<GalleryItem>();
-    }
-
-    public long getLastUpdate() {
-        return lastUpdate;
-    }
-
-    public void setLastUpdate(long lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
-
-    public ArrayList<GalleryItem> getGalleries() {
-        return galleries;
-    }
-
-    public void setGalleries(ArrayList<GalleryItem> galleries) {
-        this.galleries = galleries;
-    }
-
-    public boolean needsUpdate() {
-        // Update only if last refresh is older than 30 minutes
-
-        long now = new Date().getTime();
-
-        if ((lastUpdate < now - TIMER_INVALIDATE)) {
-            return true;
-        } else {
-            return false;
+    public static ArrayList<GalleryItem> casteArray(ArrayList<UpdateableItem> array) {
+        ArrayList<GalleryItem> convertedItems = new ArrayList<GalleryItem>();
+        for (int i = 0; i < array.size(); i++) {
+            convertedItems.add((GalleryItem) array.get(i));
         }
+        return convertedItems;
     }
 
     public void parseFromString(String jsonString, ImageLoader imageLoader) {
         Log.d(WeightliftingApp.TAG, "Parsing gallery JSON...");
         try {
-            galleries = new ArrayList<GalleryItem>();
+            ArrayList<UpdateableItem> newItems = new ArrayList<UpdateableItem>();
 
             JsonParser jsonParser = new JsonParser();
             jsonParser.getJsonFromString(jsonString);
@@ -85,21 +52,19 @@ public class Galleries {
                     }
                     item.setImageUrls(image_urls.toArray(new String[image_urls.size()]));
                     imageLoader.preloadImage(item.getImageUrls()[0]);
-
-                    this.galleries.add(item);
+                    newItems.add(item);
                 } catch (Exception ex) {
                     Log.e(WeightliftingApp.TAG, "Error while parsing gallery #" + i);
                     ex.printStackTrace();
                 }
             }
 
-            setGalleries(this.galleries);
+            setItems(newItems);
             setLastUpdate((new Date()).getTime());
-            Log.i(WeightliftingApp.TAG, "Galleries parsed, " + this.galleries.size() + " items found");
+            Log.i(WeightliftingApp.TAG, "Galleries parsed, " + newItems.size() + " items found");
         } catch (Exception ex) {
             Log.e(WeightliftingApp.TAG, "Error while parsing galleries");
             ex.printStackTrace();
         }
     }
-
 }

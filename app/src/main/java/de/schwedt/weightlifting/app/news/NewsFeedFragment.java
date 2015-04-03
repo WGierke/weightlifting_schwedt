@@ -56,7 +56,7 @@ public class NewsFeedFragment extends Fragment {
 
     private void getNews() {
         news = app.getNews();
-        if (news.getNewsItems().size() == 0) {
+        if (news.getItems().size() == 0) {
             // No news items yet
             app.setLoading(true);
             Log.d(WeightliftingApp.TAG, "Waiting for news...");
@@ -74,7 +74,7 @@ public class NewsFeedFragment extends Fragment {
             // We have news items to display
             app.setLoading(false);
             try {
-                NewsFeedListAdapter adapter = new NewsFeedListAdapter(news.getNewsItems(), getActivity());
+                NewsFeedListAdapter adapter = new NewsFeedListAdapter(News.casteArray(news.getItems()), getActivity());
                 listViewNews.setAdapter(adapter);
                 listViewNews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override

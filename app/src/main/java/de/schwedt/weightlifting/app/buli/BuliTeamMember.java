@@ -2,7 +2,9 @@ package de.schwedt.weightlifting.app.buli;
 
 import android.graphics.drawable.Drawable;
 
-public class BuliTeamMember {
+import de.schwedt.weightlifting.app.UpdateableItem;
+
+public class BuliTeamMember extends UpdateableItem {
 
     private String name;
     private String year;

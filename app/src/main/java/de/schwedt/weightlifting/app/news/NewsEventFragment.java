@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import de.schwedt.weightlifting.app.R;
-import de.schwedt.weightlifting.app.UpdateableItem;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 
 public class NewsEventFragment extends Fragment {

@@ -156,7 +156,7 @@ public class WeightliftingApp extends Application {
                     }
                     News newNews = new News();
                     newNews.parseFromString(result, imageLoader);
-                    markNewItems((ArrayList) news.getNewsItems(), (ArrayList) newNews.getNewsItems(), (ArrayList) News.itemsToMark, MainActivity.FRAGMENT_NEWS, 0);
+                    markNewItems((ArrayList) news.getItems(), (ArrayList) newNews.getItems(), (ArrayList) News.itemsToMark, MainActivity.FRAGMENT_NEWS, 0);
                     news = newNews;
                     Log.i(TAG, "News updated");
                 } catch (Exception ex) {
@@ -280,7 +280,7 @@ public class WeightliftingApp extends Application {
                     buliTeam.parseFromString(result, imageLoader);
                     BuliTeam newTeam = new BuliTeam();
                     newTeam.parseFromString(result, imageLoader);
-                    markNewItems((ArrayList) buliTeam.getBuliTeamMembers(), (ArrayList) newTeam.getBuliTeamMembers(), (ArrayList) BuliTeam.itemsToMark, MainActivity.FRAGMENT_BULI, 0);
+                    markNewItems((ArrayList) buliTeam.getItems(), (ArrayList) newTeam.getItems(), (ArrayList) BuliTeam.itemsToMark, MainActivity.FRAGMENT_BULI, 0);
                     buliTeam = newTeam;
                     Log.i(TAG, "BuliTeam updated");
                 } catch (Exception ex) {
@@ -324,7 +324,7 @@ public class WeightliftingApp extends Application {
                     }
                     BuliCompetitions newCompetitions = new BuliCompetitions();
                     newCompetitions.parseFromString(result, imageLoader);
-                    markNewItems((ArrayList) buliCompetitions.getBuliPastCompetitions(), (ArrayList) newCompetitions.getBuliPastCompetitions(), (ArrayList) BuliCompetitions.itemsToMark, MainActivity.FRAGMENT_BULI, 1);
+                    markNewItems((ArrayList) buliCompetitions.getItems(), (ArrayList) newCompetitions.getItems(), (ArrayList) BuliCompetitions.itemsToMark, MainActivity.FRAGMENT_BULI, 1);
                     buliCompetitions = newCompetitions;
                     Log.i(TAG, "BuliCompetitions updated");
                 } catch (Exception ex) {
@@ -368,7 +368,7 @@ public class WeightliftingApp extends Application {
                     }
                     BuliTable newTable = new BuliTable();
                     newTable.parseFromString(result, imageLoader);
-                    markNewItems((ArrayList) buliTable.getBuliTableEntries(), (ArrayList) newTable.getBuliTableEntries(), (ArrayList) BuliTable.itemsToMark, MainActivity.FRAGMENT_BULI, 2);
+                    markNewItems((ArrayList) buliTable.getItems(), (ArrayList) newTable.getItems(), (ArrayList) BuliTable.itemsToMark, MainActivity.FRAGMENT_BULI, 2);
                     buliTable = newTable;
                     Log.i(TAG, "BuliTable updated");
                 } catch (Exception ex) {
@@ -413,7 +413,7 @@ public class WeightliftingApp extends Application {
                     }
                     Galleries newGalleries = new Galleries();
                     newGalleries.parseFromString(result, imageLoader);
-                    markNewItems((ArrayList) galleries.getGalleries(), (ArrayList) newGalleries.getGalleries(), (ArrayList) Galleries.itemsToMark, MainActivity.FRAGMENT_GALLERY, 0);
+                    markNewItems((ArrayList) galleries.getItems(), (ArrayList) newGalleries.getItems(), (ArrayList) Galleries.itemsToMark, MainActivity.FRAGMENT_GALLERY, 0);
                     galleries = newGalleries;
                     Log.i(TAG, "Gallery updated");
                 } catch (Exception ex) {

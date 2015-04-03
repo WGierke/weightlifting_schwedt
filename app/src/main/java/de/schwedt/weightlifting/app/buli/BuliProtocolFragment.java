@@ -38,7 +38,7 @@ public class BuliProtocolFragment extends Fragment {
         try {
             Bundle bundle = this.getArguments();
             int position = bundle.getInt("item");
-            competition = app.getBuliCompetitions().getCompetition(position);
+            competition = (BuliPastCompetition) app.getBuliCompetitions().getItem(position);
             webview.loadUrl(competition.getProtocolUrl());
         } catch (Exception ex) {
             ex.printStackTrace();

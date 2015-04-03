@@ -46,7 +46,7 @@ public class BuliTableFragment extends Fragment {
 
     private void getBuliTable() {
         buliTable = app.getBuliTable();
-        if (buliTable.getBuliTableEntries().size() == 0) {
+        if (buliTable.getItems().size() == 0) {
             // No table items yet
             app.setLoading(true);
             Log.d(WeightliftingApp.TAG, "Waiting for buliTable...");
@@ -65,7 +65,7 @@ public class BuliTableFragment extends Fragment {
             app.setLoading(false);
             try {
                 ListView listViewNews = (ListView) fragment.findViewById(R.id.listView_Buli);
-                BuliTableListAdapter adapter = new BuliTableListAdapter(buliTable.getBuliTableEntries(), getActivity());
+                BuliTableListAdapter adapter = new BuliTableListAdapter(BuliTable.casteArray(buliTable.getItems()), getActivity());
                 listViewNews.setAdapter(adapter);
 
             } catch (Exception ex) {
