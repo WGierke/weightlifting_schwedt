@@ -20,6 +20,8 @@ public class BuliTable {
     // If table not yet ready, try again in 30 seconds
     public static final long TIMER_RETRY = 30000;
 
+    public static ArrayList<BuliTableEntry> itemsToMark = new ArrayList<BuliTableEntry>();
+
     private long lastUpdate = 0;
 
     // holds all past competitions

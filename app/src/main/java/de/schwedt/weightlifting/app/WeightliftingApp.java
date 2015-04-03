@@ -334,8 +334,10 @@ public class WeightliftingApp extends Application {
                         setLoading(false);
                         return;
                     }
-                    buliTable = new BuliTable();
-                    buliTable.parseFromString(result, imageLoader);
+                    BuliTable newTable = new BuliTable();
+                    newTable.parseFromString(result, imageLoader);
+                    markNewItems((ArrayList) buliTable.getBuliTableEntries(), (ArrayList) newTable.getBuliTableEntries(), (ArrayList) BuliTable.itemsToMark, MainActivity.FRAGMENT_BULI, 2);
+                    buliTable = newTable;
                     Log.i(TAG, "BuliTable updated");
                 } catch (Exception ex) {
                     Log.e(TAG, "BuliTable update failed");

@@ -12,8 +12,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
+import de.schwedt.weightlifting.app.helper.UiHelper;
 
 public class BuliTableListAdapter extends BaseAdapter {
 
@@ -84,6 +86,11 @@ public class BuliTableListAdapter extends BaseAdapter {
         TextView maxPoints = (TextView) view.findViewById(R.id.buli_table_max_score);
         maxPoints.setText(items.get(position).getMaxScore() + " " + res.getString(R.string.buli_max_score));
 
+        if (BuliTable.itemsToMark.contains(items.get(position))) {
+            UiHelper.colorFade(view, activity.getResources());
+            BuliTable.itemsToMark.remove(items.get(position));
+            UiHelper.refreshCounterNav(MainActivity.FRAGMENT_BULI, 2, BuliTable.itemsToMark.size());
+        }
 
         return view;
     }
