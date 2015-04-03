@@ -10,7 +10,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.R;
+import de.schwedt.weightlifting.app.helper.UiHelper;
 
 public class GalleryOverviewAdapter extends BaseAdapter {
 
@@ -64,6 +66,12 @@ public class GalleryOverviewAdapter extends BaseAdapter {
 
         TextView title = (TextView) view.findViewById(R.id.gallery_name);
         title.setText(items.get(position).getTitle());
+
+        if (Galleries.itemsToMark.contains(items.get(position))) {
+            UiHelper.colorFade(view, activity.getResources());
+            Galleries.itemsToMark.remove(items.get(position));
+            UiHelper.refreshCounterNav(MainActivity.FRAGMENT_GALLERY, 0, Galleries.itemsToMark.size());
+        }
 
         return view;
     }

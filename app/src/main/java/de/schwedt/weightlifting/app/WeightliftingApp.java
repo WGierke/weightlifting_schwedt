@@ -379,8 +379,10 @@ public class WeightliftingApp extends Application {
                         setLoading(false);
                         return;
                     }
-                    galleries = new Galleries();
-                    galleries.parseFromString(result, imageLoader);
+                    Galleries newGalleries = new Galleries();
+                    newGalleries.parseFromString(result, imageLoader);
+                    markNewItems((ArrayList) galleries.getGalleries(), (ArrayList) newGalleries.getGalleries(), (ArrayList) Galleries.itemsToMark, MainActivity.FRAGMENT_GALLERY, 0);
+                    galleries = newGalleries;
                     Log.i(TAG, "Gallery updated");
                 } catch (Exception ex) {
                     Log.e(TAG, "Gallery update failed");

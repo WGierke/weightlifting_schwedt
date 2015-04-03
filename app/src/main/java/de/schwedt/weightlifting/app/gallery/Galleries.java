@@ -21,6 +21,8 @@ public class Galleries {
     // If news not yet ready, try again in 3 seconds
     public static final long TIMER_RETRY = 3000;
 
+    public static ArrayList<GalleryItem> itemsToMark = new ArrayList<GalleryItem>();
+
     private long lastUpdate = 0;
 
     // holds all news items
