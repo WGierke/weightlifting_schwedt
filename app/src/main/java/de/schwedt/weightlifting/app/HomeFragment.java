@@ -20,7 +20,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(WeightliftingApp.TAG, "Showing Home fragment");
 
-        fragment = inflater.inflate(R.layout.home, container, false);
+        fragment = inflater.inflate(R.layout.fragment_home, container, false);
         app = (WeightliftingApp) getActivity().getApplicationContext();
 
         return fragment;
