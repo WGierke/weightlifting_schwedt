@@ -41,11 +41,32 @@
 
             </LinearLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/homepage_weightlifting_schwedt"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="20dp"
+                android:autoLink="web"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/homepage_club"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="20dp"
+                android:autoLink="web"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/homepage_bvdg"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="20dp"
+                android:autoLink="web"/>
+
         </LinearLayout>
 
-
-
     </ScrollView>
-
 
 </LinearLayout>

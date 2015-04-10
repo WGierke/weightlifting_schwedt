@@ -27,7 +27,7 @@
 
     <!-- Home -->
     <string name="home_welcome">Willkommen</string>
-    <string name="home_text">Seit 1967 gibt es das Gewichtheben in der Oderstadt. Etwa 120 Mitglieder betätigen sich in unserer Abteilung. Unsere Mannschaft für die 1. Bundesliga stellen wir gemeinsam mit dem TSV 1860 Stralsund auf. Hier finden Sie aktuelle Informationen zum Bundesliga-Team, -Wettkämpfen und -Platzierungen, aber auch zu Veranstaltungen und Wettkämpfen im Jugendbereich.</string>
+    <string name="home_text">Seit 1967 gibt es das Gewichtheben in der Oderstadt. Über 180 Mitglieder im TSV Blau-Weiß 65 Schwedt sind in der Abteilung Gewichtheben tätig. Unsere Mannschaft für die 1. Bundesliga stellen wir gemeinsam mit dem TSV 1860 Stralsund auf. \n \n Hier finden Sie für Sie aufbereitete aktuelle Informationen zum Bundesliga-Team, -Wettkämpfen und -Platzierungen, aber auch zu Veranstaltungen und Wettkämpfen im Jugendbereich.</string>
 
 
     <!-- News -->
@@ -79,5 +79,8 @@
     <string name="contact_app_developer">App-Developer</string>
     <string name="contact_app_developer_name">Willi Gierke</string>
     <string name="contact_app_developer_email">willi.gierke@student.hpi.de</string>
+    <string name="homepage_weightlifting_schwedt">Homepage der Abteilung Gewichtheben \n gewichtheben-schwedt.de</string>
+    <string name="homepage_club">Homepage des TSV Blau-Weiß 65 Schwedt \n blauweiss65-schwedt.de</string>
+    <string name="homepage_bvdg">Bundesverband Deutscher Gewichtheber \n bvdg-online.de</string>
 
 </resources>
