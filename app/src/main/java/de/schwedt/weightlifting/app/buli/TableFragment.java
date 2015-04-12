@@ -70,21 +70,20 @@ public class TableFragment extends Fragment {
                 ListView listViewTable = (ListView) fragment.findViewById(R.id.listView_Buli);
                 TableListAdapter adapter = new TableListAdapter(Table.casteArray(buliTable.getItems()), getActivity());
                 listViewTable.setAdapter(adapter);
-                /*listViewTable.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                listViewTable.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         // Show the competitions the club already had
-                        Fragment protocol = new CompetitionsFragment();
+                        Fragment protocol = new FilterCompetitionsFragment();
                         Log.d("filter", "click");
                         Bundle bundle = new Bundle();
                         TableEntry entry = (TableEntry) app.getBuliTable().getItem(position);
-                        bundle.putBoolean("filter", true);
                         bundle.putString("filter-name", entry.getClub());
                         protocol.setArguments(bundle);
                         ((MainActivity) getActivity()).addFragment(new EmptyFragment(), getString(R.string.nav_buli), true);
                         ((MainActivity) getActivity()).addFragment(protocol, getString(R.string.nav_buli), true);
                     }
-                });*/
+                });
 
             } catch (Exception ex) {
                 Log.e(WeightliftingApp.TAG, "Showing buliTeam failed");
