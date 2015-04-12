@@ -2,7 +2,7 @@ package de.schwedt.weightlifting.app.buli;
 
 import de.schwedt.weightlifting.app.UpdateableItem;
 
-public class BuliTableEntry extends UpdateableItem {
+public class TableEntry extends UpdateableItem {
 
     private String place;
     private String club;
@@ -10,7 +10,7 @@ public class BuliTableEntry extends UpdateableItem {
     private String max_score;
     private String cardinal_points;
 
-    public BuliTableEntry() {
+    public TableEntry() {
 
     }
 

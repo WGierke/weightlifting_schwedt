@@ -11,27 +11,28 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import de.schwedt.weightlifting.app.EmptyFragment;
 import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 
-public class BuliCompetitionsFragment extends Fragment {
+public class TableFragment extends Fragment {
 
     private WeightliftingApp app;
     private View fragment;
 
     private ImageView cover;
-    private ListView listViewCompetitions;
+    private ListView listViewTable;
 
-    private BuliCompetitions buliCompetitions;
+    private Table buliTable;
 
-    public BuliCompetitionsFragment() {
+    public TableFragment() {
         super();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(WeightliftingApp.TAG, "Showing Buli Competitions fragment");
+        Log.d(WeightliftingApp.TAG, "Showing Buli Table fragment");
 
         fragment = inflater.inflate(R.layout.buli_page, container, false);
         app = (WeightliftingApp) getActivity().getApplicationContext();
@@ -39,49 +40,54 @@ public class BuliCompetitionsFragment extends Fragment {
         cover = (ImageView) fragment.findViewById(R.id.cover_buli);
         cover.setImageDrawable(getResources().getDrawable(R.drawable.cover_competition));
 
-        listViewCompetitions = (ListView) fragment.findViewById(R.id.listView_Buli);
+        listViewTable = (ListView) fragment.findViewById(R.id.listView_Buli);
 
-        getBuliCompetitions();
+        getBuliTable();
 
         return fragment;
     }
 
-    private void getBuliCompetitions() {
-        buliCompetitions = app.getBuliCompetitions();
-        if (buliCompetitions.getItems().size() == 0) {
-            // No news items yet
+    private void getBuliTable() {
+        buliTable = app.getBuliTable();
+        if (buliTable.getItems().size() == 0) {
+            // No table items yet
             app.setLoading(true);
-            Log.d(WeightliftingApp.TAG, "Waiting for buliCompetitions...");
+            Log.d(WeightliftingApp.TAG, "Waiting for buliTable...");
 
             // Check again in a few seconds
             Runnable refreshRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    getBuliCompetitions();
+                    getBuliTable();
                 }
             };
             Handler refreshHandler = new Handler();
-            refreshHandler.postDelayed(refreshRunnable, BuliCompetitions.TIMER_RETRY);
+            refreshHandler.postDelayed(refreshRunnable, Table.TIMER_RETRY);
         } else {
-            // We have competitions to display
+            // We have Table items to display
             app.setLoading(false);
             try {
-                BuliCompetitionsListAdapter adapter = new BuliCompetitionsListAdapter(BuliCompetitions.casteArray(buliCompetitions.getItems()), getActivity());
-                listViewCompetitions.setAdapter(adapter);
-                listViewCompetitions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                ListView listViewTable = (ListView) fragment.findViewById(R.id.listView_Buli);
+                TableListAdapter adapter = new TableListAdapter(Table.casteArray(buliTable.getItems()), getActivity());
+                listViewTable.setAdapter(adapter);
+                /*listViewTable.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        // Show an article fragment and put the selected index as argument
-                        Fragment protocol = new BuliProtocolFragment();
+                        // Show the competitions the club already had
+                        Fragment protocol = new CompetitionsFragment();
+                        Log.d("filter", "click");
                         Bundle bundle = new Bundle();
-                        bundle.putInt("item", position);
+                        TableEntry entry = (TableEntry) app.getBuliTable().getItem(position);
+                        bundle.putBoolean("filter", true);
+                        bundle.putString("filter-name", entry.getClub());
                         protocol.setArguments(bundle);
+                        ((MainActivity) getActivity()).addFragment(new EmptyFragment(), getString(R.string.nav_buli), true);
                         ((MainActivity) getActivity()).addFragment(protocol, getString(R.string.nav_buli), true);
                     }
-                });
+                });*/
 
             } catch (Exception ex) {
-                Log.e(WeightliftingApp.TAG, "Showing competitions failed");
+                Log.e(WeightliftingApp.TAG, "Showing buliTeam failed");
                 ex.toString();
             }
 

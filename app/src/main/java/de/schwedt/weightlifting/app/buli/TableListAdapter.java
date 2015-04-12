@@ -17,23 +17,23 @@ import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.UiHelper;
 
-public class BuliTableListAdapter extends BaseAdapter {
+public class TableListAdapter extends BaseAdapter {
 
-    private ArrayList<BuliTableEntry> items;
+    private ArrayList<TableEntry> items;
     private Activity activity;
     private LayoutInflater inflater;
 
-    public BuliTableListAdapter(ArrayList<BuliTableEntry> items, Activity activity) {
+    public TableListAdapter(ArrayList<TableEntry> items, Activity activity) {
         this.items = items;
         this.activity = activity;
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public ArrayList<BuliTableEntry> getItems() {
+    public ArrayList<TableEntry> getItems() {
         return items;
     }
 
-    public void setItems(ArrayList<BuliTableEntry> items) {
+    public void setItems(ArrayList<TableEntry> items) {
         this.items = items;
     }
 
@@ -86,10 +86,10 @@ public class BuliTableListAdapter extends BaseAdapter {
         TextView maxPoints = (TextView) view.findViewById(R.id.buli_table_max_score);
         maxPoints.setText(items.get(position).getMaxScore() + " " + res.getString(R.string.buli_max_score));
 
-        if (BuliTable.itemsToMark.contains(items.get(position))) {
+        if (Table.itemsToMark.contains(items.get(position))) {
             UiHelper.colorFade(view, activity.getResources());
-            BuliTable.itemsToMark.remove(items.get(position));
-            UiHelper.refreshCounterNav(MainActivity.FRAGMENT_BULI, 2, BuliTable.itemsToMark.size());
+            Table.itemsToMark.remove(items.get(position));
+            UiHelper.refreshCounterNav(MainActivity.FRAGMENT_BULI, 2, Table.itemsToMark.size());
         }
 
         return view;

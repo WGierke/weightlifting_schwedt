@@ -16,23 +16,23 @@ import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.UiHelper;
 
-public class BuliCompetitionsListAdapter extends BaseAdapter {
+public class CompetitionsListAdapter extends BaseAdapter {
 
-    private ArrayList<BuliPastCompetition> items;
+    private ArrayList<PastCompetition> items;
     private Activity activity;
     private LayoutInflater inflater;
 
-    public BuliCompetitionsListAdapter(ArrayList<BuliPastCompetition> items, Activity activity) {
+    public CompetitionsListAdapter(ArrayList<PastCompetition> items, Activity activity) {
         this.items = items;
         this.activity = activity;
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public ArrayList<BuliPastCompetition> getItems() {
+    public ArrayList<PastCompetition> getItems() {
         return items;
     }
 
-    public void setItems(ArrayList<BuliPastCompetition> items) {
+    public void setItems(ArrayList<PastCompetition> items) {
         this.items = items;
     }
 
@@ -85,10 +85,10 @@ public class BuliCompetitionsListAdapter extends BaseAdapter {
         TextView location = (TextView) view.findViewById(R.id.buli_competition_location);
         location.setText(items.get(position).getLocation());
 
-        if (BuliCompetitions.itemsToMark.contains(items.get(position))) {
+        if (Competitions.itemsToMark.contains(items.get(position))) {
             UiHelper.colorFade(view, activity.getResources());
-            BuliCompetitions.itemsToMark.remove(items.get(position));
-            UiHelper.refreshCounterNav(MainActivity.FRAGMENT_BULI, 1, BuliCompetitions.itemsToMark.size());
+            Competitions.itemsToMark.remove(items.get(position));
+            UiHelper.refreshCounterNav(MainActivity.FRAGMENT_BULI, 1, Competitions.itemsToMark.size());
         }
 
         return view;

@@ -13,60 +13,70 @@ import android.widget.ListView;
 import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 
-public class BuliTableFragment extends Fragment {
+public class TeamFragment extends Fragment {
 
     private WeightliftingApp app;
     private View fragment;
 
     private ImageView cover;
-    private ListView listViewTable;
+    private ListView listViewTeam;
 
-    private BuliTable buliTable;
+    private Team buliTeam;
 
-    public BuliTableFragment() {
+    public TeamFragment() {
         super();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(WeightliftingApp.TAG, "Showing Buli Table fragment");
+        Log.d(WeightliftingApp.TAG, "Showing Buli Team fragment");
 
         fragment = inflater.inflate(R.layout.buli_page, container, false);
         app = (WeightliftingApp) getActivity().getApplicationContext();
 
         cover = (ImageView) fragment.findViewById(R.id.cover_buli);
-        cover.setImageDrawable(getResources().getDrawable(R.drawable.cover_competition));
+        cover.setImageDrawable(getResources().getDrawable(R.drawable.cover_team));
 
-        listViewTable = (ListView) fragment.findViewById(R.id.listView_Buli);
+        listViewTeam = (ListView) fragment.findViewById(R.id.listView_Buli);
 
-        getBuliTable();
+        /*Runnable refreshRunnable = new Runnable() {
+            @Override
+            public void run() {
+                getTeam();
+            }
+        };
+        Handler refreshHandler = new Handler();
+        refreshHandler.postDelayed(refreshRunnable, WeightliftingApp.DISPLAY_DELAY);
+        */
+        getTeam();
 
         return fragment;
     }
 
-    private void getBuliTable() {
-        buliTable = app.getBuliTable();
-        if (buliTable.getItems().size() == 0) {
-            // No table items yet
+
+    private void getTeam() {
+        buliTeam = app.getBuliTeam();
+        if (buliTeam.getItems().size() == 0) {
+            // No news items yet
             app.setLoading(true);
-            Log.d(WeightliftingApp.TAG, "Waiting for buliTable...");
+            Log.d(WeightliftingApp.TAG, "Waiting for buli team...");
 
             // Check again in a few seconds
             Runnable refreshRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    getBuliTable();
+                    getTeam();
                 }
             };
             Handler refreshHandler = new Handler();
-            refreshHandler.postDelayed(refreshRunnable, BuliTable.TIMER_RETRY);
+            refreshHandler.postDelayed(refreshRunnable, Team.TIMER_RETRY);
         } else {
-            // We have buliTable items to display
+            // We have buliTeam items to display
             app.setLoading(false);
             try {
-                ListView listViewNews = (ListView) fragment.findViewById(R.id.listView_Buli);
-                BuliTableListAdapter adapter = new BuliTableListAdapter(BuliTable.casteArray(buliTable.getItems()), getActivity());
-                listViewNews.setAdapter(adapter);
+                //ListView listViewNews = (ListView) fragment.findViewById(R.id.listView_Buli);
+                TeamListAdapter adapter = new TeamListAdapter(Team.casteArray(buliTeam.getItems()), getActivity());
+                listViewTeam.setAdapter(adapter);
 
             } catch (Exception ex) {
                 Log.e(WeightliftingApp.TAG, "Showing buliTeam failed");

@@ -17,23 +17,23 @@ import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.UiHelper;
 
-public class BuliTeamListAdapter extends BaseAdapter {
+public class TeamListAdapter extends BaseAdapter {
 
-    private ArrayList<BuliTeamMember> items;
+    private ArrayList<TeamMember> items;
     private Activity activity;
     private LayoutInflater inflater;
 
-    public BuliTeamListAdapter(ArrayList<BuliTeamMember> items, Activity activity) {
+    public TeamListAdapter(ArrayList<TeamMember> items, Activity activity) {
         this.items = items;
         this.activity = activity;
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public ArrayList<BuliTeamMember> getItems() {
+    public ArrayList<TeamMember> getItems() {
         return items;
     }
 
-    public void setItems(ArrayList<BuliTeamMember> items) {
+    public void setItems(ArrayList<TeamMember> items) {
         this.items = items;
     }
 
@@ -84,10 +84,10 @@ public class BuliTeamListAdapter extends BaseAdapter {
         TextView maxPoints = (TextView) view.findViewById(R.id.buli_member_max_score);
         maxPoints.setText(res.getString(R.string.buli_relative_points) + ": " + items.get(position).getMaxScore());
 
-        if (BuliTeam.itemsToMark.contains(items.get(position))) {
+        if (Team.itemsToMark.contains(items.get(position))) {
             UiHelper.colorFade(view, res);
-            BuliTeam.itemsToMark.remove(items.get(position));
-            UiHelper.refreshCounterNav(MainActivity.FRAGMENT_BULI, 0, BuliTeam.itemsToMark.size());
+            Team.itemsToMark.remove(items.get(position));
+            UiHelper.refreshCounterNav(MainActivity.FRAGMENT_BULI, 0, Team.itemsToMark.size());
         }
 
         ImageView icon = (ImageView) view.findViewById(R.id.buli_member_image);

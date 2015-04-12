@@ -14,14 +14,14 @@ import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
 import de.schwedt.weightlifting.app.helper.JsonParser;
 
-public class BuliTable extends UpdateableWrapper {
+public class Table extends UpdateableWrapper {
 
-    public static ArrayList<BuliTableEntry> itemsToMark = new ArrayList<BuliTableEntry>();
+    public static ArrayList<TableEntry> itemsToMark = new ArrayList<TableEntry>();
 
-    public static ArrayList<BuliTableEntry> casteArray(ArrayList<UpdateableItem> array) {
-        ArrayList<BuliTableEntry> convertedItems = new ArrayList<BuliTableEntry>();
+    public static ArrayList<TableEntry> casteArray(ArrayList<UpdateableItem> array) {
+        ArrayList<TableEntry> convertedItems = new ArrayList<TableEntry>();
         for (int i = 0; i < array.size(); i++) {
-            convertedItems.add((BuliTableEntry) array.get(i));
+            convertedItems.add((TableEntry) array.get(i));
         }
         return convertedItems;
     }
@@ -40,7 +40,7 @@ public class BuliTable extends UpdateableWrapper {
             for (int i = 0; i < table.length(); i++) {
                 try {
                     JSONObject jsonTableEntry = table.getJSONObject(i);
-                    BuliTableEntry tableEntry = new BuliTableEntry();
+                    TableEntry tableEntry = new TableEntry();
                     tableEntry.setPlace(jsonTableEntry.getString("place"));
                     tableEntry.setClub(jsonTableEntry.getString("club"));
                     tableEntry.setScore(jsonTableEntry.getString("score"));
@@ -55,7 +55,7 @@ public class BuliTable extends UpdateableWrapper {
             }
             setItems(newBuliTableItems);
             setLastUpdate((new Date()).getTime());
-            Log.i(WeightliftingApp.TAG, "BuliTable items parsed, " + newBuliTableItems.size() + " items found");
+            Log.i(WeightliftingApp.TAG, "Table items parsed, " + newBuliTableItems.size() + " items found");
         } catch (Exception ex) {
             Log.e(WeightliftingApp.TAG, "Error while parsing buli table");
             ex.printStackTrace();

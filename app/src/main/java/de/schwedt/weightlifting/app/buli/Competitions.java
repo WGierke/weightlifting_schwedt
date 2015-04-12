@@ -14,14 +14,14 @@ import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
 import de.schwedt.weightlifting.app.helper.JsonParser;
 
-public class BuliCompetitions extends UpdateableWrapper {
+public class Competitions extends UpdateableWrapper {
 
-    public static ArrayList<BuliPastCompetition> itemsToMark = new ArrayList<BuliPastCompetition>();
+    public static ArrayList<PastCompetition> itemsToMark = new ArrayList<PastCompetition>();
 
-    public static ArrayList<BuliPastCompetition> casteArray(ArrayList<UpdateableItem> array) {
-        ArrayList<BuliPastCompetition> convertedItems = new ArrayList<BuliPastCompetition>();
+    public static ArrayList<PastCompetition> casteArray(ArrayList<UpdateableItem> array) {
+        ArrayList<PastCompetition> convertedItems = new ArrayList<PastCompetition>();
         for (int i = 0; i < array.size(); i++) {
-            convertedItems.add((BuliPastCompetition) array.get(i));
+            convertedItems.add((PastCompetition) array.get(i));
         }
         return convertedItems;
     }
@@ -40,7 +40,7 @@ public class BuliCompetitions extends UpdateableWrapper {
             for (int i = 0; i < competitions.length(); i++) {
                 try {
                     JSONObject jsonCompoetition = competitions.getJSONObject(i);
-                    BuliPastCompetition competition = new BuliPastCompetition();
+                    PastCompetition competition = new PastCompetition();
                     competition.setLocation(jsonCompoetition.getString("location"));
                     competition.setDate(jsonCompoetition.getString("date"));
                     competition.setHome(jsonCompoetition.getString("home"));

@@ -4,7 +4,7 @@ import android.graphics.drawable.Drawable;
 
 import de.schwedt.weightlifting.app.UpdateableItem;
 
-public class BuliTeamMember extends UpdateableItem {
+public class TeamMember extends UpdateableItem {
 
     private String name;
     private String year;
@@ -14,7 +14,7 @@ public class BuliTeamMember extends UpdateableItem {
     private String imageURL;
     private Drawable image;
 
-    public BuliTeamMember() {
+    public TeamMember() {
 
     }
 

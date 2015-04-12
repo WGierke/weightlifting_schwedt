@@ -13,9 +13,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Date;
 
-import de.schwedt.weightlifting.app.buli.BuliCompetitions;
-import de.schwedt.weightlifting.app.buli.BuliTable;
-import de.schwedt.weightlifting.app.buli.BuliTeam;
+import de.schwedt.weightlifting.app.buli.Competitions;
+import de.schwedt.weightlifting.app.buli.Table;
+import de.schwedt.weightlifting.app.buli.Team;
 import de.schwedt.weightlifting.app.faq.FaqItem;
 import de.schwedt.weightlifting.app.gallery.Galleries;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
@@ -25,7 +25,7 @@ import de.schwedt.weightlifting.app.helper.UiHelper;
 import de.schwedt.weightlifting.app.news.Events;
 import de.schwedt.weightlifting.app.news.News;
 
-//import de.schwedt.weightlifting.app.buliTeam.BuliTeam;
+//import de.schwedt.weightlifting.app.buliTeam.Team;
 
 public class WeightliftingApp extends Application {
 
@@ -50,9 +50,9 @@ public class WeightliftingApp extends Application {
 
     private News news;
     private Events events;
-    private BuliTeam buliTeam;
-    private BuliCompetitions buliCompetitions;
-    private BuliTable buliTable;
+    private Team buliTeam;
+    private Competitions buliCompetitions;
+    private Table buliTable;
     private Galleries galleries;
     private ProgressDialog loadingProgressDialog;
     private MainActivity mainActivity;
@@ -248,9 +248,9 @@ public class WeightliftingApp extends Application {
         NetworkHelper.getWebRequest(NetworkHelper.URL_EVENTS, callBackHandler);
     }
 
-    public BuliTeam getBuliTeam() {
+    public Team getBuliTeam() {
         if (buliTeam == null) {
-            buliTeam = new BuliTeam();
+            buliTeam = new Team();
         }
 
         if (buliTeam.needsUpdate() && !isUpdatingTeam && isOnline) {
@@ -276,15 +276,15 @@ public class WeightliftingApp extends Application {
                         setLoading(false);
                         return;
                     }
-                    buliTeam = new BuliTeam();
+                    buliTeam = new Team();
                     buliTeam.parseFromString(result, imageLoader);
-                    BuliTeam newTeam = new BuliTeam();
+                    Team newTeam = new Team();
                     newTeam.parseFromString(result, imageLoader);
-                    markNewItems((ArrayList) buliTeam.getItems(), (ArrayList) newTeam.getItems(), (ArrayList) BuliTeam.itemsToMark, MainActivity.FRAGMENT_BULI, 0);
+                    markNewItems((ArrayList) buliTeam.getItems(), (ArrayList) newTeam.getItems(), (ArrayList) Team.itemsToMark, MainActivity.FRAGMENT_BULI, 0);
                     buliTeam = newTeam;
-                    Log.i(TAG, "BuliTeam updated");
+                    Log.i(TAG, "Team updated");
                 } catch (Exception ex) {
-                    Log.e(TAG, "BuliTeam update failed");
+                    Log.e(TAG, "Team update failed");
                     ex.printStackTrace();
                 }
                 isUpdatingTeam = false;
@@ -294,9 +294,9 @@ public class WeightliftingApp extends Application {
         NetworkHelper.getWebRequest(NetworkHelper.URL_BULI_TEAM, callBackHandler);
     }
 
-    public BuliCompetitions getBuliCompetitions() {
+    public Competitions getBuliCompetitions() {
         if (buliCompetitions == null) {
-            buliCompetitions = new BuliCompetitions();
+            buliCompetitions = new Competitions();
         }
 
         if (buliCompetitions.needsUpdate() && !isUpdatingCompetitions && isOnline) {
@@ -322,13 +322,13 @@ public class WeightliftingApp extends Application {
                         setLoading(false);
                         return;
                     }
-                    BuliCompetitions newCompetitions = new BuliCompetitions();
+                    Competitions newCompetitions = new Competitions();
                     newCompetitions.parseFromString(result, imageLoader);
-                    markNewItems((ArrayList) buliCompetitions.getItems(), (ArrayList) newCompetitions.getItems(), (ArrayList) BuliCompetitions.itemsToMark, MainActivity.FRAGMENT_BULI, 1);
+                    markNewItems((ArrayList) buliCompetitions.getItems(), (ArrayList) newCompetitions.getItems(), (ArrayList) Competitions.itemsToMark, MainActivity.FRAGMENT_BULI, 1);
                     buliCompetitions = newCompetitions;
-                    Log.i(TAG, "BuliCompetitions updated");
+                    Log.i(TAG, "Competitions updated");
                 } catch (Exception ex) {
-                    Log.e(TAG, "BuliCompetitions update failed");
+                    Log.e(TAG, "Competitions update failed");
                     ex.printStackTrace();
                 }
                 isUpdatingCompetitions = false;
@@ -338,9 +338,9 @@ public class WeightliftingApp extends Application {
         NetworkHelper.getWebRequest(NetworkHelper.URL_BULI_COMPETITIONS, callBackHandler);
     }
 
-    public BuliTable getBuliTable() {
+    public Table getBuliTable() {
         if (buliTable == null) {
-            buliTable = new BuliTable();
+            buliTable = new Table();
         }
 
         if (buliTable.needsUpdate() && !isUpdatingTable && isOnline) {
@@ -366,13 +366,13 @@ public class WeightliftingApp extends Application {
                         setLoading(false);
                         return;
                     }
-                    BuliTable newTable = new BuliTable();
+                    Table newTable = new Table();
                     newTable.parseFromString(result, imageLoader);
-                    markNewItems((ArrayList) buliTable.getItems(), (ArrayList) newTable.getItems(), (ArrayList) BuliTable.itemsToMark, MainActivity.FRAGMENT_BULI, 2);
+                    markNewItems((ArrayList) buliTable.getItems(), (ArrayList) newTable.getItems(), (ArrayList) Table.itemsToMark, MainActivity.FRAGMENT_BULI, 2);
                     buliTable = newTable;
-                    Log.i(TAG, "BuliTable updated");
+                    Log.i(TAG, "Table updated");
                 } catch (Exception ex) {
-                    Log.e(TAG, "BuliTable update failed");
+                    Log.e(TAG, "Table update failed");
                     ex.printStackTrace();
                 }
                 isUpdatingTable = false;

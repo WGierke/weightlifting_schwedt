@@ -2,7 +2,7 @@ package de.schwedt.weightlifting.app.buli;
 
 import de.schwedt.weightlifting.app.UpdateableItem;
 
-public class BuliPastCompetition extends UpdateableItem {
+public class PastCompetition extends UpdateableItem {
 
     private String location;
     private String date;
@@ -11,7 +11,7 @@ public class BuliPastCompetition extends UpdateableItem {
     private String score;
     private String url;
 
-    public BuliPastCompetition() {
+    public PastCompetition() {
 
     }
 

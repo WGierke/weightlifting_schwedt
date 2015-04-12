@@ -10,9 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import de.schwedt.weightlifting.app.buli.BuliCompetitionsFragment;
-import de.schwedt.weightlifting.app.buli.BuliTableFragment;
-import de.schwedt.weightlifting.app.buli.BuliTeamFragment;
+import de.schwedt.weightlifting.app.buli.CompetitionsFragment;
+import de.schwedt.weightlifting.app.buli.TableFragment;
+import de.schwedt.weightlifting.app.buli.TeamFragment;
 
 public class BuliFragment extends Fragment {
 
@@ -59,13 +59,13 @@ public class BuliFragment extends Fragment {
 
             switch (position) {
                 case FRAGMENT_TEAM:
-                    fragment = new BuliTeamFragment();
+                    fragment = new TeamFragment();
                     break;
                 case FRAGMENT_COMPETITIONS:
-                    fragment = new BuliCompetitionsFragment();
+                    fragment = new CompetitionsFragment();
                     break;
                 case FRAGMENT_TABLE:
-                    fragment = new BuliTableFragment();
+                    fragment = new TableFragment();
                     break;
                 default:
                     fragment = null;

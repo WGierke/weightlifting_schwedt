@@ -12,15 +12,15 @@ import android.webkit.WebView;
 import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 
-public class BuliProtocolFragment extends Fragment {
+public class ProtocolFragment extends Fragment {
 
     private WeightliftingApp app;
     private View fragment;
-    private BuliPastCompetition competition;
+    private PastCompetition competition;
 
     private WebView webview;
 
-    public BuliProtocolFragment() {
+    public ProtocolFragment() {
         super();
     }
 
@@ -38,7 +38,7 @@ public class BuliProtocolFragment extends Fragment {
         try {
             Bundle bundle = this.getArguments();
             int position = bundle.getInt("item");
-            competition = (BuliPastCompetition) app.getBuliCompetitions().getItem(position);
+            competition = (PastCompetition) app.getBuliCompetitions().getItem(position);
             webview.loadUrl(competition.getProtocolUrl());
         } catch (Exception ex) {
             ex.printStackTrace();

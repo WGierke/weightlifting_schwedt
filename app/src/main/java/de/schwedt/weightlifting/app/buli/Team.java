@@ -14,14 +14,14 @@ import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
 import de.schwedt.weightlifting.app.helper.JsonParser;
 
-public class BuliTeam extends UpdateableWrapper {
+public class Team extends UpdateableWrapper {
 
-    public static ArrayList<BuliTeamMember> itemsToMark = new ArrayList<BuliTeamMember>();
+    public static ArrayList<TeamMember> itemsToMark = new ArrayList<TeamMember>();
 
-    public static ArrayList<BuliTeamMember> casteArray(ArrayList<UpdateableItem> array) {
-        ArrayList<BuliTeamMember> convertedItems = new ArrayList<BuliTeamMember>();
+    public static ArrayList<TeamMember> casteArray(ArrayList<UpdateableItem> array) {
+        ArrayList<TeamMember> convertedItems = new ArrayList<TeamMember>();
         for (int i = 0; i < array.size(); i++) {
-            convertedItems.add((BuliTeamMember) array.get(i));
+            convertedItems.add((TeamMember) array.get(i));
         }
         return convertedItems;
     }
@@ -40,7 +40,7 @@ public class BuliTeam extends UpdateableWrapper {
             for (int i = 0; i < team.length(); i++) {
                 try {
                     JSONObject jsonMember = team.getJSONObject(i);
-                    BuliTeamMember member = new BuliTeamMember();
+                    TeamMember member = new TeamMember();
                     member.setName(jsonMember.getString("name"));
                     member.setYear(jsonMember.getString("year"));
                     member.setSnatching(jsonMember.getString("snatching"));
@@ -57,7 +57,7 @@ public class BuliTeam extends UpdateableWrapper {
             }
             setItems(newItems);
             setLastUpdate((new Date()).getTime());
-            Log.i(WeightliftingApp.TAG, "BuliTeam items parsed, " + newItems.size() + " items found");
+            Log.i(WeightliftingApp.TAG, "Team items parsed, " + newItems.size() + " items found");
         } catch (Exception ex) {
             Log.e(WeightliftingApp.TAG, "Error while parsing buli team");
             ex.printStackTrace();

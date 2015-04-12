@@ -51,4 +51,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <ImageView
+        android:id="@+id/buli_competition_protocol"
+        android:src="@drawable/arrow_right"
+        android:layout_width="40dip"
+        android:layout_height="match_parent"
+        android:scaleType="centerInside"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:padding="5dip" />
+
 </RelativeLayout>
