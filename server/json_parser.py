@@ -49,9 +49,9 @@ def create_news_file():
                     post = urllib2.urlopen(article["url"]).read()
                     post = post.replace('"content">', '', 2)
 
-                    post = post[post.find('"content">')+len('"content">'):post.find('class="under"')]
-                    article = add_article_content(post, article)
-                    articles.append(article)
+                post = post[post.find('"content">')+len('"content">'):post.find('class="under"')]
+                article = add_article_content(post, article)
+                articles.append(article)
 
             n += 1
             page = urllib2.urlopen(basic_url + str(n)).read()
