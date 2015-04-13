@@ -46,7 +46,7 @@ public class CompetitionsFragment extends Fragment {
         return fragment;
     }
 
-    private void getBuliCompetitions() {
+    protected void getBuliCompetitions() {
         buliCompetitions = app.getBuliCompetitions();
         if (buliCompetitions.getItems().size() == 0) {
             // No news items yet

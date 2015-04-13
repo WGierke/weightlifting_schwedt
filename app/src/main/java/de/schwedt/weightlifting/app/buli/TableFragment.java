@@ -81,7 +81,7 @@ public class TableFragment extends Fragment {
                         bundle.putString("filter-name", entry.getClub());
                         protocol.setArguments(bundle);
                         ((MainActivity) getActivity()).addFragment(new EmptyFragment(), getString(R.string.nav_buli), true);
-                        ((MainActivity) getActivity()).addFragment(protocol, getString(R.string.nav_buli), true);
+                        ((MainActivity) getActivity()).addFragment(protocol, entry.getClub(), true);
                     }
                 });
 
