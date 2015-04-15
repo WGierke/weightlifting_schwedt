@@ -5,14 +5,11 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -186,8 +183,7 @@ public class DataHelper {
                 sb.append(line);
             }
             return sb.toString();
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return "";

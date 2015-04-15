@@ -10,9 +10,7 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -55,8 +53,8 @@ public class WeightliftingApp extends Application {
     private News news;
     private Events events;
     private Team buliTeam;
-    private Competitions buliCompetitions;
-    private Table buliTable;
+    private Competitions competitions;
+    private Table table;
     private Galleries galleries;
     private ProgressDialog loadingProgressDialog;
     private MainActivity mainActivity;
@@ -96,9 +94,9 @@ public class WeightliftingApp extends Application {
     public void getData() {
         getNews();
         getEvents();
-        getBuliTeam();
-        getBuliCompetitions();
-        getBuliTable();
+        getTeam();
+        getCompetitions();
+        getTable();
         getGalleries();
     }
 
@@ -131,10 +129,15 @@ public class WeightliftingApp extends Application {
     public News getNews() {
         if (news == null) {
             news = new News();
-            news.parseFromString(readInternal("news.json"), imageLoader);
+            String newsFileContent = DataHelper.readIntern("news.json", getApplicationContext());
+            if (newsFileContent != "") {
+                news.parseFromString(newsFileContent, imageLoader);
+                news.setLastUpdate(new File(getFilesDir() + "/news.json").lastModified());
+            }
         }
 
         if (news.needsUpdate() && !isUpdatingNews && isOnline) {
+            Toast.makeText(getApplicationContext(), "Updating news", Toast.LENGTH_LONG).show();
             updateNews();
         }
 
@@ -181,6 +184,10 @@ public class WeightliftingApp extends Application {
     public Events getEvents() {
         if (events == null) {
             events = new Events();
+            String eventsFileContent = DataHelper.readIntern("events.json", getApplicationContext());
+            if (eventsFileContent != "") {
+                events.parseFromString(eventsFileContent, imageLoader);
+            }
         }
 
         if (events.needsUpdate() && !isUpdatingEvents && isOnline) {
@@ -226,19 +233,23 @@ public class WeightliftingApp extends Application {
         NetworkHelper.getWebRequest(NetworkHelper.URL_EVENTS, callBackHandler);
     }
 
-    public Team getBuliTeam() {
+    public Team getTeam() {
         if (buliTeam == null) {
             buliTeam = new Team();
+            String teamFileContent = DataHelper.readIntern("team.json", getApplicationContext());
+            if (teamFileContent != "") {
+                buliTeam.parseFromString(teamFileContent, imageLoader);
+            }
         }
 
         if (buliTeam.needsUpdate() && !isUpdatingTeam && isOnline) {
-            updateBuliTeam();
+            updateTeam();
         }
 
         return buliTeam;
     }
 
-    public void updateBuliTeam() {
+    public void updateTeam() {
         Log.i(TAG, "Updating buliTeam...");
         isUpdatingTeam = true;
         setLoading(true);
@@ -272,19 +283,23 @@ public class WeightliftingApp extends Application {
         NetworkHelper.getWebRequest(NetworkHelper.URL_BULI_TEAM, callBackHandler);
     }
 
-    public Competitions getBuliCompetitions() {
-        if (buliCompetitions == null) {
-            buliCompetitions = new Competitions();
+    public Competitions getCompetitions() {
+        if (competitions == null) {
+            competitions = new Competitions();
+            String competitionsFileContent = DataHelper.readIntern("competitions.json", getApplicationContext());
+            if (competitionsFileContent != "") {
+                competitions.parseFromString(competitionsFileContent, imageLoader);
+            }
         }
 
-        if (buliCompetitions.needsUpdate() && !isUpdatingCompetitions && isOnline) {
-            updateBuliCompetitions();
+        if (competitions.needsUpdate() && !isUpdatingCompetitions && isOnline) {
+            updateCompetitions();
         }
 
-        return buliCompetitions;
+        return competitions;
     }
 
-    public void updateBuliCompetitions() {
+    public void updateCompetitions() {
         Log.i(TAG, "Updating buliTeam...");
         isUpdatingCompetitions = true;
         setLoading(true);
@@ -304,8 +319,8 @@ public class WeightliftingApp extends Application {
 
                     Competitions newCompetitions = new Competitions();
                     newCompetitions.parseFromString(result, imageLoader);
-                    markNewItems((ArrayList) buliCompetitions.getItems(), (ArrayList) newCompetitions.getItems(), (ArrayList) Competitions.itemsToMark, MainActivity.FRAGMENT_BULI, 1);
-                    buliCompetitions = newCompetitions;
+                    markNewItems((ArrayList) competitions.getItems(), (ArrayList) newCompetitions.getItems(), (ArrayList) Competitions.itemsToMark, MainActivity.FRAGMENT_BULI, 1);
+                    competitions = newCompetitions;
                     Log.i(TAG, "Competitions updated");
                 } catch (Exception ex) {
                     Log.e(TAG, "Competitions update failed");
@@ -318,20 +333,24 @@ public class WeightliftingApp extends Application {
         NetworkHelper.getWebRequest(NetworkHelper.URL_BULI_COMPETITIONS, callBackHandler);
     }
 
-    public Table getBuliTable() {
-        if (buliTable == null) {
-            buliTable = new Table();
+    public Table getTable() {
+        if (table == null) {
+            table = new Table();
+            String tableFileContent = DataHelper.readIntern("table.json", getApplicationContext());
+            if (tableFileContent != "") {
+                table.parseFromString(tableFileContent, imageLoader);
+            }
         }
 
-        if (buliTable.needsUpdate() && !isUpdatingTable && isOnline) {
-            updateBuliTable();
+        if (table.needsUpdate() && !isUpdatingTable && isOnline) {
+            updateTable();
         }
 
-        return buliTable;
+        return table;
     }
 
-    public void updateBuliTable() {
-        Log.i(TAG, "Updating buliTable...");
+    public void updateTable() {
+        Log.i(TAG, "Updating table...");
         isUpdatingTable = true;
         setLoading(true);
         Handler callBackHandler = new Handler() {
@@ -351,8 +370,8 @@ public class WeightliftingApp extends Application {
 
                     Table newTable = new Table();
                     newTable.parseFromString(result, imageLoader);
-                    markNewItems((ArrayList) buliTable.getItems(), (ArrayList) newTable.getItems(), (ArrayList) Table.itemsToMark, MainActivity.FRAGMENT_BULI, 2);
-                    buliTable = newTable;
+                    markNewItems((ArrayList) table.getItems(), (ArrayList) newTable.getItems(), (ArrayList) Table.itemsToMark, MainActivity.FRAGMENT_BULI, 2);
+                    table = newTable;
                     Log.i(TAG, "Table updated");
                 } catch (Exception ex) {
                     Log.e(TAG, "Table update failed");
@@ -365,10 +384,13 @@ public class WeightliftingApp extends Application {
         NetworkHelper.getWebRequest(NetworkHelper.URL_BULI_TABLE, callBackHandler);
     }
 
-
     public Galleries getGalleries() {
         if (galleries == null) {
             galleries = new Galleries();
+            String galleriesFileContent = DataHelper.readIntern("galleries.json", getApplicationContext());
+            if (galleriesFileContent != "") {
+                galleries.parseFromString(galleriesFileContent, imageLoader);
+            }
         }
 
         if (galleries.needsUpdate() && !isUpdatingGalleries && isOnline) {

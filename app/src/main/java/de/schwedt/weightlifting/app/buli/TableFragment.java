@@ -48,7 +48,7 @@ public class TableFragment extends Fragment {
     }
 
     private void getBuliTable() {
-        buliTable = app.getBuliTable();
+        buliTable = app.getTable();
         if (buliTable.getItems().size() == 0) {
             // No table items yet
             app.setLoading(true);
@@ -76,7 +76,7 @@ public class TableFragment extends Fragment {
                         // Show the competitions the club already had
                         Fragment protocol = new FilterCompetitionsFragment();
                         Bundle bundle = new Bundle();
-                        TableEntry entry = (TableEntry) app.getBuliTable().getItem(position);
+                        TableEntry entry = (TableEntry) app.getTable().getItem(position);
                         bundle.putString("filter-name", entry.getClub());
                         protocol.setArguments(bundle);
                         ((MainActivity) getActivity()).addFragment(new EmptyFragment(), getString(R.string.nav_buli), true);

@@ -16,7 +16,7 @@ import de.schwedt.weightlifting.app.WeightliftingApp;
 public class FilterCompetitionsFragment extends CompetitionsFragment {
 
     protected void getBuliCompetitions() {
-        buliCompetitions = app.getBuliCompetitions();
+        buliCompetitions = app.getCompetitions();
         if (buliCompetitions.getItems().size() == 0) {
             app.setLoading(true);
             Log.d(WeightliftingApp.TAG, "Waiting for Competitions...");

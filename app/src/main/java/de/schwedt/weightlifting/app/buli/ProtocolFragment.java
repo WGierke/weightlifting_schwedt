@@ -38,7 +38,7 @@ public class ProtocolFragment extends Fragment {
         try {
             Bundle bundle = this.getArguments();
             int position = bundle.getInt("item");
-            competition = (PastCompetition) app.getBuliCompetitions().getItem(position);
+            competition = (PastCompetition) app.getCompetitions().getItem(position);
             webview.loadUrl(competition.getProtocolUrl());
         } catch (Exception ex) {
             ex.printStackTrace();

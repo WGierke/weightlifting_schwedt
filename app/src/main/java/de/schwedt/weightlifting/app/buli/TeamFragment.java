@@ -55,7 +55,7 @@ public class TeamFragment extends Fragment {
 
 
     private void getTeam() {
-        buliTeam = app.getBuliTeam();
+        buliTeam = app.getTeam();
         if (buliTeam.getItems().size() == 0) {
             // No news items yet
             app.setLoading(true);
