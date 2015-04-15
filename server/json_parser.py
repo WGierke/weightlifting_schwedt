@@ -10,14 +10,15 @@ iat_url = "https://www.iat.uni-leipzig.de/datenbanken/blgew1415/"
 
 def add_article_content(post, article):
     re_img_tag = re.compile(ur'(?<=<img)[^>]*')
-    re_img_src = re.compile(ur'(?<=src=")[^"]*(?=")')
+    re_img_src = re.compile(ur'(?<=src="http)[^"]*(?=")')
 
     soup = BeautifulSoup(post)
     article["content"] = ''.join(soup.findAll(text=True)).replace("\n", "").replace(u"\u00a0", "").replace("[Zeige als Diashow]", "").replace("Thumbnails", "")
     img_tags = re.findall(re_img_tag, post)
     image = ''
     if len(img_tags) > 0:
-        image = re.findall(re_img_src, img_tags[0])[0]
+        if len(re.findall(re_img_src, img_tags[0])) > 0:
+            image = "http" + re.findall(re_img_src, img_tags[0])[0]
     article["image"] = image
     return article
 
@@ -64,7 +65,7 @@ def create_news_file():
     if not error_occured:
         news_dict["articles"] = articles
         json_news = json.dumps(news_dict)
-        json_news = "[" + json_news + "]"
+        json_news = "[" + json_news.replace("\u00df","ß").replace("\u00e4", "ä").replace("\u00fc", "ü") + "]"
         f = open("../production/news.json", "w")
         f.write(json_news)
         f.close()
