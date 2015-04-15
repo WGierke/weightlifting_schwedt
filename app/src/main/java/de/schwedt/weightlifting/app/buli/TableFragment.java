@@ -75,7 +75,6 @@ public class TableFragment extends Fragment {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         // Show the competitions the club already had
                         Fragment protocol = new FilterCompetitionsFragment();
-                        Log.d("filter", "click");
                         Bundle bundle = new Bundle();
                         TableEntry entry = (TableEntry) app.getBuliTable().getItem(position);
                         bundle.putString("filter-name", entry.getClub());

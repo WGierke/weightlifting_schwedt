@@ -34,7 +34,6 @@ public class FilterCompetitionsFragment extends CompetitionsFragment {
             try {
                 Bundle bundle = this.getArguments();
                 String name = bundle.getString("filter-name");
-                Log.d("filter", "name: " + name);
                 CompetitionsListAdapter adapter = new CompetitionsListAdapter(filter(Competitions.casteArray(buliCompetitions.getItems()), name), getActivity());
                 listViewCompetitions.setAdapter(adapter);
                 listViewCompetitions.setOnItemClickListener(new AdapterView.OnItemClickListener() {

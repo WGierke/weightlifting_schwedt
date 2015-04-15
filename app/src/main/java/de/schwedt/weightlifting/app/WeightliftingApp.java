@@ -10,6 +10,9 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -18,6 +21,7 @@ import de.schwedt.weightlifting.app.buli.Table;
 import de.schwedt.weightlifting.app.buli.Team;
 import de.schwedt.weightlifting.app.faq.FaqItem;
 import de.schwedt.weightlifting.app.gallery.Galleries;
+import de.schwedt.weightlifting.app.helper.DataHelper;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
 import de.schwedt.weightlifting.app.helper.MemoryCache;
 import de.schwedt.weightlifting.app.helper.NetworkHelper;
@@ -127,11 +131,13 @@ public class WeightliftingApp extends Application {
     public News getNews() {
         if (news == null) {
             news = new News();
+            news.parseFromString(readInternal("news.json"), imageLoader);
         }
 
         if (news.needsUpdate() && !isUpdatingNews && isOnline) {
             updateNews();
         }
+
         if (!isOnline) {
             Log.d(TAG, "No connection");
         }
@@ -154,6 +160,8 @@ public class WeightliftingApp extends Application {
                         setLoading(false);
                         return;
                     }
+                    DataHelper.saveIntern(result, "news.json", getApplicationContext());
+
                     News newNews = new News();
                     newNews.parseFromString(result, imageLoader);
                     markNewItems((ArrayList) news.getItems(), (ArrayList) newNews.getItems(), (ArrayList) News.itemsToMark, MainActivity.FRAGMENT_NEWS, 0);
@@ -184,38 +192,6 @@ public class WeightliftingApp extends Application {
         return events;
     }
 
-    public void update(String name, boolean updatingVariable) {
-        Log.i(TAG, "Updating events...");
-        isUpdatingEvents = true;
-        setLoading(true);
-        Handler callBackHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                try {
-                    Bundle data = msg.getData();
-                    String result = data.getString("result");
-                    if (result == null) {
-                        checkConnection(false);
-                        isUpdatingEvents = false;
-                        setLoading(false);
-                        return;
-                    }
-                    Events newEvents = new Events();
-                    newEvents.parseFromString(result, imageLoader);
-                    markNewItems((ArrayList) events.getItems(), (ArrayList) newEvents.getItems(), (ArrayList) Events.itemsToMark, MainActivity.FRAGMENT_NEWS, 1);
-                    events = newEvents;
-                    Log.i(TAG, "Events updated");
-                } catch (Exception ex) {
-                    Log.e(TAG, "Events update failed");
-                    ex.printStackTrace();
-                }
-                isUpdatingEvents = false;
-                setLoading(false);
-            }
-        };
-        NetworkHelper.getWebRequest(NetworkHelper.URL_EVENTS, callBackHandler);
-    }
-
     public void updateEvents() {
         Log.i(TAG, "Updating events...");
         isUpdatingEvents = true;
@@ -232,6 +208,8 @@ public class WeightliftingApp extends Application {
                         setLoading(false);
                         return;
                     }
+                    DataHelper.saveIntern(result, "events.json", getApplicationContext());
+
                     Events newEvents = new Events();
                     newEvents.parseFromString(result, imageLoader);
                     markNewItems((ArrayList) events.getItems(), (ArrayList) newEvents.getItems(), (ArrayList) Events.itemsToMark, MainActivity.FRAGMENT_NEWS, 1);
@@ -276,8 +254,8 @@ public class WeightliftingApp extends Application {
                         setLoading(false);
                         return;
                     }
-                    buliTeam = new Team();
-                    buliTeam.parseFromString(result, imageLoader);
+                    DataHelper.saveIntern(result, "team.json", getApplicationContext());
+
                     Team newTeam = new Team();
                     newTeam.parseFromString(result, imageLoader);
                     markNewItems((ArrayList) buliTeam.getItems(), (ArrayList) newTeam.getItems(), (ArrayList) Team.itemsToMark, MainActivity.FRAGMENT_BULI, 0);
@@ -322,6 +300,8 @@ public class WeightliftingApp extends Application {
                         setLoading(false);
                         return;
                     }
+                    DataHelper.saveIntern(result, "competitions.json", getApplicationContext());
+
                     Competitions newCompetitions = new Competitions();
                     newCompetitions.parseFromString(result, imageLoader);
                     markNewItems((ArrayList) buliCompetitions.getItems(), (ArrayList) newCompetitions.getItems(), (ArrayList) Competitions.itemsToMark, MainActivity.FRAGMENT_BULI, 1);
@@ -366,6 +346,9 @@ public class WeightliftingApp extends Application {
                         setLoading(false);
                         return;
                     }
+                    DataHelper.saveIntern(result, "table.json", getApplicationContext());
+
+
                     Table newTable = new Table();
                     newTable.parseFromString(result, imageLoader);
                     markNewItems((ArrayList) buliTable.getItems(), (ArrayList) newTable.getItems(), (ArrayList) Table.itemsToMark, MainActivity.FRAGMENT_BULI, 2);
@@ -411,6 +394,8 @@ public class WeightliftingApp extends Application {
                         setLoading(false);
                         return;
                     }
+                    DataHelper.saveIntern(result, "galleries.json", getApplicationContext());
+
                     Galleries newGalleries = new Galleries();
                     newGalleries.parseFromString(result, imageLoader);
                     markNewItems((ArrayList) galleries.getItems(), (ArrayList) newGalleries.getItems(), (ArrayList) Galleries.itemsToMark, MainActivity.FRAGMENT_GALLERY, 0);

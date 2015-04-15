@@ -2,12 +2,19 @@ package de.schwedt.weightlifting.app.helper;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -165,5 +172,35 @@ public class DataHelper {
             n += array[i];
         }
         return n;
+    }
+
+    public static String readIntern(String fileName, Context context) {
+        try {
+            FileInputStream in = context.getApplicationContext().openFileInput(fileName);
+            InputStreamReader inputStreamReader = new InputStreamReader(in);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            StringBuilder sb = new StringBuilder();
+            String line;
+            Log.d("storage", "read from " + fileName);
+            while ((line = bufferedReader.readLine()) != null) {
+                sb.append(line);
+            }
+            return sb.toString();
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public static void saveIntern(String content, String fileName, Context context) {
+        try {
+            FileOutputStream fos = context.getApplicationContext().openFileOutput(fileName, Context.MODE_PRIVATE);
+            fos.write(content.getBytes());
+            fos.close();
+            Log.d("storage", "saved in " + fileName + " content: " + content);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }
