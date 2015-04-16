@@ -8,11 +8,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Date;
 
+import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.UpdateableItem;
 import de.schwedt.weightlifting.app.UpdateableWrapper;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
 import de.schwedt.weightlifting.app.helper.JsonParser;
+import de.schwedt.weightlifting.app.helper.UiHelper;
 
 public class Team extends UpdateableWrapper {
 
@@ -24,6 +26,32 @@ public class Team extends UpdateableWrapper {
             convertedItems.add((TeamMember) array.get(i));
         }
         return convertedItems;
+    }
+
+    public static void markNewItems(ArrayList<TeamMember> oldItems, ArrayList<TeamMember> newItems) {
+        int navigationPosition = MainActivity.FRAGMENT_BULI;
+        int subPosition = 0;
+        for (int i = 0; i < newItems.size(); i++) {
+            boolean isNew = true;
+            for (int j = 0; j < oldItems.size(); j++) {
+                if (newItems.get(i).getName().equals(oldItems.get(j).getName()) && newItems.get(i).getSnatching().equals(oldItems.get(j).getSnatching()) && newItems.get(i).getJerking().equals(oldItems.get(j).getJerking()) && newItems.get(i).getMaxScore().equals(oldItems.get(j).getMaxScore()) && newItems.get(i).getYear().equals(oldItems.get(j).getYear()) && newItems.get(i).getImageURL().equals(oldItems.get(j).getImageURL())) {
+                    isNew = false;
+                    break;
+                }
+            }
+            if (isNew) {
+                itemsToMark.add(newItems.get(i));
+            }
+        }
+        UiHelper.refreshCounterNav(navigationPosition, subPosition, itemsToMark.size());
+    }
+
+    public static String getNotificationMessage() {
+        String content = "";
+        for (TeamMember item : itemsToMark) {
+            content += item.getName() + ": " + item.getSnatching() + "\\/" + item.getJerking() + " (" + item.getMaxScore() + " RP)|";
+        }
+        return content;
     }
 
     public void parseFromString(String jsonString, ImageLoader imageLoader) {

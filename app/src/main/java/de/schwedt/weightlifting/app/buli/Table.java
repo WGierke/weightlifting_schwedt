@@ -8,11 +8,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Date;
 
+import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.UpdateableItem;
 import de.schwedt.weightlifting.app.UpdateableWrapper;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
 import de.schwedt.weightlifting.app.helper.JsonParser;
+import de.schwedt.weightlifting.app.helper.UiHelper;
 
 public class Table extends UpdateableWrapper {
 
@@ -24,6 +26,33 @@ public class Table extends UpdateableWrapper {
             convertedItems.add((TableEntry) array.get(i));
         }
         return convertedItems;
+    }
+
+    public static void markNewItems(ArrayList<TableEntry> oldItems, ArrayList<TableEntry> newItems) {
+        int navigationPosition = MainActivity.FRAGMENT_BULI;
+        int subPosition = 2;
+        for (int i = 0; i < newItems.size(); i++) {
+            boolean isNew = true;
+            for (int j = 0; j < oldItems.size(); j++) {
+                if (newItems.get(i).getClub().equals(oldItems.get(j).getClub()) && newItems.get(i).getScore().equals(oldItems.get(j).getScore()) && newItems.get(i).getCardinalPoints().equals(oldItems.get(j).getCardinalPoints()) && newItems.get(i).getMaxScore().equals(oldItems.get(j).getMaxScore()) && newItems.get(i).getPlace().equals(oldItems.get(j).getPlace())) {
+                    isNew = false;
+                    break;
+                }
+            }
+            if (isNew) {
+                itemsToMark.add(newItems.get(i));
+            }
+        }
+        UiHelper.refreshCounterNav(navigationPosition, subPosition, itemsToMark.size());
+    }
+
+
+    public static String getNotificationMessage() {
+        String content = "";
+        for (TableEntry item : itemsToMark) {
+            content += item.getPlace() + ". " + item.getClub() + "|";
+        }
+        return content;
     }
 
     public void parseFromString(String jsonString, ImageLoader imageLoader) {

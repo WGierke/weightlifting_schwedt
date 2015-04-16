@@ -1,17 +1,13 @@
 package de.schwedt.weightlifting.app;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Date;
-
-import de.schwedt.weightlifting.app.helper.ImageLoader;
 
 public abstract class UpdateableWrapper {
 
 
     // Refresh if older than 30 minutes
-    public static final long TIMER_INVALIDATE = 1800000;
+    public static final long TIMER_INVALIDATE = 10;//1800000;
 
     // If not yet ready, try again in 30 second
     public static final long TIMER_RETRY = 30 * 1000;
@@ -54,10 +50,5 @@ public abstract class UpdateableWrapper {
         } else {
             return false;
         }
-    }
-
-    public void
-    parseFromString(String jsonString, ImageLoader imageLoader) {
-        Log.d(WeightliftingApp.TAG, "Parsing updateable items...");
     }
 }

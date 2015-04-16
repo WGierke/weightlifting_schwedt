@@ -37,6 +37,15 @@
     <string name="news_feed">Neuigkeiten</string>
     <string name="news_events">Veranstaltungen</string>
     <string name="news_article_url">Link zum Artikel</string>
+    <plurals name="new_news">
+        <item quantity="one">%d neuer Artikel</item>
+        <item quantity="other">%d neue Artikel</item>
+    </plurals>
+    <plurals name="new_events">
+        <item quantity="one">%d neues/geändertes Event</item>
+        <item quantity="other">%d neue/geänderte Events</item>
+    </plurals>
+
 
 
     <!-- Bundesliga -->
@@ -51,6 +60,24 @@
     <string name="buli_max_score">Höchstpunktzahl</string>
     <string name="buli_points">Punkte</string>
     <string name="buli_relay">1. Bundesliga Staffel B</string>
+    <plurals name="new_member">
+        <item quantity="one">%d aktualisierter Heber</item>
+        <item quantity="other">%d aktualisierte Heber</item>
+    </plurals>
+    <plurals name="new_competitions">
+        <item quantity="one">%d neuer/geänderter Wettkampf</item>
+        <item quantity="other">%d neue/geänderte Wettlämpfe</item>
+    </plurals>
+    <plurals name="new_table">
+        <item quantity="one">%d aktualisierter Tabellen-Eintrag</item>
+        <item quantity="other">%d aktualisierte Tabellen-Einträge</item>
+    </plurals>
+
+    <!-- Gallery -->
+    <plurals name="new_gallery">
+        <item quantity="one">%d neue/geänderte Gallerie</item>
+        <item quantity="other">%d neue/geänderte Gallerien</item>
+    </plurals>
 
     <!-- FAQs -->
     <string name="faq_off_signal_heading">Ab-Zeichen</string>

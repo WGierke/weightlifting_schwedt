@@ -2,11 +2,15 @@ package de.schwedt.weightlifting.app;
 
 import android.app.Activity;
 import android.app.Application;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -27,7 +31,7 @@ import de.schwedt.weightlifting.app.helper.UiHelper;
 import de.schwedt.weightlifting.app.news.Events;
 import de.schwedt.weightlifting.app.news.News;
 
-//import de.schwedt.weightlifting.app.buliTeam.Team;
+//import de.schwedt.weightlifting.app.team.Team;
 
 public class WeightliftingApp extends Application {
 
@@ -52,7 +56,7 @@ public class WeightliftingApp extends Application {
 
     private News news;
     private Events events;
-    private Team buliTeam;
+    private Team team;
     private Competitions competitions;
     private Table table;
     private Galleries galleries;
@@ -137,7 +141,6 @@ public class WeightliftingApp extends Application {
         }
 
         if (news.needsUpdate() && !isUpdatingNews && isOnline) {
-            Toast.makeText(getApplicationContext(), "Updating news", Toast.LENGTH_LONG).show();
             updateNews();
         }
 
@@ -167,7 +170,10 @@ public class WeightliftingApp extends Application {
 
                     News newNews = new News();
                     newNews.parseFromString(result, imageLoader);
-                    markNewItems((ArrayList) news.getItems(), (ArrayList) newNews.getItems(), (ArrayList) News.itemsToMark, MainActivity.FRAGMENT_NEWS, 0);
+                    News.markNewItems(News.casteArray(news.getItems()), News.casteArray(newNews.getItems()));
+                    if (News.itemsToMark.size() > 0) {
+                        showNotification(getResources().getQuantityString(R.plurals.new_news, News.itemsToMark.size(), News.itemsToMark.size()), News.getNotificationMessage(), 0);
+                    }
                     news = newNews;
                     Log.i(TAG, "News updated");
                 } catch (Exception ex) {
@@ -187,11 +193,13 @@ public class WeightliftingApp extends Application {
             String eventsFileContent = DataHelper.readIntern("events.json", getApplicationContext());
             if (eventsFileContent != "") {
                 events.parseFromString(eventsFileContent, imageLoader);
+                events.setLastUpdate(new File(getFilesDir() + "/events.json").lastModified());
             }
         }
 
         if (events.needsUpdate() && !isUpdatingEvents && isOnline) {
             updateEvents();
+            Toast.makeText(getApplicationContext(), "Updating events", Toast.LENGTH_LONG).show();
         }
         if (!isOnline) {
             Log.d(TAG, "No connection");
@@ -219,7 +227,10 @@ public class WeightliftingApp extends Application {
 
                     Events newEvents = new Events();
                     newEvents.parseFromString(result, imageLoader);
-                    markNewItems((ArrayList) events.getItems(), (ArrayList) newEvents.getItems(), (ArrayList) Events.itemsToMark, MainActivity.FRAGMENT_NEWS, 1);
+                    Events.markNewItems(Events.casteArray(events.getItems()), Events.casteArray(newEvents.getItems()));
+                    if (Events.itemsToMark.size() > 0) {
+                        showNotification(getResources().getQuantityString(R.plurals.new_events, Events.itemsToMark.size(), Events.itemsToMark.size()), Events.getNotificationMessage(), 1);
+                    }
                     events = newEvents;
                     Log.i(TAG, "Events updated");
                 } catch (Exception ex) {
@@ -234,23 +245,24 @@ public class WeightliftingApp extends Application {
     }
 
     public Team getTeam() {
-        if (buliTeam == null) {
-            buliTeam = new Team();
+        if (team == null) {
+            team = new Team();
             String teamFileContent = DataHelper.readIntern("team.json", getApplicationContext());
             if (teamFileContent != "") {
-                buliTeam.parseFromString(teamFileContent, imageLoader);
+                team.parseFromString(teamFileContent, imageLoader);
+                team.setLastUpdate(new File(getFilesDir() + "/team.json").lastModified());
             }
         }
 
-        if (buliTeam.needsUpdate() && !isUpdatingTeam && isOnline) {
+        if (team.needsUpdate() && !isUpdatingTeam && isOnline) {
             updateTeam();
         }
 
-        return buliTeam;
+        return team;
     }
 
     public void updateTeam() {
-        Log.i(TAG, "Updating buliTeam...");
+        Log.i(TAG, "Updating team...");
         isUpdatingTeam = true;
         setLoading(true);
         Handler callBackHandler = new Handler() {
@@ -269,8 +281,11 @@ public class WeightliftingApp extends Application {
 
                     Team newTeam = new Team();
                     newTeam.parseFromString(result, imageLoader);
-                    markNewItems((ArrayList) buliTeam.getItems(), (ArrayList) newTeam.getItems(), (ArrayList) Team.itemsToMark, MainActivity.FRAGMENT_BULI, 0);
-                    buliTeam = newTeam;
+                    Team.markNewItems(Team.casteArray(team.getItems()), Team.casteArray(newTeam.getItems()));
+                    if (Team.itemsToMark.size() > 0) {
+                        showNotification(getResources().getQuantityString(R.plurals.new_member, Team.itemsToMark.size(), Team.itemsToMark.size()), Team.getNotificationMessage(), 2);
+                    }
+                    team = newTeam;
                     Log.i(TAG, "Team updated");
                 } catch (Exception ex) {
                     Log.e(TAG, "Team update failed");
@@ -289,6 +304,7 @@ public class WeightliftingApp extends Application {
             String competitionsFileContent = DataHelper.readIntern("competitions.json", getApplicationContext());
             if (competitionsFileContent != "") {
                 competitions.parseFromString(competitionsFileContent, imageLoader);
+                competitions.setLastUpdate(new File(getFilesDir() + "/competitions.json").lastModified());
             }
         }
 
@@ -300,7 +316,7 @@ public class WeightliftingApp extends Application {
     }
 
     public void updateCompetitions() {
-        Log.i(TAG, "Updating buliTeam...");
+        Log.i(TAG, "Updating team...");
         isUpdatingCompetitions = true;
         setLoading(true);
         Handler callBackHandler = new Handler() {
@@ -319,7 +335,10 @@ public class WeightliftingApp extends Application {
 
                     Competitions newCompetitions = new Competitions();
                     newCompetitions.parseFromString(result, imageLoader);
-                    markNewItems((ArrayList) competitions.getItems(), (ArrayList) newCompetitions.getItems(), (ArrayList) Competitions.itemsToMark, MainActivity.FRAGMENT_BULI, 1);
+                    Competitions.markNewItems(Competitions.casteArray(competitions.getItems()), Competitions.casteArray(newCompetitions.getItems()));
+                    if (Competitions.itemsToMark.size() > 0) {
+                        showNotification(getResources().getQuantityString(R.plurals.new_competitions, Competitions.itemsToMark.size(), Competitions.itemsToMark.size()), Competitions.getNotificationMessage(), 3);
+                    }
                     competitions = newCompetitions;
                     Log.i(TAG, "Competitions updated");
                 } catch (Exception ex) {
@@ -339,6 +358,7 @@ public class WeightliftingApp extends Application {
             String tableFileContent = DataHelper.readIntern("table.json", getApplicationContext());
             if (tableFileContent != "") {
                 table.parseFromString(tableFileContent, imageLoader);
+                table.setLastUpdate(new File(getFilesDir() + "/table.json").lastModified());
             }
         }
 
@@ -367,10 +387,12 @@ public class WeightliftingApp extends Application {
                     }
                     DataHelper.saveIntern(result, "table.json", getApplicationContext());
 
-
                     Table newTable = new Table();
                     newTable.parseFromString(result, imageLoader);
-                    markNewItems((ArrayList) table.getItems(), (ArrayList) newTable.getItems(), (ArrayList) Table.itemsToMark, MainActivity.FRAGMENT_BULI, 2);
+                    Table.markNewItems(Table.casteArray(table.getItems()), Table.casteArray(newTable.getItems()));
+                    if (Table.itemsToMark.size() > 0) {
+                        showNotification(getResources().getQuantityString(R.plurals.new_table, Table.itemsToMark.size(), Table.itemsToMark.size()), Table.getNotificationMessage(), 2);
+                    }
                     table = newTable;
                     Log.i(TAG, "Table updated");
                 } catch (Exception ex) {
@@ -390,6 +412,7 @@ public class WeightliftingApp extends Application {
             String galleriesFileContent = DataHelper.readIntern("galleries.json", getApplicationContext());
             if (galleriesFileContent != "") {
                 galleries.parseFromString(galleriesFileContent, imageLoader);
+                galleries.setLastUpdate(new File(getFilesDir() + "/galleries.json").lastModified());
             }
         }
 
@@ -420,7 +443,10 @@ public class WeightliftingApp extends Application {
 
                     Galleries newGalleries = new Galleries();
                     newGalleries.parseFromString(result, imageLoader);
-                    markNewItems((ArrayList) galleries.getItems(), (ArrayList) newGalleries.getItems(), (ArrayList) Galleries.itemsToMark, MainActivity.FRAGMENT_GALLERY, 0);
+                    Galleries.markNewItems(Galleries.casteArray(galleries.getItems()), Galleries.casteArray(newGalleries.getItems()));
+                    if (Galleries.itemsToMark.size() > 0) {
+                        showNotification(getResources().getQuantityString(R.plurals.new_gallery, Galleries.itemsToMark.size(), Galleries.itemsToMark.size()), Galleries.getNotificationMessage(), 2);
+                    }
                     galleries = newGalleries;
                     Log.i(TAG, "Gallery updated");
                 } catch (Exception ex) {
@@ -450,5 +476,47 @@ public class WeightliftingApp extends Application {
         } catch (Exception ex) {
             // Not supported. Wayne.
         }
+    }
+
+    private void showNotification(String title, String message, int notificationId) {
+
+        Intent resultIntent = new Intent(this, MainActivity.class);
+        resultIntent.setAction(Intent.ACTION_MAIN);
+        resultIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, resultIntent, 0);
+
+        NotificationCompat.Builder normal = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setContentTitle(title)
+                .setContentIntent(pendingIntent);
+
+        NotificationCompat.InboxStyle big = new NotificationCompat.InboxStyle(normal);
+
+        //big.setSummaryText("this is the summary text");
+        String[] parts = message.split("\\|");
+        for (int i = 0; i < parts.length; i++) {
+            big.addLine(parts[i]);
+        }
+
+        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        manager.notify(notificationId, big.build());
+        /*
+
+       Notification.Builder mBuilder =
+                new Notification.Builder(this)
+                        .setSmallIcon(R.drawable.ic_launcher)
+                        .setContentTitle(title)
+                        .setContentText(message);
+
+        Intent resultIntent = new Intent(this, MainActivity.class);
+        resultIntent.setAction(Intent.ACTION_MAIN);
+        resultIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, resultIntent, 0);
+
+        mBuilder.setContentIntent(pendingIntent);
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        mNotificationManager.notify(mNotificationId, mBuilder.build());*/
     }
 }

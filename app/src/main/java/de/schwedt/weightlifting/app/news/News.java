@@ -8,11 +8,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Date;
 
+import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.UpdateableItem;
 import de.schwedt.weightlifting.app.UpdateableWrapper;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
 import de.schwedt.weightlifting.app.helper.JsonParser;
+import de.schwedt.weightlifting.app.helper.UiHelper;
 
 public class News extends UpdateableWrapper {
 
@@ -24,6 +26,32 @@ public class News extends UpdateableWrapper {
             convertedItems.add((NewsItem) array.get(i));
         }
         return convertedItems;
+    }
+
+    public static void markNewItems(ArrayList<NewsItem> oldItems, ArrayList<NewsItem> newItems) {
+        int navigationPosition = MainActivity.FRAGMENT_NEWS;
+        int subPosition = 0;
+        for (int i = 0; i < newItems.size(); i++) {
+            boolean isNew = true;
+            for (int j = 0; j < oldItems.size(); j++) {
+                if (newItems.get(i).getContent().equals(oldItems.get(j).getContent()) && newItems.get(i).getDate().equals(oldItems.get(j).getDate()) && newItems.get(i).getHeading().equals(oldItems.get(j).getHeading()) && newItems.get(i).getImageURL().equals(oldItems.get(j).getImageURL()) && newItems.get(i).getURL().equals(oldItems.get(j).getURL())) {
+                    isNew = false;
+                    break;
+                }
+            }
+            if (isNew) {
+                itemsToMark.add(newItems.get(i));
+            }
+        }
+        UiHelper.refreshCounterNav(navigationPosition, subPosition, itemsToMark.size());
+    }
+
+    public static String getNotificationMessage() {
+        String content = "";
+        for (NewsItem item : itemsToMark) {
+            content += item.getHeading() + "|";
+        }
+        return content;
     }
 
     public void
