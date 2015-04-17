@@ -15,7 +15,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Date;
 
 import de.schwedt.weightlifting.app.buli.Competitions;
@@ -27,20 +26,17 @@ import de.schwedt.weightlifting.app.helper.DataHelper;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
 import de.schwedt.weightlifting.app.helper.MemoryCache;
 import de.schwedt.weightlifting.app.helper.NetworkHelper;
-import de.schwedt.weightlifting.app.helper.UiHelper;
 import de.schwedt.weightlifting.app.news.Events;
 import de.schwedt.weightlifting.app.news.News;
-
-//import de.schwedt.weightlifting.app.team.Team;
 
 public class WeightliftingApp extends Application {
 
     public static final String TAG = "Weightlifting";
     public static final String TEAM_NAME = "KG Schwedt-Stralsund";
     public static final int DISPLAY_DELAY = 500;
-    public static final int CONNECTION_CHECK_CONNECTED = 30000;
-    public static final int CONNECTION_CHECK_DISCONNECTED = 3000;
-
+    private static final int REFRESH_INTERVAL = 1000 * 60 * 2;
+    public static boolean[] finishedUpdating = {false, false, false, false, false, false};
+    public static boolean isUpdatingAll = false;
     public boolean isInitialized = false;
     public boolean isUpdatingNews = false;
     public boolean isUpdatingEvents = false;
@@ -50,7 +46,6 @@ public class WeightliftingApp extends Application {
     public boolean isUpdatingGalleries = false;
     public boolean isOnline = true;
     public boolean isInForeground = true;
-
     public MemoryCache memoryCache;
     public ImageLoader imageLoader;
 
@@ -74,11 +69,11 @@ public class WeightliftingApp extends Application {
         mainActivity = (MainActivity) activity;
         memoryCache = new MemoryCache();
         imageLoader = new ImageLoader(activity);
-        //imageLoader.clearCache();
 
         NetworkHelper networkHelper = new NetworkHelper(this);
-        checkConnection(true);
+        checkConnection();
 
+        refreshData();
         getData();
 
         FaqFragment.faqEntries.add(new FaqItem(getString(R.string.faq_off_signal_heading), getString(R.string.faq_off_signal_question), getString(R.string.faq_off_signal_answer)));
@@ -96,6 +91,7 @@ public class WeightliftingApp extends Application {
     }
 
     public void getData() {
+        //load data either from storage or from the internet
         getNews();
         getEvents();
         getTeam();
@@ -104,29 +100,34 @@ public class WeightliftingApp extends Application {
         getGalleries();
     }
 
-    public void checkConnection(boolean checkPermanent) {
+    public void updateData() {
+        //Update everything and save it on storage
+        Log.d("network", "updating everything");
+        Toast.makeText(getApplicationContext(), "Updating everything", Toast.LENGTH_SHORT).show();
+        updateNews();
+        updateEvents();
+        updateTeam();
+        updateCompetitions();
+        updateTable();
+        updateGallery();
+    }
+
+    private void refreshData() {
+        //update everything periodically
+        getData();
+        Runnable refreshRunnable = new Runnable() {
+            @Override
+            public void run() {
+                refreshData();
+            }
+        };
+        Handler refreshHandler = new Handler();
+        refreshHandler.postDelayed(refreshRunnable, REFRESH_INTERVAL);
+    }t
+
+    public void checkConnection() {
         Log.d(TAG, "checking connection");
-        //if the device went offline
-        if (isOnline && !NetworkHelper.isOnline()) {
-            Toast.makeText(getApplicationContext(), R.string.disconnected, Toast.LENGTH_LONG).show();
-        }
-        //if device went online
-        if (!isOnline && NetworkHelper.isOnline()) {
-            Toast.makeText(getApplicationContext(), R.string.connected, Toast.LENGTH_LONG).show();
-            isOnline = NetworkHelper.isOnline();
-            getData();
-        }
         isOnline = NetworkHelper.isOnline();
-        if (checkPermanent) {
-            Runnable refreshRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    checkConnection(true);
-                }
-            };
-            Handler refreshHandler = new Handler();
-            refreshHandler.postDelayed(refreshRunnable, ((isOnline) ? CONNECTION_CHECK_CONNECTED : CONNECTION_CHECK_DISCONNECTED));
-        }
     }
 
 
@@ -140,7 +141,7 @@ public class WeightliftingApp extends Application {
             }
         }
 
-        if (news.needsUpdate() && !isUpdatingNews && isOnline) {
+        if (news.needsUpdate() && !isUpdatingNews && !isUpdatingAll && isOnline) {
             updateNews();
         }
 
@@ -161,7 +162,7 @@ public class WeightliftingApp extends Application {
                     Bundle data = msg.getData();
                     String result = data.getString("result");
                     if (result == null) {
-                        checkConnection(false);
+                        checkConnection();
                         isUpdatingNews = false;
                         setLoading(false);
                         return;
@@ -175,6 +176,7 @@ public class WeightliftingApp extends Application {
                         showNotification(getResources().getQuantityString(R.plurals.new_news, News.itemsToMark.size(), News.itemsToMark.size()), News.getNotificationMessage(), 0);
                     }
                     news = newNews;
+                    finishedUpdating[0] = true;
                     Log.i(TAG, "News updated");
                 } catch (Exception ex) {
                     Log.e(TAG, "News update failed");
@@ -197,7 +199,7 @@ public class WeightliftingApp extends Application {
             }
         }
 
-        if (events.needsUpdate() && !isUpdatingEvents && isOnline) {
+        if (events.needsUpdate() && !isUpdatingEvents && !isUpdatingAll && isOnline) {
             updateEvents();
             Toast.makeText(getApplicationContext(), "Updating events", Toast.LENGTH_LONG).show();
         }
@@ -218,7 +220,7 @@ public class WeightliftingApp extends Application {
                     Bundle data = msg.getData();
                     String result = data.getString("result");
                     if (result == null) {
-                        checkConnection(false);
+                        checkConnection();
                         isUpdatingEvents = false;
                         setLoading(false);
                         return;
@@ -232,6 +234,7 @@ public class WeightliftingApp extends Application {
                         showNotification(getResources().getQuantityString(R.plurals.new_events, Events.itemsToMark.size(), Events.itemsToMark.size()), Events.getNotificationMessage(), 1);
                     }
                     events = newEvents;
+                    finishedUpdating[1] = true;
                     Log.i(TAG, "Events updated");
                 } catch (Exception ex) {
                     Log.e(TAG, "Events update failed");
@@ -254,7 +257,7 @@ public class WeightliftingApp extends Application {
             }
         }
 
-        if (team.needsUpdate() && !isUpdatingTeam && isOnline) {
+        if (team.needsUpdate() && !isUpdatingTeam && !isUpdatingAll && isOnline) {
             updateTeam();
         }
 
@@ -272,7 +275,7 @@ public class WeightliftingApp extends Application {
                     Bundle data = msg.getData();
                     String result = data.getString("result");
                     if (result == null) {
-                        checkConnection(false);
+                        checkConnection();
                         isUpdatingTeam = false;
                         setLoading(false);
                         return;
@@ -286,6 +289,7 @@ public class WeightliftingApp extends Application {
                         showNotification(getResources().getQuantityString(R.plurals.new_member, Team.itemsToMark.size(), Team.itemsToMark.size()), Team.getNotificationMessage(), 2);
                     }
                     team = newTeam;
+                    finishedUpdating[2] = true;
                     Log.i(TAG, "Team updated");
                 } catch (Exception ex) {
                     Log.e(TAG, "Team update failed");
@@ -308,7 +312,7 @@ public class WeightliftingApp extends Application {
             }
         }
 
-        if (competitions.needsUpdate() && !isUpdatingCompetitions && isOnline) {
+        if (competitions.needsUpdate() && !isUpdatingCompetitions && !isUpdatingAll && isOnline) {
             updateCompetitions();
         }
 
@@ -326,7 +330,7 @@ public class WeightliftingApp extends Application {
                     Bundle data = msg.getData();
                     String result = data.getString("result");
                     if (result == null) {
-                        checkConnection(false);
+                        checkConnection();
                         isUpdatingCompetitions = false;
                         setLoading(false);
                         return;
@@ -340,6 +344,7 @@ public class WeightliftingApp extends Application {
                         showNotification(getResources().getQuantityString(R.plurals.new_competitions, Competitions.itemsToMark.size(), Competitions.itemsToMark.size()), Competitions.getNotificationMessage(), 3);
                     }
                     competitions = newCompetitions;
+                    finishedUpdating[3] = true;
                     Log.i(TAG, "Competitions updated");
                 } catch (Exception ex) {
                     Log.e(TAG, "Competitions update failed");
@@ -362,7 +367,7 @@ public class WeightliftingApp extends Application {
             }
         }
 
-        if (table.needsUpdate() && !isUpdatingTable && isOnline) {
+        if (table.needsUpdate() && !isUpdatingTable && !isUpdatingAll && isOnline) {
             updateTable();
         }
 
@@ -380,7 +385,7 @@ public class WeightliftingApp extends Application {
                     Bundle data = msg.getData();
                     String result = data.getString("result");
                     if (result == null) {
-                        checkConnection(false);
+                        checkConnection();
                         isUpdatingTable = false;
                         setLoading(false);
                         return;
@@ -394,6 +399,7 @@ public class WeightliftingApp extends Application {
                         showNotification(getResources().getQuantityString(R.plurals.new_table, Table.itemsToMark.size(), Table.itemsToMark.size()), Table.getNotificationMessage(), 2);
                     }
                     table = newTable;
+                    finishedUpdating[4] = true;
                     Log.i(TAG, "Table updated");
                 } catch (Exception ex) {
                     Log.e(TAG, "Table update failed");
@@ -416,7 +422,7 @@ public class WeightliftingApp extends Application {
             }
         }
 
-        if (galleries.needsUpdate() && !isUpdatingGalleries && isOnline) {
+        if (galleries.needsUpdate() && !isUpdatingGalleries && !isUpdatingAll && isOnline) {
             updateGallery();
         }
 
@@ -434,7 +440,7 @@ public class WeightliftingApp extends Application {
                     Bundle data = msg.getData();
                     String result = data.getString("result");
                     if (result == null) {
-                        checkConnection(false);
+                        checkConnection();
                         isUpdatingGalleries = false;
                         setLoading(false);
                         return;
@@ -448,6 +454,7 @@ public class WeightliftingApp extends Application {
                         showNotification(getResources().getQuantityString(R.plurals.new_gallery, Galleries.itemsToMark.size(), Galleries.itemsToMark.size()), Galleries.getNotificationMessage(), 2);
                     }
                     galleries = newGalleries;
+                    finishedUpdating[5] = true;
                     Log.i(TAG, "Gallery updated");
                 } catch (Exception ex) {
                     Log.e(TAG, "Gallery update failed");
@@ -458,15 +465,6 @@ public class WeightliftingApp extends Application {
             }
         };
         NetworkHelper.getWebRequest(NetworkHelper.URL_GALLERY, callBackHandler);
-    }
-
-    private void markNewItems(ArrayList<UpdateableItem> oldItems, ArrayList<UpdateableItem> newItems, ArrayList<UpdateableItem> itemsToMark, int navigationPosition, int subPosition) {
-        for (int i = 0; i < newItems.size(); i++) {
-            if (!oldItems.contains(newItems.get(i))) {
-                itemsToMark.add(newItems.get(i));
-            }
-        }
-        UiHelper.refreshCounterNav(navigationPosition, subPosition, itemsToMark.size());
     }
 
 
@@ -484,7 +482,7 @@ public class WeightliftingApp extends Application {
         resultIntent.setAction(Intent.ACTION_MAIN);
         resultIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, resultIntent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder normal = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_launcher)
@@ -501,22 +499,5 @@ public class WeightliftingApp extends Application {
 
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         manager.notify(notificationId, big.build());
-        /*
-
-       Notification.Builder mBuilder =
-                new Notification.Builder(this)
-                        .setSmallIcon(R.drawable.ic_launcher)
-                        .setContentTitle(title)
-                        .setContentText(message);
-
-        Intent resultIntent = new Intent(this, MainActivity.class);
-        resultIntent.setAction(Intent.ACTION_MAIN);
-        resultIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, resultIntent, 0);
-
-        mBuilder.setContentIntent(pendingIntent);
-        NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        mNotificationManager.notify(mNotificationId, mBuilder.build());*/
     }
 }

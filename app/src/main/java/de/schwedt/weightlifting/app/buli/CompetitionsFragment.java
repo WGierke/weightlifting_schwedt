@@ -41,12 +41,12 @@ public class CompetitionsFragment extends Fragment {
 
         listViewCompetitions = (ListView) fragment.findViewById(R.id.listView_Buli);
 
-        getBuliCompetitions();
+        getCompetitions();
 
         return fragment;
     }
 
-    protected void getBuliCompetitions() {
+    protected void getCompetitions() {
         buliCompetitions = app.getCompetitions();
         if (buliCompetitions.getItems().size() == 0) {
             // No news items yet
@@ -57,7 +57,7 @@ public class CompetitionsFragment extends Fragment {
             Runnable refreshRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    getBuliCompetitions();
+                    getCompetitions();
                 }
             };
             Handler refreshHandler = new Handler();

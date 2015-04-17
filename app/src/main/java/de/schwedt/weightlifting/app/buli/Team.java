@@ -49,7 +49,7 @@ public class Team extends UpdateableWrapper {
     public static String getNotificationMessage() {
         String content = "";
         for (TeamMember item : itemsToMark) {
-            content += item.getName() + ": " + item.getSnatching() + "\\/" + item.getJerking() + " (" + item.getMaxScore() + " RP)|";
+            content += item.getName() + ": " + item.getSnatching() + "/" + item.getJerking() + " (" + item.getMaxScore() + " RP)|";
         }
         return content;
     }

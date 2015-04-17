@@ -2,6 +2,7 @@ package de.schwedt.weightlifting.app;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -18,6 +19,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+
+import de.schwedt.weightlifting.app.buli.Competitions;
+import de.schwedt.weightlifting.app.buli.Table;
+import de.schwedt.weightlifting.app.buli.Team;
+import de.schwedt.weightlifting.app.gallery.Galleries;
+import de.schwedt.weightlifting.app.news.Events;
+import de.schwedt.weightlifting.app.news.News;
 
 public class MainActivity extends FragmentActivity {
 
@@ -116,9 +124,28 @@ public class MainActivity extends FragmentActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
-        menu.findItem(R.id.action_refresh).setVisible(!app.isOnline);
-
+        menu.findItem(R.id.action_refresh).setVisible(true);
+        menu.findItem(R.id.action_settings).setVisible(true);
         return true;
+    }
+
+    private void showAsyncUpdateResults() {
+        for (int i = 0; i < app.finishedUpdating.length; i++) {
+            if (!app.finishedUpdating[i]) {
+                Runnable refreshRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        showAsyncUpdateResults();
+                    }
+                };
+                Handler refreshHandler = new Handler();
+                refreshHandler.postDelayed(refreshRunnable, 200);
+                return;
+            }
+        }
+        int newElements = News.itemsToMark.size() + Events.itemsToMark.size() + Team.itemsToMark.size() + Competitions.itemsToMark.size() + Table.itemsToMark.size() + Galleries.itemsToMark.size();
+        Toast.makeText(getApplicationContext(), getResources().getQuantityString(R.plurals.new_elements, newElements, newElements), Toast.LENGTH_SHORT).show();
+        app.isUpdatingAll = false;
     }
 
     @Override
@@ -132,13 +159,20 @@ public class MainActivity extends FragmentActivity {
             case R.id.action_settings:
                 return true;
             case R.id.action_refresh:
-                app.checkConnection(false);
+                app.checkConnection();
                 if (app.isOnline) {
-                    Toast.makeText(getApplicationContext(), R.string.connected, Toast.LENGTH_LONG).show();
-                    showFragment(0);
-                    item.setVisible(false);
+                    if (app.isUpdatingAll) {
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.updating_in_progress), Toast.LENGTH_LONG).show();
+                    } else {
+                        app.isUpdatingAll = true;
+                        for (int i = 0; i < app.finishedUpdating.length; i++) {
+                            app.finishedUpdating[i] = false;
+                        }
+                        app.updateData();
+                        showAsyncUpdateResults();
+                    }
                 } else {
-                    Toast.makeText(getApplicationContext(), R.string.still_no_connection, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), R.string.not_connected, Toast.LENGTH_SHORT).show();
                 }
                 return true;
             default:
