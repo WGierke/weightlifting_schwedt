@@ -21,8 +21,6 @@ public class NewsFeedFragment extends Fragment {
     private View fragment;
     private ListView listViewNews;
 
-    private long lastUpdaDate = 0;
-
     public NewsFeedFragment() {
         super();
     }

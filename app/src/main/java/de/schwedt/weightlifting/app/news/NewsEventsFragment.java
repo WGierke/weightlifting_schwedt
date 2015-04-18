@@ -24,8 +24,6 @@ public class NewsEventsFragment extends Fragment {
     private Events events;
     private ListView listViewEvents;
 
-    private long lastUpdaDate = 0;
-
     public NewsEventsFragment() {
         super();
     }

@@ -11,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import de.schwedt.weightlifting.app.EmptyFragment;
 import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
@@ -42,12 +41,12 @@ public class TableFragment extends Fragment {
 
         listViewTable = (ListView) fragment.findViewById(R.id.listView_Buli);
 
-        getBuliTable();
+        getTable();
 
         return fragment;
     }
 
-    private void getBuliTable() {
+    private void getTable() {
         buliTable = app.getTable();
         if (buliTable.getItems().size() == 0) {
             // No table items yet
@@ -58,7 +57,7 @@ public class TableFragment extends Fragment {
             Runnable refreshRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    getBuliTable();
+                    getTable();
                 }
             };
             Handler refreshHandler = new Handler();
@@ -79,13 +78,12 @@ public class TableFragment extends Fragment {
                         TableEntry entry = (TableEntry) app.getTable().getItem(position);
                         bundle.putString("filter-name", entry.getClub());
                         protocol.setArguments(bundle);
-                        ((MainActivity) getActivity()).addFragment(new EmptyFragment(), getString(R.string.nav_buli), true);
                         ((MainActivity) getActivity()).addFragment(protocol, entry.getClub(), true);
                     }
                 });
 
             } catch (Exception ex) {
-                Log.e(WeightliftingApp.TAG, "Showing buliTeam failed");
+                Log.e(WeightliftingApp.TAG, "Showing Table failed");
                 ex.toString();
             }
 

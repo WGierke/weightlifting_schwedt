@@ -23,7 +23,6 @@ public class BuliFragment extends Fragment {
     private ViewPager mViewPager;
     private WeightliftingApp app;
     private View fragment;
-    private long lastUpdaDate = 0;
 
     public BuliFragment() {
         super();
@@ -46,6 +45,7 @@ public class BuliFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        getActivity().getActionBar().setTitle(getString(R.string.nav_buli));
     }
 
     public class BuliCollectionPagerAdapter extends FragmentStatePagerAdapter {

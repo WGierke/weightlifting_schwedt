@@ -74,7 +74,6 @@ public class WeightliftingApp extends Application {
         checkConnection();
 
         refreshData();
-        getData();
 
         FaqFragment.faqEntries.add(new FaqItem(getString(R.string.faq_off_signal_heading), getString(R.string.faq_off_signal_question), getString(R.string.faq_off_signal_answer)));
         FaqFragment.faqEntries.add(new FaqItem(getString(R.string.faq_bad_attempt_jerking_heading), getString(R.string.faq_bad_attempt_jerking_question), getString(R.string.faq_bad_attempt_jerking_answer)));
@@ -123,7 +122,7 @@ public class WeightliftingApp extends Application {
         };
         Handler refreshHandler = new Handler();
         refreshHandler.postDelayed(refreshRunnable, REFRESH_INTERVAL);
-    }t
+    }
 
     public void checkConnection() {
         Log.d(TAG, "checking connection");
@@ -487,7 +486,8 @@ public class WeightliftingApp extends Application {
         NotificationCompat.Builder normal = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setContentTitle(title)
-                .setContentIntent(pendingIntent);
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
 
         NotificationCompat.InboxStyle big = new NotificationCompat.InboxStyle(normal);
 

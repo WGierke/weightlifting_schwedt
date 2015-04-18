@@ -21,7 +21,6 @@ public class NewsFragment extends Fragment {
     ViewPager mViewPager;
     private WeightliftingApp app;
     private View fragment;
-    private long lastUpdaDate = 0;
 
     public NewsFragment() {
         super();

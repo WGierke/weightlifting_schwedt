@@ -301,17 +301,6 @@ public class MainActivity extends FragmentActivity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    public void onBackPressed() {
-        if (mCurFragment == FRAGMENT_HOME) {
-            finish();
-        } else {
-            mCurFragment = FRAGMENT_HOME;
-            setTitle("Home");
-
-            replaceFragment(new HomeFragment(), mTitle.toString());
-        }
-    }
-
     @Override
     public void onPause() {
         super.onPause();
