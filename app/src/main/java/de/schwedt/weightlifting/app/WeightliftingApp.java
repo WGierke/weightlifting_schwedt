@@ -14,6 +14,9 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
 import java.io.File;
 import java.util.Date;
 
@@ -82,6 +85,16 @@ public class WeightliftingApp extends Application {
 
         isInitialized = true;
         long dateDiff = (new Date().getTime() - dateStart);
+
+        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .build();
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
+                .defaultDisplayImageOptions(defaultOptions)
+                .build();
+        com.nostra13.universalimageloader.core.ImageLoader.getInstance().init(config);
+
         Log.i(TAG, "Initialized (" + String.valueOf(dateDiff) + "ms)");
     }
 

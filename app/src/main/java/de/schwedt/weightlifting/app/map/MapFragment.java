@@ -66,7 +66,6 @@ public class MapFragment extends SupportMapFragment {
                 // Getting reference to the ImageView to set MarkerImage
                 ImageView markerImage = (ImageView) v.findViewById(R.id.marker_image);
 //                markerImage.setImageDrawable(R.drawable.hpi_panorama);
-                markerImage.setImageResource(R.drawable.hpi_panorama);
 
 
                 // Returning the view containing InfoWindow contents
@@ -85,7 +84,8 @@ public class MapFragment extends SupportMapFragment {
         map.moveCamera(center);
         map.animateCamera(zoom);
 
-        Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.map_marker);
+        //Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.map_marker);
+        Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
         Bitmap halfIcon = Bitmap.createScaledBitmap(icon, icon.getWidth() / 4, icon.getHeight() / 4, false);
 
 

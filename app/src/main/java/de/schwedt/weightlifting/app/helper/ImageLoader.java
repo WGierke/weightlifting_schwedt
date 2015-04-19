@@ -24,7 +24,7 @@ import de.schwedt.weightlifting.app.R;
 
 public class ImageLoader {
 
-    final int stub_id = R.drawable.ic_launcher;
+    final int stub_id = R.drawable.ic_launcher_xx;
     MemoryCache memoryCache = new MemoryCache();
     FileCache fileCache;
     ExecutorService executorService;

@@ -7,7 +7,7 @@
 
     <ImageView
         android:id="@+id/news_icon"
-        android:src="@drawable/ic_launcher"
+        android:src="@drawable/ic_launcher_xx"
         android:layout_width="70dip"
         android:layout_height="70dip"
         android:layout_marginTop="5dip"

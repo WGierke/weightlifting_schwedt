@@ -36,4 +36,5 @@ android {
 dependencies {
     compile 'com.google.android.gms:play-services:5.+'
     compile 'com.android.support:support-v4:20.+'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
 }

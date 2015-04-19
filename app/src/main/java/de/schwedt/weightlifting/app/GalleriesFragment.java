@@ -1,5 +1,6 @@
 package de.schwedt.weightlifting.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -12,7 +13,9 @@ import android.widget.ListView;
 
 import de.schwedt.weightlifting.app.gallery.Galleries;
 import de.schwedt.weightlifting.app.gallery.GalleryOverviewAdapter;
-import de.schwedt.weightlifting.app.gallery.GalleryPicturesRowFragment;
+import de.schwedt.weightlifting.app.helper.UniversalImageLoader.Constants;
+import de.schwedt.weightlifting.app.helper.UniversalImageLoader.ImageGridFragment;
+import de.schwedt.weightlifting.app.helper.UniversalImageLoader.SimpleImageActivity;
 import de.schwedt.weightlifting.app.news.News;
 
 public class GalleriesFragment extends Fragment {
@@ -76,13 +79,13 @@ public class GalleriesFragment extends Fragment {
                 listViewGalleries.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        // Show an article fragment and put the selected index as argument
-                        Fragment article = new GalleryPicturesRowFragment();
-                        Bundle bundle = new Bundle();
-                        bundle.putInt("item", position);
-                        article.setArguments(bundle);
-                        ((MainActivity) getActivity()).addFragment(article, getString(R.string.nav_gallery), true);
+                        Intent intent = new Intent(app, SimpleImageActivity.class);
+                        intent.putExtra(Constants.Extra.FRAGMENT_INDEX, ImageGridFragment.INDEX);
+                        intent.putExtra(Constants.Extra.GALLERY_POSITION, position);
+                        startActivity(intent);
                     }
+
+
                 });
             } catch (Exception ex) {
                 Log.e(WeightliftingApp.TAG, "Showing gallery failed");
