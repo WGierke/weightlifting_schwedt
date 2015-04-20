@@ -66,7 +66,7 @@ def create_news_file():
         news_dict["articles"] = articles
         json_news = json.dumps(news_dict)
         json_news = "[" + json_news.replace("\u00df","ß").replace("\u00e4", "ä").replace("\u00fc", "ü") + "]"
-        f = open("../production/news.json", "w")
+        f = open("production/news.json", "w")
         f.write(json_news)
         f.close()
 
@@ -102,7 +102,7 @@ def create_events_file():
     events_dict["events"] = final_events
     json_events = json.dumps(events_dict)
     events_dict = "[" + json_events + "]"
-    f = open("../production/events.json", "w")
+    f = open("production/events.json", "w")
     f.write(events_dict)
     f.close()
 
@@ -142,7 +142,7 @@ def create_competitions_file():
         final_competitions.append(entry)
 
     #handle swapping of competitions due to IAT database
-    f = open("../production/past_competitions.json", "r")
+    f = open("production/past_competitions.json", "r")
     old_competitions = f.read()
     f.close()
     old_competitions = get_competitions_array(old_competitions)
@@ -153,7 +153,7 @@ def create_competitions_file():
 
     new_competitions = get_competitions_array(json_competitions)
     if sorted(new_competitions) != sorted(old_competitions):
-        f = open("../production/past_competitions.json", "w")
+        f = open("production/past_competitions.json", "w")
         f.write(json_competitions)
         f.close()
         print "Competitions: Change detected"
@@ -186,7 +186,7 @@ def create_table_file():
     table_dict["table"] = final_entries
     json_table = json.dumps(table_dict, encoding='latin1')
     json_table = "[" + json_table + "]"
-    f = open("../production/table.json", "w")
+    f = open("production/table.json", "w")
     f.write(json_table)
     f.close()
 
@@ -198,7 +198,7 @@ def add_gallery_images(gallery_entry):
     except rllib2.URLError, e:
         print 'Error while downloading gallery site ', e
         return
-    if(page.find('ngg-next-') != -1):                                                                                #multiple pages
+    if(page.find('[Zeige als Diashow]') != -1):                                                                    #diashow, possibly multiple pages
         n = 1
         while(page.find("no images were found") == -1):
             page = page.replace('class="content"', '', 1).split('class="content"')[1].split('<!-- Pagination -->')[0]
@@ -218,7 +218,7 @@ def add_gallery_images(gallery_entry):
 
         gallery_entry["images"] = total_links
         return gallery_entry
-    else:                                                                                                           #one page
+    else:                                                                                                           #one page containing all pictures
         page = page.replace('class="content"', '', 1).split('class="content"')[1].split('<div id="comments">')[0]
         re_href = re.compile(ur"(?<=href=')[^']*(?=')")
         image_links = re.findall(re_href, page)
@@ -245,7 +245,6 @@ def create_galleries_file():
 
         for i in range(len(gallery_links)):
             gallery_entry = {}
-            print gallery_links[i]
             gallery_entry["url"] = gallery_links[i].split('">')[0]
             gallery_entry["title"] = gallery_links[i].split('">')[1].replace('&#8211;', '-')
             print gallery_entry["title"]
@@ -259,7 +258,7 @@ def create_galleries_file():
             gallery_dict["galleries"] = final_entries
             json_galleries = json.dumps(gallery_dict)
             json_galleries = "[" + json_galleries + "]"
-            f = open("../production/galleries.json", "w")
+            f = open("production/galleries.json", "w")
             f.write(json_galleries)
             f.close()
     except rllib2.URLError, e:
