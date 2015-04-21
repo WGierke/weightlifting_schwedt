@@ -24,14 +24,14 @@ public class NetworkHelper {
     public static final String URL_BULI_COMPETITIONS = "http://pastebin.com/raw.php?i=RGjFCd41";
     public static final String URL_BULI_TABLE = "http://pastebin.com/raw.php?i=C5bYpcAt";
     public static final String URL_GALLERY = "http://pastebin.com/raw.php?i=kyKhHxr8";
-/*
-    public static final String URL_NEWS = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/master/production/news.json";
-    public static final String URL_EVENTS = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/master/production/events.json";
-    public static final String URL_BULI_TEAM = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/master/production/team.json";
-    public static final String URL_BULI_COMPETITIONS = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/master/production/past_competitions.json";
-    public static final String URL_BULI_TABLE = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/master/production/table.json";
-    public static final String URL_GALLERY = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/master/production/galleries.json";
-*/
+    /*
+        public static final String URL_NEWS = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/master/production/news.json";
+        public static final String URL_EVENTS = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/master/production/events.json";
+        public static final String URL_BULI_TEAM = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/master/production/team.json";
+        public static final String URL_BULI_COMPETITIONS = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/master/production/past_competitions.json";
+        public static final String URL_BULI_TABLE = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/master/production/table.json";
+        public static final String URL_GALLERY = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/master/production/galleries.json";
+    */
     public static boolean isOnline = true;
 
     private static Context context;

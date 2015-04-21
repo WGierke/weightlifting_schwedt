@@ -23,7 +23,7 @@ public class CompetitionsFragment extends Fragment {
     protected ImageView cover;
     protected ListView listViewCompetitions;
 
-    protected Competitions buliCompetitions;
+    protected Competitions competitions;
 
     public CompetitionsFragment() {
         super();
@@ -47,11 +47,11 @@ public class CompetitionsFragment extends Fragment {
     }
 
     protected void getCompetitions() {
-        buliCompetitions = app.getCompetitions();
-        if (buliCompetitions.getItems().size() == 0) {
+        competitions = app.getCompetitions();
+        if (competitions.getItems().size() == 0) {
             // No news items yet
             app.setLoading(true);
-            Log.d(WeightliftingApp.TAG, "Waiting for buliCompetitions...");
+            Log.d(WeightliftingApp.TAG, "Waiting for competitions...");
 
             // Check again in a few seconds
             Runnable refreshRunnable = new Runnable() {
@@ -66,7 +66,7 @@ public class CompetitionsFragment extends Fragment {
             // We have competitions to display
             app.setLoading(false);
             try {
-                CompetitionsListAdapter adapter = new CompetitionsListAdapter(Competitions.casteArray(buliCompetitions.getItems()), getActivity());
+                CompetitionsListAdapter adapter = new CompetitionsListAdapter(Competitions.casteArray(competitions.getItems()), getActivity());
                 listViewCompetitions.setAdapter(adapter);
                 listViewCompetitions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
@@ -74,7 +74,7 @@ public class CompetitionsFragment extends Fragment {
                         // Show the protocol which belongs to the competition
                         Fragment protocol = new ProtocolFragment();
                         Bundle bundle = new Bundle();
-                        bundle.putInt("item", position);
+                        bundle.putString("protocol-url", Competitions.casteArray(competitions.getItems()).get(position).getProtocolUrl());
                         protocol.setArguments(bundle);
                         ((MainActivity) getActivity()).addFragment(protocol, getString(R.string.nav_buli), true);
                     }

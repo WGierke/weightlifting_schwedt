@@ -76,7 +76,7 @@ public class TableFragment extends Fragment {
                         Fragment protocol = new FilterCompetitionsFragment();
                         Bundle bundle = new Bundle();
                         TableEntry entry = (TableEntry) app.getTable().getItem(position);
-                        bundle.putString("filter-name", entry.getClub());
+                        bundle.putString("club-name", entry.getClub());
                         protocol.setArguments(bundle);
                         ((MainActivity) getActivity()).addFragment(protocol, entry.getClub(), true);
                     }

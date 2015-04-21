@@ -14,9 +14,7 @@ import de.schwedt.weightlifting.app.WeightliftingApp;
 
 public class ProtocolFragment extends Fragment {
 
-    private WeightliftingApp app;
     private View fragment;
-    private PastCompetition competition;
 
     private WebView webview;
 
@@ -29,17 +27,15 @@ public class ProtocolFragment extends Fragment {
         Log.d(WeightliftingApp.TAG, "Showing Protocol fragment");
 
         fragment = inflater.inflate(R.layout.buli_competition_protocol, container, false);
-        app = (WeightliftingApp) getActivity().getApplicationContext();
 
         webview = (WebView) fragment.findViewById(R.id.buli_competition_protocol);
         webview.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
 
-        // Get protocol information from bundle
+        // Get protocol url from bundle
         try {
             Bundle bundle = this.getArguments();
-            int position = bundle.getInt("item");
-            competition = (PastCompetition) app.getCompetitions().getItem(position);
-            webview.loadUrl(competition.getProtocolUrl());
+            String url = bundle.getString("protocol-url");
+            webview.loadUrl(url);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

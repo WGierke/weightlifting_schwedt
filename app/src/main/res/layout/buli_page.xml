@@ -24,8 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:requiresFadingEdge="vertical"
-        android:fadingEdgeLength="50dip"
-        >
+        android:fadingEdgeLength="50dip">
 
     </ListView>
 

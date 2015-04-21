@@ -15,9 +15,12 @@ import de.schwedt.weightlifting.app.WeightliftingApp;
 
 public class FilterCompetitionsFragment extends CompetitionsFragment {
 
+    private String clubName;
+    private ArrayList<PastCompetition> filteredCompetitions;
+
     protected void getCompetitions() {
-        buliCompetitions = app.getCompetitions();
-        if (buliCompetitions.getItems().size() == 0) {
+        competitions = app.getCompetitions();
+        if (competitions.getItems().size() == 0) {
             app.setLoading(true);
             Log.d(WeightliftingApp.TAG, "Waiting for Competitions...");
 
@@ -33,15 +36,16 @@ public class FilterCompetitionsFragment extends CompetitionsFragment {
             app.setLoading(false);
             try {
                 Bundle bundle = this.getArguments();
-                String name = bundle.getString("filter-name");
-                CompetitionsListAdapter adapter = new CompetitionsListAdapter(filter(Competitions.casteArray(buliCompetitions.getItems()), name), getActivity());
+                clubName = bundle.getString("club-name");
+                filteredCompetitions = filter(Competitions.casteArray(competitions.getItems()), clubName);
+                CompetitionsListAdapter adapter = new CompetitionsListAdapter(filteredCompetitions, getActivity());
                 listViewCompetitions.setAdapter(adapter);
                 listViewCompetitions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Fragment protocol = new ProtocolFragment();
                         Bundle bundle = new Bundle();
-                        bundle.putInt("item", position);
+                        bundle.putString("protocol-url", filteredCompetitions.get(position).getProtocolUrl());
                         protocol.setArguments(bundle);
                         ((MainActivity) getActivity()).addFragment(protocol, getString(R.string.nav_buli), true);
                     }
