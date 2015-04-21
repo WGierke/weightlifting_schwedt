@@ -8,7 +8,10 @@ from bs4 import BeautifulSoup
 
 iat_url = "https://www.iat.uni-leipzig.de/datenbanken/blgew1415/"
 
+# Helper functions
+
 def add_article_content(post, article):
+    """Return content and first image of the post"""
     re_img_tag = re.compile(ur'(?<=<img)[^>]*')
     re_img_src = re.compile(ur'(?<=src="http)[^"]*(?=")')
 
@@ -22,7 +25,59 @@ def add_article_content(post, article):
     article["image"] = image
     return article
 
+def get_competitions_array(array):
+    """Convert json in competitions array"""
+    array = array.split("}, ")
+    array[0] = array[0].split('"past_competitions": [')[1]
+    array[-1] = array[-1].split("}")[0]
+    return array
+
+def add_gallery_images(gallery_entry):
+    """Return image urls of the gallery"""
+    total_links = []
+    current_url = gallery_entry["url"]
+    try:
+        page = urllib2.urlopen(current_url).read()
+    except rllib2.URLError, e:
+        print 'Error while downloading gallery site ', e
+        return
+    if(page.find('[Zeige als Diashow]') != -1):
+        #diashow, possibly multiple pages
+        n = 1
+        while(page.find("no images were found") == -1):
+            page = page.replace('class="content"', '', 1).split('class="content"')[1].split('<!-- Pagination -->')[0]
+            re_href = re.compile(ur'(?<=href=")[^"]*(?=")')
+            image_links = re.findall(re_href, page)
+
+            for i in range(len(image_links)):
+                total_links.append(image_links[i])
+
+            n += 1
+            current_url = re.sub(ur'(?<=page\/)\d+', str(n), current_url)
+            try:
+                page = urllib2.urlopen(current_url).read()
+            except rllib2.URLError, e:
+                print 'Error while downloading gallery site ', e
+                return
+
+        gallery_entry["images"] = total_links
+        return gallery_entry
+    else:
+        #one page containing all pictures
+        page = page.replace('class="content"', '', 1).split('class="content"')[1].split('<div id="comments">')[0]
+        re_href = re.compile(ur"(?<=href=')[^']*(?=')")
+        image_links = re.findall(re_href, page)
+
+        for i in range(len(image_links)):
+            total_links.append(image_links[i])
+
+        gallery_entry["images"] = total_links
+        return gallery_entry
+
+# Main functions
+
 def create_news_file():
+    """Save posts in news.json"""
     global error_occured
     basic_url = 'http://gewichtheben.blauweiss65-schwedt.de/?page_id=171&paged='
     re_href = re.compile(ur'(?<=href=")[^"]*(?=")')
@@ -44,7 +99,7 @@ def create_news_file():
 
                 article["url"] = re.findall(re_href, post)[0]
                 article["date"] = re.findall(re_date, post)[0]
-                article["heading"] = post[post.find('"bookmark">')+len('"bookmark">'):post.find('</a>')]
+                article["heading"] = post[post.find('"bookmark">')+len('"bookmark">'):post.find('</a>')].replace('&#8211;', '-')
 
                 if post.find("Mehr&#8230;") != -1:
                     post = urllib2.urlopen(article["url"]).read()
@@ -72,6 +127,7 @@ def create_news_file():
 
 
 def create_events_file():
+    """Save events in events.json"""
     global error_occured
     print "Parsing events ..."
     try:
@@ -106,14 +162,8 @@ def create_events_file():
     f.write(events_dict)
     f.close()
 
-def get_competitions_array(array):
-    array = array.split("}, ")
-    array[0] = array[0].split('"past_competitions": [')[1]
-    array[-1] = array[-1].split("}")[0]
-    return array
-
-
 def create_competitions_file():
+    """Save past competitions in past_competitions.json"""
     global iat_url
     global error_occured
     print "Parsing competitions ..."
@@ -159,6 +209,7 @@ def create_competitions_file():
         print "Competitions: Change detected"
 
 def create_table_file():
+    """Save table entries in table.json"""
     global iat_url
     global error_occured
     print "Parsing table ..."
@@ -190,48 +241,8 @@ def create_table_file():
     f.write(json_table)
     f.close()
 
-def add_gallery_images(gallery_entry):
-    total_links = []
-    current_url = gallery_entry["url"]
-    try:
-        page = urllib2.urlopen(current_url).read()
-    except rllib2.URLError, e:
-        print 'Error while downloading gallery site ', e
-        return
-    if(page.find('[Zeige als Diashow]') != -1):                                                                    #diashow, possibly multiple pages
-        n = 1
-        while(page.find("no images were found") == -1):
-            page = page.replace('class="content"', '', 1).split('class="content"')[1].split('<!-- Pagination -->')[0]
-            re_href = re.compile(ur'(?<=href=")[^"]*(?=")')
-            image_links = re.findall(re_href, page)
-
-            for i in range(len(image_links)):
-                total_links.append(image_links[i])
-
-            n += 1
-            current_url = re.sub(ur'(?<=page\/)\d+', str(n), current_url)
-            try:
-                page = urllib2.urlopen(current_url).read()
-            except rllib2.URLError, e:
-                print 'Error while downloading gallery site ', e
-                return
-
-        gallery_entry["images"] = total_links
-        return gallery_entry
-    else:                                                                                                           #one page containing all pictures
-        page = page.replace('class="content"', '', 1).split('class="content"')[1].split('<div id="comments">')[0]
-        re_href = re.compile(ur"(?<=href=')[^']*(?=')")
-        image_links = re.findall(re_href, page)
-
-        for i in range(len(image_links)):
-            total_links.append(image_links[i])
-
-        gallery_entry["images"] = total_links
-        return gallery_entry
-
-
-
 def create_galleries_file():
+    """Save gallery images in galleries.json"""
     global error_occured
     try:
         print "Parsing galleries ..."
@@ -266,13 +277,14 @@ def create_galleries_file():
         error_occured = True
         return
 
-error_occured = False
-create_news_file()
-if not error_occured:
-    create_events_file()
-if not error_occured:
-    create_competitions_file()
-if not error_occured:
-    create_galleries_file()
-if not error_occured:
-    create_table_file()
+if __name__ == '__main__':
+    error_occured = False
+    create_news_file()
+    if not error_occured:
+        create_events_file()
+    if not error_occured:
+        create_competitions_file()
+    if not error_occured:
+        create_galleries_file()
+    if not error_occured:
+        create_table_file()

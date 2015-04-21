@@ -1,18 +1,17 @@
-weightlifting_schwedt
+# ![Logo](https://github.com/WGierke/weightlifting_schwedt/raw/master/app/src/main/res/drawable-hdpi/ic_launcher.png) weightlifting_schwedt
 =========================
 
-This mobile application should promote the attractiveness of the department 'Weightlifting' of the TSV Blau-Weiß 65 Schwedt.
+This Android application should promote the attractiveness of the department 'Weightlifting' of the TSV Blau-Weiß 65 Schwedt.
+
+![Screenshot](https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/master/weightlifting_schwedt.jpg)
 
 
-Credits
-=========================
-
+## Credits
 HPI Mobile Developer Club
 
 Universal Image Loader https://github.com/nostra13/Android-Universal-Image-Loader
 
 ## License
-
     Copyright 2015 Willi Gierke
 
     Licensed under the Apache License, Version 2.0 (the "License");
