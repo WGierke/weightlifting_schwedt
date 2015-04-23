@@ -26,12 +26,36 @@
             "image": "http://gewichtheben.blauweiss65-schwedt.de/wp-content/uploads/2014/12/IMG_1541-500x333.jpg"
          },
          {
+            "name":"Simon Darville",
+            "year":"1993",
+            "snatching":"137",
+            "jerking":"170",
+            "max_score":"123",
+            "image": "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/team_pictures/Simon.jpg"
+         },
+         {
             "name":"Jon-Luke Mau",
             "year":"1998",
             "snatching":"86",
             "jerking":"112",
             "max_score":"114",
-            "image": "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/master/production/team_pictures/Jon.jpg"
+            "image": "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/team_pictures/Jon.jpg"
+         },
+	 {
+            "name":"Martin Adler",
+            "year":"1999",
+            "snatching":"102",
+            "jerking":"125",
+            "max_score":"82",
+            "image": "http://gewichtheben.blauweiss65-schwedt.de/wp-content/uploads/2015/05/Martin.jpg"
+         },
+         {
+            "name":"Marius Zimmermann",
+            "year":"1998",
+            "snatching":"92",
+            "jerking":"110",
+            "max_score":"81",
+            "image": "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/team_pictures/Marius.jpg"
          },
          {
             "name":"Ken Fischer",
@@ -39,7 +63,7 @@
             "snatching":"98",
             "jerking":"128",
             "max_score":"85",
-            "image": "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/master/production/team_pictures/Ken.jpg"
+            "image": "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/team_pictures/Ken.jpg"
          },
          {
             "name":"Karl Waldemar Schiffer",
@@ -55,7 +79,7 @@
             "snatching":"120",
             "jerking":"145",
             "max_score":"135",
-            "image": "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/master/production/team_pictures/Thomas.jpg"
+            "image": "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/team_pictures/Thomas.jpg"
          },
          {
             "name":"Arkadiusz Michalski",
@@ -63,7 +87,7 @@
             "snatching":"175",
             "jerking":"222",
             "max_score":"193",
-            "image": "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/master/production/team_pictures/Arkadiusz.jpg"
+            "image": "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/team_pictures/Arkadiusz.jpg"
          },
          {
             "name":"Eik Lessing",
@@ -71,7 +95,7 @@
             "snatching":"115",
             "jerking":"147",
             "max_score":"102",
-            "image": "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/master/production/team_pictures/Eik.jpg"
+            "image": "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/team_pictures/Eik.jpg"
          }
       ]
    }

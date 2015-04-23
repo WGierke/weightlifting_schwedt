@@ -2,9 +2,12 @@ package de.schwedt.weightlifting.app.helper.UniversalImageLoader;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
@@ -12,13 +15,17 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
+import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
+import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.gallery.Galleries;
+import de.schwedt.weightlifting.app.gallery.GalleryItem;
 
 /*******************************************************************************
  * Copyright 2011-2014 Sergey Tarasevich
@@ -45,7 +52,7 @@ import de.schwedt.weightlifting.app.gallery.Galleries;
  - adapted to own icons and layouts
  */
 
-public class ImageGridFragment extends AbsListViewBaseFragment {
+public class ImageGridFragment extends Fragment {
 
     public static final int INDEX = 1;
 
@@ -55,10 +62,15 @@ public class ImageGridFragment extends AbsListViewBaseFragment {
 
     int galleryPosition;
 
+    protected AbsListView listView;
+
+    protected boolean pauseOnScroll = false;
+    protected boolean pauseOnFling = true;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Bundle bundle = this.getArguments();
-        galleryPosition = bundle.getInt(Constants.Extra.GALLERY_POSITION);
+        galleryPosition = bundle.getInt("GALLERY_POSITION");
 
         WeightliftingApp app = (WeightliftingApp) getActivity().getApplicationContext();
         Galleries galleries = app.getGalleries();
@@ -85,10 +97,32 @@ public class ImageGridFragment extends AbsListViewBaseFragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startImagePagerActivity(galleryPosition, position);
+
+                Fragment fr = new ImageControllerFragment();
+                Bundle bundle = new Bundle();
+                bundle.putInt("FRAGMENT_INDEX", ImagePagerFragment.INDEX);
+                bundle.putInt("GALLERY_POSITION", galleryPosition);
+                bundle.putInt("IMAGE_POSITION", position);
+                fr.setArguments(bundle);
+                WeightliftingApp app = (WeightliftingApp) getActivity().getApplicationContext();
+                GalleryItem currentGallery = (GalleryItem) app.getGalleries().getItem(galleryPosition);
+                String tag = currentGallery.getTitle();
+
+                ((MainActivity) getActivity()).addFragment(fr, tag, false);
+
             }
         });
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        applyScrollListener();
+    }
+
+    private void applyScrollListener() {
+        listView.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), pauseOnScroll, pauseOnFling));
     }
 
     static class ViewHolder {

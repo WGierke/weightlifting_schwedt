@@ -34,10 +34,9 @@ public class MainActivity extends FragmentActivity {
     public static final int FRAGMENT_BULI = 2;
     public static final int FRAGMENT_GALLERY = 3;
     public static final int FRAGMENT_FAQ = 4;
-    public static final int FRAGMENT_YOUTH = 5;
-    public static final int FRAGMENT_CONTACT = 6;
+    public static final int FRAGMENT_CONTACT = 5;
     //home, (news, events), (team, competitions, table), (gallery)
-    public static int counter[][] = {{}, {0, 0}, {0, 0, 0}, {0}, {}, {}, {}};
+    public static int counter[][] = {{}, {0, 0}, {0, 0, 0}, {0}};
     public static ArrayList<NavDrawerItem> navDrawerItems = new ArrayList<NavDrawerItem>();
     private WeightliftingApp app;
     private DrawerLayout mDrawerLayout;
@@ -83,7 +82,6 @@ public class MainActivity extends FragmentActivity {
         navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_buli), R.drawable.nav_buli));
         navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_gallery), R.drawable.nav_gallery));
         navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_faq), R.drawable.nav_help));
-        navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_youth), R.drawable.nav_help));
         navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_contact), R.drawable.nav_contact));
 
         mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
@@ -125,7 +123,6 @@ public class MainActivity extends FragmentActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         menu.findItem(R.id.action_refresh).setVisible(true);
-        menu.findItem(R.id.action_settings).setVisible(true);
         return true;
     }
 
@@ -156,8 +153,6 @@ public class MainActivity extends FragmentActivity {
         }
         // Handle action bar actions click
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                return true;
             case R.id.action_refresh:
                 app.checkConnection();
                 if (app.isOnline) {
@@ -187,7 +182,7 @@ public class MainActivity extends FragmentActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         // if nav drawer is opened, hide the action items
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
+        menu.findItem(R.id.action_refresh).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -219,10 +214,6 @@ public class MainActivity extends FragmentActivity {
                 fragment = new FaqFragment();
                 setTitle(getString(R.string.nav_faq));
                 break;
-            case FRAGMENT_YOUTH:
-                fragment = new YouthFragment();
-                setTitle(getString(R.string.nav_youth));
-                break;
             case FRAGMENT_CONTACT:
                 fragment = new ContactFragment();
                 setTitle(getString(R.string.nav_contact));
@@ -238,6 +229,7 @@ public class MainActivity extends FragmentActivity {
         mDrawerList.setItemChecked(position, true);
         mDrawerList.setSelection(position);
         mDrawerLayout.closeDrawer(mDrawerList);
+        invalidateOptionsMenu();
     }
 
     public void replaceFragment(Fragment fragment, String title) {
@@ -249,7 +241,6 @@ public class MainActivity extends FragmentActivity {
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             transaction.commit();
             setTitle(title);
-
             fragmentManager.popBackStack();
         } else {
             Log.e(WeightliftingApp.TAG, "Fragment is null");

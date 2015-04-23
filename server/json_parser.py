@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-15 -*-
 import urllib2
-import hashlib
 import re
 import json
 from bs4 import BeautifulSoup
@@ -9,6 +8,7 @@ from bs4 import BeautifulSoup
 iat_url = "https://www.iat.uni-leipzig.de/datenbanken/blgew1415/"
 
 # Helper functions
+
 
 def add_article_content(post, article):
     """Return content and first image of the post"""
@@ -25,6 +25,7 @@ def add_article_content(post, article):
     article["image"] = image
     return article
 
+
 def get_competitions_array(array):
     """Convert json in competitions array"""
     array = array.split("}, ")
@@ -32,17 +33,18 @@ def get_competitions_array(array):
     array[-1] = array[-1].split("}")[0]
     return array
 
+
 def add_gallery_images(gallery_entry):
     """Return image urls of the gallery"""
     total_links = []
     current_url = gallery_entry["url"]
     try:
         page = urllib2.urlopen(current_url).read()
-    except rllib2.URLError, e:
+    except Exception, e:
         print 'Error while downloading gallery site ', e
         return
     if(page.find('[Zeige als Diashow]') != -1):
-        #diashow, possibly multiple pages
+        # Diashow, possibly multiple pages
         n = 1
         while(page.find("no images were found") == -1):
             page = page.replace('class="content"', '', 1).split('class="content"')[1].split('<!-- Pagination -->')[0]
@@ -56,14 +58,14 @@ def add_gallery_images(gallery_entry):
             current_url = re.sub(ur'(?<=page\/)\d+', str(n), current_url)
             try:
                 page = urllib2.urlopen(current_url).read()
-            except rllib2.URLError, e:
+            except Exception, e:
                 print 'Error while downloading gallery site ', e
                 return
 
         gallery_entry["images"] = total_links
         return gallery_entry
     else:
-        #one page containing all pictures
+        # One page containing all pictures
         page = page.replace('class="content"', '', 1).split('class="content"')[1].split('<div id="comments">')[0]
         re_href = re.compile(ur"(?<=href=')[^']*(?=')")
         image_links = re.findall(re_href, page)
@@ -76,6 +78,7 @@ def add_gallery_images(gallery_entry):
 
 # Main functions
 
+
 def create_news_file():
     """Save posts in news.json"""
     global error_occured
@@ -87,6 +90,18 @@ def create_news_file():
     articles = []
 
     try:
+        # Check if a new article appeared.
+        page = urllib2.urlopen(basic_url + str(1)).read()
+        first_post = page.split('id="pagenavi"')[0].split('<div class="post"')[1]
+        first_url = re.findall(re_href, first_post)[0]
+        with open('production/news.json') as news_json:
+            old_json = json.load(news_json)
+
+        # Cancel the process if the first article is already saved.
+        if first_url == old_json[0]["articles"][0]["url"]:
+            print "No new articles"
+            return
+
         n = 1
         page = urllib2.urlopen(basic_url + str(n)).read()
         while page.find('Willkommen auf der 404 Fehlerseite') == -1:
@@ -111,16 +126,17 @@ def create_news_file():
 
             n += 1
             page = urllib2.urlopen(basic_url + str(n)).read()
-    except urllib2.URLError, e:
+    except Exception, e:
         if e.code == 404 and articles[len(articles)-1]["heading"] == "Qualifikation DM C-Jugend":
             pass
         else:
             error_occured = True
             print 'Error while downloading news ', e
+            return
     if not error_occured:
         news_dict["articles"] = articles
         json_news = json.dumps(news_dict)
-        json_news = "[" + json_news.replace("\u00df","ß").replace("\u00e4", "ä").replace("\u00fc", "ü") + "]"
+        json_news = "[" + json_news.replace("\u00df", "ß").replace("\u00e4", "ä").replace("\u00fc", "ü") + "]"
         f = open("production/news.json", "w")
         f.write(json_news)
         f.close()
@@ -132,7 +148,7 @@ def create_events_file():
     print "Parsing events ..."
     try:
         months = urllib2.urlopen("http://gewichtheben.blauweiss65-schwedt.de/?page_id=31").read().replace('<div class="fixed"></div>', '', 3).split('<div class="fixed"></div>')[0].split('<strong>')[1:]
-    except rllib2.URLError, e:
+    except Exception, e:
         print 'Error while downloading events ', e
         error_occured = True
         return
@@ -169,7 +185,7 @@ def create_competitions_file():
     print "Parsing competitions ..."
     try:
         competitions = urllib2.urlopen(iat_url + "start.php?pid=%27123%27&resultate=1&bl=1&staffel=Gruppe+B").read().split("</TABLE>")[0]
-    except rllib2.URLError, e:
+    except Exception, e:
         print 'Error while downloading competitions ', e
         error_occured = True
         return
@@ -180,21 +196,21 @@ def create_competitions_file():
     competitions_dict = {}
     final_competitions = []
 
-    for i in range(len(competition_entries)/7):
+    for i in range(0, len(competition_entries), 7):
         entry = {}
-        entry["location"] = competition_entries[i*7+1]
-        entry["date"] = competition_entries[i*7+2]
-        entry["home"] = competition_entries[i*7+3]
-        entry["guest"] = competition_entries[i*7+4]
-        entry["score"] = competition_entries[i*7+5]
-        entry["url"] = iat_url + re.findall(re_href, competition_entries[i*7+6])[0]
+        entry["location"] = competition_entries[i+1]
+        entry["date"] = competition_entries[i+2]
+        entry["home"] = competition_entries[i+3]
+        entry["guest"] = competition_entries[i+4]
+        entry["score"] = competition_entries[i+5]
+        entry["url"] = iat_url + re.findall(re_href,
+                                            competition_entries[i+6])[0]
 
         final_competitions.append(entry)
 
-    #handle swapping of competitions due to IAT database
-    f = open("production/past_competitions.json", "r")
-    old_competitions = f.read()
-    f.close()
+    # Handle swapping of competitions due to IAT database
+    with open("production/past_competitions.json", "r") as f:
+        old_competitions = f.read()
     old_competitions = get_competitions_array(old_competitions)
 
     competitions_dict["past_competitions"] = final_competitions
@@ -215,7 +231,7 @@ def create_table_file():
     print "Parsing table ..."
     try:
         table = urllib2.urlopen(iat_url + "start.php?pid=%27123%27&tabelle=1&bl=1&staffel=Gruppe+B").read().split("</TABLE>")[0]
-    except rllib2.URLError, e:
+    except Exception, e:
         print 'Error while downloading table ', e
         error_occured = True
         return
@@ -241,6 +257,7 @@ def create_table_file():
     f.write(json_table)
     f.close()
 
+
 def create_galleries_file():
     """Save gallery images in galleries.json"""
     global error_occured
@@ -254,6 +271,16 @@ def create_galleries_file():
         gallery_dict = {}
         final_entries = []
 
+        # Check if a new gallery appeared.
+        first_gallery_link = "http://gewichtheben.blauweiss65-schwedt.de/index.php/nggallery/page/1?" + gallery_links[0].split('">')[0].split("?")[1]
+        with open('production/galleries.json') as galleries_json:
+            old_json = json.load(galleries_json)
+
+        # Cancel the process if the first gallery is already saved.
+        if first_gallery_link == old_json[0]["galleries"][0]["url"]:
+            print "No new galleries"
+            return
+
         for i in range(len(gallery_links)):
             gallery_entry = {}
             gallery_entry["url"] = gallery_links[i].split('">')[0]
@@ -266,13 +293,13 @@ def create_galleries_file():
 
             final_entries.append(gallery_entry)
 
-            gallery_dict["galleries"] = final_entries
-            json_galleries = json.dumps(gallery_dict)
-            json_galleries = "[" + json_galleries + "]"
-            f = open("production/galleries.json", "w")
-            f.write(json_galleries)
-            f.close()
-    except rllib2.URLError, e:
+        gallery_dict["galleries"] = final_entries
+        json_galleries = json.dumps(gallery_dict)
+        json_galleries = "[" + json_galleries + "]"
+        f = open("production/galleries.json", "w")
+        f.write(json_galleries)
+        f.close()
+    except Exception, e:
         print 'Error while downloading galleries ', e
         error_occured = True
         return
@@ -280,11 +307,10 @@ def create_galleries_file():
 if __name__ == '__main__':
     error_occured = False
     create_news_file()
-    if not error_occured:
-        create_events_file()
-    if not error_occured:
-        create_competitions_file()
-    if not error_occured:
-        create_galleries_file()
-    if not error_occured:
-        create_table_file()
+    creating_functions = [create_events_file,
+                          create_competitions_file,
+                          create_table_file,
+                          create_galleries_file]
+    for func in creating_functions:
+        if not error_occured:
+            func()

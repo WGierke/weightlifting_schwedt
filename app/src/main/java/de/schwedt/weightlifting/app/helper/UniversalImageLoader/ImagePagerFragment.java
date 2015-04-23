@@ -55,7 +55,7 @@ public class ImagePagerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Bundle bundle = this.getArguments();
-        int galleryPosition = bundle.getInt(Constants.Extra.GALLERY_POSITION);
+        int galleryPosition = bundle.getInt("GALLERY_POSITION");
 
         WeightliftingApp app = (WeightliftingApp) getActivity().getApplicationContext();
         Galleries galleries = app.getGalleries();
@@ -80,7 +80,7 @@ public class ImagePagerFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.image_pager, container, false);
         ViewPager pager = (ViewPager) rootView.findViewById(R.id.pager);
         pager.setAdapter(new ImageAdapter());
-        pager.setCurrentItem(getArguments().getInt(Constants.Extra.IMAGE_POSITION, 0));
+        pager.setCurrentItem(getArguments().getInt("IMAGE_POSITION"));
         return rootView;
     }
 

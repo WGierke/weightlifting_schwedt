@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/buli_competition_home"
-        style="@style/NewsHeading"
+        style="@style/CompetitionOpponents"
         android:text="Home"
         android:layout_marginTop="3dip"
         android:layout_marginLeft="10dip"
@@ -17,7 +17,7 @@
 
     <TextView
         android:id="@+id/buli_competition_vs"
-        style="@style/NewsHeading"
+        style="@style/CompetitionOpponents"
         android:text="vs."
         android:layout_marginTop="3dip"
         android:layout_marginLeft="5dip"
@@ -27,7 +27,7 @@
 
     <TextView
         android:id="@+id/buli_competition_guest"
-        style="@style/NewsHeading"
+        style="@style/CompetitionOpponents"
         android:text="Guest"
         android:layout_marginTop="3dip"
         android:layout_marginLeft="5dip"
@@ -37,6 +37,7 @@
 
     <TextView
         android:id="@+id/buli_competition_score"
+        style="@style/TextSubHeading"
         android:text="100 : 90"
         android:layout_marginLeft="10dip"
         android:layout_below="@id/buli_competition_home"
@@ -48,6 +49,7 @@
     <TextView
         android:id="@+id/buli_competition_date"
         android:text="Date"
+        android:textSize="14sp"
         android:layout_marginLeft="10dip"
         android:layout_below="@id/buli_competition_score"
         android:layout_marginBottom="5dip"
@@ -57,6 +59,7 @@
     <TextView
         android:id="@+id/buli_competition_location"
         android:text="Location"
+        android:textSize="14sp"
         android:layout_marginLeft="20dip"
         android:layout_below="@id/buli_competition_score"
         android:layout_toRightOf="@id/buli_competition_date"

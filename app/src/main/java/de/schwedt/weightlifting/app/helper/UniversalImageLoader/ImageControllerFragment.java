@@ -2,11 +2,14 @@ package de.schwedt.weightlifting.app.helper.UniversalImageLoader;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-import de.schwedt.weightlifting.app.R;
+import de.schwedt.weightlifting.app.MainActivity;
+import de.schwedt.weightlifting.app.WeightliftingApp;
+import de.schwedt.weightlifting.app.gallery.GalleryItem;
+
 
 /*******************************************************************************
  * Copyright 2014 Sergey Tarasevich
@@ -30,44 +33,49 @@ import de.schwedt.weightlifting.app.R;
 
 /*Modification:
 - only show ImageListFragment or ImageGalleryFragment
+- imported functionality in Fragment
 */
 
-public class SimpleImageActivity extends FragmentActivity {
+public class ImageControllerFragment extends Fragment {
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        int frIndex = getIntent().getIntExtra(Constants.Extra.FRAGMENT_INDEX, 0);
+        WeightliftingApp app = (WeightliftingApp) getActivity().getApplicationContext();
+
+        Bundle bundle = this.getArguments();
+        int frIndex = bundle.getInt("FRAGMENT_INDEX");
         Fragment fr;
         String tag;
-        int titleRes;
         switch (frIndex) {
             default:
             case ImageGridFragment.INDEX:
                 //Hands over GALLERY_POSITION
                 tag = ImageGridFragment.class.getSimpleName();
-                fr = getSupportFragmentManager().findFragmentByTag(tag);
+                fr = getActivity().getSupportFragmentManager().findFragmentByTag(tag);
                 if (fr == null) {
                     fr = new ImageGridFragment();
-                    fr.setArguments(getIntent().getExtras());
+                    fr.setArguments(bundle);
+                    GalleryItem currentGallery = (GalleryItem) app.getGalleries().getItem(bundle.getInt("GALLERY_POSITION"));
+                    tag = currentGallery.getTitle();
                 }
-                titleRes = R.string.nav_gallery;
                 break;
             case ImagePagerFragment.INDEX:
                 //Hands over GALLERY_POSITION, IMAGE_POSITION
                 tag = ImagePagerFragment.class.getSimpleName();
-                fr = getSupportFragmentManager().findFragmentByTag(tag);
+                fr = getActivity().getSupportFragmentManager().findFragmentByTag(tag);
                 if (fr == null) {
                     fr = new ImagePagerFragment();
-                    fr.setArguments(getIntent().getExtras());
+                    fr.setArguments(bundle);
+                    GalleryItem currentGallery = (GalleryItem) app.getGalleries().getItem(bundle.getInt("GALLERY_POSITION"));
+                    tag = currentGallery.getTitle();
                 }
-                titleRes = R.string.nav_gallery;
                 break;
         }
+        ((MainActivity) getActivity()).addFragment(fr, tag, true);
 
-        setTitle(titleRes);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(android.R.id.content, fr, tag).commit();
+        return null;
     }
+
 }

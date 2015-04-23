@@ -40,9 +40,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="de.schwedt.weightlifting.app.helper.UniversalImageLoader.SimpleImageActivity"
-            android:label="@string/nav_gallery" />
     </application>
 
 </manifest>

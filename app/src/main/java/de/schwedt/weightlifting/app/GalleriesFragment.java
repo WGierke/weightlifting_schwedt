@@ -1,6 +1,5 @@
 package de.schwedt.weightlifting.app;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -13,9 +12,8 @@ import android.widget.ListView;
 
 import de.schwedt.weightlifting.app.gallery.Galleries;
 import de.schwedt.weightlifting.app.gallery.GalleryOverviewAdapter;
-import de.schwedt.weightlifting.app.helper.UniversalImageLoader.Constants;
+import de.schwedt.weightlifting.app.helper.UniversalImageLoader.ImageControllerFragment;
 import de.schwedt.weightlifting.app.helper.UniversalImageLoader.ImageGridFragment;
-import de.schwedt.weightlifting.app.helper.UniversalImageLoader.SimpleImageActivity;
 import de.schwedt.weightlifting.app.news.News;
 
 public class GalleriesFragment extends Fragment {
@@ -50,7 +48,7 @@ public class GalleriesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        //getGalleries();
+        getActivity().getActionBar().setTitle(R.string.nav_gallery);
     }
 
     private void getGalleries() {
@@ -79,10 +77,14 @@ public class GalleriesFragment extends Fragment {
                 listViewGalleries.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Intent intent = new Intent(app, SimpleImageActivity.class);
-                        intent.putExtra(Constants.Extra.FRAGMENT_INDEX, ImageGridFragment.INDEX);
-                        intent.putExtra(Constants.Extra.GALLERY_POSITION, position);
-                        startActivity(intent);
+
+                        Fragment imageController = new ImageControllerFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("FRAGMENT_INDEX", ImageGridFragment.INDEX);
+                        bundle.putInt("GALLERY_POSITION", position);
+                        imageController.setArguments(bundle);
+                        ((MainActivity) getActivity()).addFragment(imageController, getString(R.string.nav_gallery), true);
+
                     }
 
 

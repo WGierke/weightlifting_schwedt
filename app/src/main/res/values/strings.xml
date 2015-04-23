@@ -26,7 +26,6 @@
     <string name="nav_lali">Landesliga</string>
     <string name="nav_map">Maps</string>
     <string name="nav_faq">FAQ</string>
-    <string name="nav_youth">Jugend</string>
     <string name="nav_gallery">Galerie</string>
     <string name="nav_contact">Kontakt</string>
 
@@ -93,12 +92,6 @@
     <string name="faq_bad_attempt_jerking_heading">Ungültiger Stoß-Versuch</string>
     <string name="faq_bad_attempt_jerking_question">Wann ist ein Versuch im Stoßen ungültig?</string>
     <string name="faq_bad_attempt_jerking_answer">Bei folgenden Bewegungen ist der Stoß-Versuch als ungültig zu bewerten:\n - ein anderes Körperteil als die Füße berühren den Boden\n - die Ellenbogen berühren beim Umsetzen die Knie\n - beim Ausstoßen werden die Arme nicht in einer Bewegung gestreckt ("Nachdrücken")</string>
-
-
-
-    <!-- Youth -->
-    <string name="youth_test">Jugend-Seite</string>
-
 
     <!-- Contact -->
     <string name="contact_club">TSV Blau-Weiß 65 Schwedt e.V.</string>
