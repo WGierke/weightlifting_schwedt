@@ -3,7 +3,6 @@ package de.schwedt.weightlifting.app.helper.UniversalImageLoader;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,17 +54,12 @@ import de.schwedt.weightlifting.app.gallery.GalleryItem;
 public class ImageGridFragment extends Fragment {
 
     public static final int INDEX = 1;
-
-    String[] imageUrls;
-
-    DisplayImageOptions options;
-
-    int galleryPosition;
-
     protected AbsListView listView;
-
     protected boolean pauseOnScroll = false;
     protected boolean pauseOnFling = true;
+    String[] imageUrls;
+    DisplayImageOptions options;
+    int galleryPosition;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

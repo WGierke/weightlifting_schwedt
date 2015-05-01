@@ -14,6 +14,12 @@ public class TableEntry extends UpdateableItem {
 
     }
 
+    public boolean equals(TableEntry item2) {
+        return place.equals(item2.getPlace()) && club.equals(item2.getClub())
+                && score.equals(item2.getScore()) && max_score.equals(item2.getMaxScore())
+                && cardinal_points.equals(item2.getCardinalPoints());
+    }
+
     public String getPlace() {
         return place;
     }

@@ -73,4 +73,11 @@ public class TeamMember extends UpdateableItem {
     public void setImage(Drawable image) {
         this.image = image;
     }
+
+    public boolean equals(TeamMember item2) {
+        return name.equals(item2.getName()) && year.equals(item2.getYear())
+                && snatching.equals(item2.getSnatching()) && jerking.equals(item2.getJerking())
+                && max_score.equals(item2.getMaxScore()) && imageURL.equals(item2.getImageURL())
+                && ((image == null && item2.getImage() == null) || image.equals(item2.getImage()));
+    }
 }

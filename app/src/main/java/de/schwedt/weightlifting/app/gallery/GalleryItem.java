@@ -1,6 +1,8 @@
 package de.schwedt.weightlifting.app.gallery;
 
 
+import java.util.Arrays;
+
 import de.schwedt.weightlifting.app.UpdateableItem;
 
 public class GalleryItem extends UpdateableItem {
@@ -11,6 +13,10 @@ public class GalleryItem extends UpdateableItem {
 
     public GalleryItem() {
 
+    }
+
+    public boolean equals(GalleryItem item2) {
+        return title.equals(item2.getTitle()) && url.equals(item2.getUrl()) && Arrays.equals(imageUrls, item2.getImageUrls());
     }
 
     public String getUrl() {

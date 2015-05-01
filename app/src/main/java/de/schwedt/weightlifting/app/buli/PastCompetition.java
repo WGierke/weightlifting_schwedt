@@ -63,4 +63,10 @@ public class PastCompetition extends UpdateableItem {
         this.url = url;
     }
 
+    public boolean equals(PastCompetition item2) {
+        return location.equals(item2.getLocation()) && date.equals(item2.getDate())
+                && home.equals(item2.getHome()) && guest.equals(item2.getGuest())
+                && score.equals(item2.getScore()) && url.equals(item2.getProtocolUrl());
+    }
+
 }

@@ -85,4 +85,12 @@ public class NewsItem extends UpdateableItem {
     public void setImageURL(String url_image) {
         this.imageURL = url_image;
     }
+
+    public boolean equals(NewsItem item2) {
+        return heading.equals(item2.getHeading()) && content.equals(item2.getContent())
+                && url.equals(item2.getURL()) && imageURL.equals(item2.getImageURL())
+                && date.equals(item2.getDate())
+                && ((image == null && item2.getImage() == null) || image.equals(item2.getImage()));
+    }
 }
+

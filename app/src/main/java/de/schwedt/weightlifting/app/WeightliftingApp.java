@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,23 +19,29 @@ import java.io.File;
 import java.util.Date;
 
 import de.schwedt.weightlifting.app.buli.Competitions;
+import de.schwedt.weightlifting.app.buli.PastCompetition;
 import de.schwedt.weightlifting.app.buli.Table;
+import de.schwedt.weightlifting.app.buli.TableEntry;
 import de.schwedt.weightlifting.app.buli.Team;
+import de.schwedt.weightlifting.app.buli.TeamMember;
 import de.schwedt.weightlifting.app.faq.FaqItem;
 import de.schwedt.weightlifting.app.gallery.Galleries;
+import de.schwedt.weightlifting.app.gallery.GalleryItem;
 import de.schwedt.weightlifting.app.helper.DataHelper;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
 import de.schwedt.weightlifting.app.helper.MemoryCache;
 import de.schwedt.weightlifting.app.helper.NetworkHelper;
+import de.schwedt.weightlifting.app.news.EventItem;
 import de.schwedt.weightlifting.app.news.Events;
 import de.schwedt.weightlifting.app.news.News;
+import de.schwedt.weightlifting.app.news.NewsItem;
 
 public class WeightliftingApp extends Application {
 
     public static final String TAG = "Weightlifting";
     public static final String TEAM_NAME = "KG Schwedt-Stralsund";
     public static final int DISPLAY_DELAY = 500;
-    private static final int REFRESH_INTERVAL = 1000 * 60 * 2;
+    private static final int REFRESH_INTERVAL = 1000 * 60 * 60* 24; //once a day
     public static boolean[] finishedUpdating = {false, false, false, false, false, false};
     public static boolean isUpdatingAll = false;
     public boolean isInitialized = false;
@@ -58,10 +62,7 @@ public class WeightliftingApp extends Application {
     private Competitions competitions;
     private Table table;
     private Galleries galleries;
-    private ProgressDialog loadingProgressDialog;
     private MainActivity mainActivity;
-    private SharedPreferences.Editor edit;
-    private SharedPreferences userData;
 
 
     public void initialize(Activity activity) {
@@ -183,17 +184,27 @@ public class WeightliftingApp extends Application {
 
                     News newNews = new News();
                     newNews.parseFromString(result, imageLoader);
+
+                    //Keep references to old items
+                    for (int i = 0; i < newNews.getItems().size(); i++) {
+                        for (int j = 0; j < news.getItems().size(); j++) {
+                            if (((NewsItem) newNews.getItems().get(i)).equals((NewsItem) news.getItems().get(j))) {
+                                newNews.getItems().set(i, news.getItems().get(j));
+                            }
+                        }
+                    }
+
                     News.markNewItems(News.casteArray(news.getItems()), News.casteArray(newNews.getItems()));
                     if (News.itemsToMark.size() > 0) {
                         showNotification(getResources().getQuantityString(R.plurals.new_news, News.itemsToMark.size(), News.itemsToMark.size()), News.getNotificationMessage(), 0);
                     }
                     news = newNews;
-                    finishedUpdating[0] = true;
                     Log.i(TAG, "News updated");
                 } catch (Exception ex) {
                     Log.e(TAG, "News update failed");
                     ex.printStackTrace();
                 }
+                finishedUpdating[0] = true;
                 isUpdatingNews = false;
                 setLoading(false);
             }
@@ -241,17 +252,28 @@ public class WeightliftingApp extends Application {
 
                     Events newEvents = new Events();
                     newEvents.parseFromString(result, imageLoader);
+
+                    //Keep references to old items
+                    for (int i = 0; i < newEvents.getItems().size(); i++) {
+                        for (int j = 0; j < events.getItems().size(); j++) {
+                            if (((EventItem) newEvents.getItems().get(i)).equals((EventItem) events.getItems().get(j))) {
+                                newEvents.getItems().set(i, events.getItems().get(j));
+                            }
+                        }
+                    }
+
                     Events.markNewItems(Events.casteArray(events.getItems()), Events.casteArray(newEvents.getItems()));
                     if (Events.itemsToMark.size() > 0) {
                         showNotification(getResources().getQuantityString(R.plurals.new_events, Events.itemsToMark.size(), Events.itemsToMark.size()), Events.getNotificationMessage(), 1);
                     }
+
                     events = newEvents;
-                    finishedUpdating[1] = true;
                     Log.i(TAG, "Events updated");
                 } catch (Exception ex) {
                     Log.e(TAG, "Events update failed");
                     ex.printStackTrace();
                 }
+                finishedUpdating[1] = true;
                 isUpdatingEvents = false;
                 setLoading(false);
             }
@@ -296,17 +318,27 @@ public class WeightliftingApp extends Application {
 
                     Team newTeam = new Team();
                     newTeam.parseFromString(result, imageLoader);
+
+                    //Keep references to old items
+                    for (int i = 0; i < newTeam.getItems().size(); i++) {
+                        for (int j = 0; j < team.getItems().size(); j++) {
+                            if (((TeamMember) newTeam.getItems().get(i)).equals((TeamMember) team.getItems().get(j))) {
+                                newTeam.getItems().set(i, team.getItems().get(j));
+                            }
+                        }
+                    }
+
                     Team.markNewItems(Team.casteArray(team.getItems()), Team.casteArray(newTeam.getItems()));
                     if (Team.itemsToMark.size() > 0) {
                         showNotification(getResources().getQuantityString(R.plurals.new_member, Team.itemsToMark.size(), Team.itemsToMark.size()), Team.getNotificationMessage(), 2);
                     }
                     team = newTeam;
-                    finishedUpdating[2] = true;
                     Log.i(TAG, "Team updated");
                 } catch (Exception ex) {
                     Log.e(TAG, "Team update failed");
                     ex.printStackTrace();
                 }
+                finishedUpdating[2] = true;
                 isUpdatingTeam = false;
                 setLoading(false);
             }
@@ -351,17 +383,27 @@ public class WeightliftingApp extends Application {
 
                     Competitions newCompetitions = new Competitions();
                     newCompetitions.parseFromString(result, imageLoader);
+
+                    //Keep references to old items
+                    for (int i = 0; i < newCompetitions.getItems().size(); i++) {
+                        for (int j = 0; j < competitions.getItems().size(); j++) {
+                            if (((PastCompetition) newCompetitions.getItems().get(i)).equals((PastCompetition) competitions.getItems().get(j))) {
+                                newCompetitions.getItems().set(i, competitions.getItems().get(j));
+                            }
+                        }
+                    }
+
                     Competitions.markNewItems(Competitions.casteArray(competitions.getItems()), Competitions.casteArray(newCompetitions.getItems()));
                     if (Competitions.itemsToMark.size() > 0) {
                         showNotification(getResources().getQuantityString(R.plurals.new_competitions, Competitions.itemsToMark.size(), Competitions.itemsToMark.size()), Competitions.getNotificationMessage(), 3);
                     }
                     competitions = newCompetitions;
-                    finishedUpdating[3] = true;
                     Log.i(TAG, "Competitions updated");
                 } catch (Exception ex) {
                     Log.e(TAG, "Competitions update failed");
                     ex.printStackTrace();
                 }
+                finishedUpdating[3] = true;
                 isUpdatingCompetitions = false;
                 setLoading(false);
             }
@@ -406,17 +448,27 @@ public class WeightliftingApp extends Application {
 
                     Table newTable = new Table();
                     newTable.parseFromString(result, imageLoader);
+
+                    //Keep references to old items
+                    for (int i = 0; i < newTable.getItems().size(); i++) {
+                        for (int j = 0; j < table.getItems().size(); j++) {
+                            if (((TableEntry) newTable.getItems().get(i)).equals((TableEntry) table.getItems().get(j))) {
+                                newTable.getItems().set(i, table.getItems().get(j));
+                            }
+                        }
+                    }
+
                     Table.markNewItems(Table.casteArray(table.getItems()), Table.casteArray(newTable.getItems()));
                     if (Table.itemsToMark.size() > 0) {
                         showNotification(getResources().getQuantityString(R.plurals.new_table, Table.itemsToMark.size(), Table.itemsToMark.size()), Table.getNotificationMessage(), 2);
                     }
                     table = newTable;
-                    finishedUpdating[4] = true;
                     Log.i(TAG, "Table updated");
                 } catch (Exception ex) {
                     Log.e(TAG, "Table update failed");
                     ex.printStackTrace();
                 }
+                finishedUpdating[4] = true;
                 isUpdatingTable = false;
                 setLoading(false);
             }
@@ -461,17 +513,27 @@ public class WeightliftingApp extends Application {
 
                     Galleries newGalleries = new Galleries();
                     newGalleries.parseFromString(result, imageLoader);
+
+                    //Keep references to old items
+                    for (int i = 0; i < newGalleries.getItems().size(); i++) {
+                        for (int j = 0; j < galleries.getItems().size(); j++) {
+                            if (((GalleryItem) newGalleries.getItems().get(i)).equals((GalleryItem) galleries.getItems().get(j))) {
+                                newGalleries.getItems().set(i, galleries.getItems().get(j));
+                            }
+                        }
+                    }
+
                     Galleries.markNewItems(Galleries.casteArray(galleries.getItems()), Galleries.casteArray(newGalleries.getItems()));
                     if (Galleries.itemsToMark.size() > 0) {
                         showNotification(getResources().getQuantityString(R.plurals.new_gallery, Galleries.itemsToMark.size(), Galleries.itemsToMark.size()), Galleries.getNotificationMessage(), 2);
                     }
                     galleries = newGalleries;
-                    finishedUpdating[5] = true;
                     Log.i(TAG, "Gallery updated");
                 } catch (Exception ex) {
                     Log.e(TAG, "Gallery update failed");
                     ex.printStackTrace();
                 }
+                finishedUpdating[5] = true;
                 isUpdatingGalleries = false;
                 setLoading(false);
             }
