@@ -116,7 +116,6 @@ public class WeightliftingApp extends Application {
     public void updateData() {
         //Update everything and save it on storage
         Log.d("network", "updating everything");
-        Toast.makeText(getApplicationContext(), "Updating everything", Toast.LENGTH_SHORT).show();
         updateNews();
         updateEvents();
         updateTeam();
@@ -224,7 +223,7 @@ public class WeightliftingApp extends Application {
 
         if (events.needsUpdate() && !isUpdatingEvents && !isUpdatingAll && isOnline) {
             updateEvents();
-            Toast.makeText(getApplicationContext(), "Updating events", Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), "Updating events", Toast.LENGTH_LONG).show();
         }
         if (!isOnline) {
             Log.d(TAG, "No connection");
