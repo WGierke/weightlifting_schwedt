@@ -3,7 +3,7 @@
 
 This Android application should promote the attractiveness of the department 'Weightlifting' of the TSV Blau-Weiß 65 Schwedt.
 
-![Screenshot](https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/master/weightlifting_schwedt.jpg)
+![Screenshot](https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/master/production/weightlifting_schwedt.jpg)
 
 
 ## Credits

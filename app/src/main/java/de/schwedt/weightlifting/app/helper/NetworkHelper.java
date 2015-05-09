@@ -17,21 +17,22 @@ import java.net.URL;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 
 public class NetworkHelper {
-
+/*
     public static final String URL_NEWS = "http://pastebin.com/raw.php?i=8us7U1sW";
     public static final String URL_EVENTS = "http://pastebin.com/raw.php?i=Ahh3fmGV";
     public static final String URL_BULI_TEAM = "http://pastebin.com/raw.php?i=FTWHySQn";
     public static final String URL_BULI_COMPETITIONS = "http://pastebin.com/raw.php?i=RGjFCd41";
     public static final String URL_BULI_TABLE = "http://pastebin.com/raw.php?i=C5bYpcAt";
     public static final String URL_GALLERY = "http://pastebin.com/raw.php?i=kyKhHxr8";
-    /*
-        public static final String URL_NEWS = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/news.json";
-        public static final String URL_EVENTS = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/events.json";
-        public static final String URL_BULI_TEAM = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/team.json";
-        public static final String URL_BULI_COMPETITIONS = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/past_competitions.json";
-        public static final String URL_BULI_TABLE = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/table.json";
-        public static final String URL_GALLERY = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/galleries.json";
     */
+
+    public static final String URL_NEWS = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/news.json";
+    public static final String URL_EVENTS = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/events.json";
+    public static final String URL_BULI_TEAM = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/team.json";
+    public static final String URL_BULI_COMPETITIONS = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/past_competitions.json";
+    public static final String URL_BULI_TABLE = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/table.json";
+    public static final String URL_GALLERY = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/galleries.json";
+    
     public static boolean isOnline = true;
 
     private static Context context;

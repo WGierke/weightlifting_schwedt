@@ -40,4 +40,4 @@ build/
 *.swp
 *.iml
 
-updater.sh
+!production/*.apk
