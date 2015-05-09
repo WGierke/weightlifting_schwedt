@@ -93,6 +93,14 @@
     <string name="faq_bad_attempt_jerking_question">Wann ist ein Versuch im Stoßen ungültig?</string>
     <string name="faq_bad_attempt_jerking_answer">Bei folgenden Bewegungen ist der Stoß-Versuch als ungültig zu bewerten:\n - ein anderes Körperteil als die Füße berühren den Boden\n - die Ellenbogen berühren beim Umsetzen die Knie\n - beim Ausstoßen werden die Arme nicht in einer Bewegung gestreckt ("Nachdrücken")</string>
 
+    <string name="winner_team_competition_heading">Sieger eines Mannschafts-Wettkampfes</string>
+    <string name="winner_team_competition_question">Wer ist Sieger eines Mannschafts-Wettkampfes?</string>
+    <string name="winner_team_competition_answer">Sieger eines Mannschafts-Wettkampfes (z.B. eines Bundesliga-Kampfes) ist das Team, das die meisten Relativpunkte in die Bewertung einbringen kann.\nJedem Athleten wird relativ zu seinem Körpergewichtes ein Wert zugeordnet. Dieser Wert wird sowohl von der größten erreichten Last im Reißen wie auch im Stoßen abgezogen (daher: Relativabzug).\nEinem Athleten mit einem Körpergewicht von 80kg wird beispielsweise ein Abzug von 80 Punkten zugeordnet. Reißt dieser Athlet 130kg und stößt 150kg, so erhält er 130+150-2*80 = 280-160 = 120 Relativpunkte. Diese werden mit den Relativpunkten seiner Mannschaftskameraden addiert. Das Team mit den meisten Relativpunkten gewinnt den Mannschafts-Wettkampf.</string>
+
+    <string name="winner_single_competition_heading">Sieger eines Einzel-Wettkampfes</string>
+    <string name="winner_single_competition_question">Wer ist Sieger eines Einzel-Wettkampfes?</string>
+    <string name="winner_single_competition_answer">Sieger eines Einzel-Wettkampfes (z.B. einer Deutschen Meisterschaft) in seiner Gewichtsklasse ist der Sportler, der das höchste Zweikampf-Ergebnis erzielt.\nEinem Athleten mit einem Körpergewicht von 80kg wird dabei die Gewichtsklasse -85kg zugeordnet. Reißt dieser 130kg und stößt 150kg, so hat er ein Zweikampf-Ergebnis von 280kg erbracht. Erbringt kein anderer Athlet dieser Gewichtsklasse ein höheres Ergebnis, so ist der Athlet Sieger der Gewichtsklasse -85kg im Olympischen Zweikampf. Bei größeren Meisterschaften werden auch das Reißen und das Stoßen mit Medaillen geehrt.</string>
+
     <!-- Contact -->
     <string name="contact_club">TSV Blau-Weiß 65 Schwedt e.V.</string>
     <string name="contact_department_chief">Abteilungsleiter Gewichtheben</string>
@@ -108,6 +116,7 @@
     <string name="homepage_weightlifting_schwedt">Homepage der Abteilung Gewichtheben \n gewichtheben-schwedt.de</string>
     <string name="homepage_club">Homepage des TSV Blau-Weiß 65 Schwedt \n blauweiss65-schwedt.de</string>
     <string name="homepage_bvdg">Bundesverband Deutscher Gewichtheber \n bvdg-online.de</string>
-    <string name="updating_in_progress">Update-Prozess läuft. Bitte gedulden Sie sich.</string>
+    <string name="updating_in_progress">Update-Prozess wurde gestartet.</string>
+    <string name="updating_already_in_progress">Update-Prozess läuft. Bitte gedulden Sie sich.</string>
 
 </resources>

@@ -67,6 +67,7 @@ public class ImagePagerFragment extends Fragment {
                 .showImageForEmptyUri(R.drawable.ic_stub_xx)
                 .showImageOnFail(R.drawable.ic_stub_xx)
                 .resetViewBeforeLoading(true)
+                .cacheInMemory(true)
                 .cacheOnDisk(true)
                 .imageScaleType(ImageScaleType.EXACTLY)
                 .bitmapConfig(Bitmap.Config.RGB_565)
