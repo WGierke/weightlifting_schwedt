@@ -241,13 +241,13 @@ def create_table_file():
     table_dict = {}
     final_entries = []
 
-    for i in range(len(table_entries)/4):
+    for i in range(0, len(table_entries), 4):
         entry = {}
-        entry["place"] = str(i+1)
-        entry["club"] = table_entries[i*4]
-        entry["score"] = table_entries[i*4+1]
-        entry["max_score"] = table_entries[i*4+2]
-        entry["cardinal_points"] = table_entries[i*4+3]
+        entry["place"] = str(i/4+1)
+        entry["club"] = table_entries[i]
+        entry["score"] = table_entries[i+1]
+        entry["max_score"] = table_entries[i+2]
+        entry["cardinal_points"] = table_entries[i+3]
         final_entries.append(entry)
 
     table_dict["table"] = final_entries
