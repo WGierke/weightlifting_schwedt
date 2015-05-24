@@ -32,11 +32,11 @@ public class BuliFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(WeightliftingApp.TAG, "Showing Buli fragment");
 
-        fragment = inflater.inflate(R.layout.buli, container, false);
+        fragment = inflater.inflate(R.layout.pager_tab_strip, container, false);
         app = (WeightliftingApp) getActivity().getApplicationContext();
 
         mBuliCollectionPagerAdapter = new BuliCollectionPagerAdapter(getActivity().getSupportFragmentManager());
-        mViewPager = (ViewPager) fragment.findViewById(R.id.buli_pager);
+        mViewPager = (ViewPager) fragment.findViewById(R.id.pager);
         mViewPager.setAdapter(mBuliCollectionPagerAdapter);
 
         return fragment;

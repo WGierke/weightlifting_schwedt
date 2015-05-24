@@ -30,11 +30,11 @@ public class NewsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(WeightliftingApp.TAG, "Showing News fragment");
 
-        fragment = inflater.inflate(R.layout.news, container, false);
+        fragment = inflater.inflate(R.layout.pager_tab_strip, container, false);
         app = (WeightliftingApp) getActivity().getApplicationContext();
 
         mNewsCollectionPagerAdapter = new NewsCollectionPagerAdapter(getActivity().getSupportFragmentManager());
-        mViewPager = (ViewPager) fragment.findViewById(R.id.news_pager);
+        mViewPager = (ViewPager) fragment.findViewById(R.id.pager);
         mViewPager.setAdapter(mNewsCollectionPagerAdapter);
 
         return fragment;

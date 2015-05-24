@@ -32,7 +32,7 @@ public class NetworkHelper {
     public static final String URL_BULI_COMPETITIONS = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/past_competitions.json";
     public static final String URL_BULI_TABLE = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/table.json";
     public static final String URL_GALLERY = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/galleries.json";
-    
+
     public static boolean isOnline = true;
 
     private static Context context;

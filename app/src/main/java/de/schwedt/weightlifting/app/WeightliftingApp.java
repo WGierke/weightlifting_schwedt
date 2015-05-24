@@ -10,7 +10,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -41,7 +40,7 @@ public class WeightliftingApp extends Application {
     public static final String TAG = "Weightlifting";
     public static final String TEAM_NAME = "KG Schwedt-Stralsund";
     public static final int DISPLAY_DELAY = 500;
-    private static final int REFRESH_INTERVAL = 1000 * 60 * 60* 24; //once a day
+    private static final int REFRESH_INTERVAL = 1000 * 60 * 60 * 24; //once a day
     public static boolean[] finishedUpdating = {false, false, false, false, false, false};
     public static boolean isUpdatingAll = false;
     public boolean isInitialized = false;

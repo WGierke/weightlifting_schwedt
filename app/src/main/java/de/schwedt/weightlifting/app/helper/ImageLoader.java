@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -86,7 +87,9 @@ public class ImageLoader {
         //from web
         try {
             Bitmap bitmap = null;
-            URL imageUrl = new URL(url);
+            String path = url.substring(0, url.lastIndexOf("/") + 1);
+            String file = url.substring(url.lastIndexOf("/") + 1);
+            URL imageUrl = new URL(path + URLEncoder.encode(file, "utf-8"));
             HttpURLConnection conn = (HttpURLConnection) imageUrl.openConnection();
             conn.setConnectTimeout(30000);
             conn.setReadTimeout(30000);
