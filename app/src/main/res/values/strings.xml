@@ -6,9 +6,11 @@
     <string name="action_settings">Settings</string>
 
     <!-- Stuff -->
-    <string name="not_connected">Leider konnte keine Internetverbindung zu den Diensten hergestellt werden.</string>
-    <string name="no_connection">Keine Internetverbindung gefunden</string>
-    <string name="updated_successfully">Inhalte wurden erfolgreich synchronisiert</string>
+
+    <string name="updated_all_successfully">Inhalte wurden erfolgreich synchronisiert</string>
+    <string name="updated_all_unsuccessfully">Nicht alle Inhalte konnten synchronisiert werden. Besteht eine Internetverbindung?</string>
+    <string name="update_failed">%1$s-Update schlug fehl. Besteht eine Internetverbindung?</string>
+    <string name="updates_failed">Updates schlugen fehl. Bitte versuchen Sie es später erneut.</string>
     <plurals name="new_elements">
         <item quantity="zero">Kein neues oder geändertes Element gefunden</item>
         <item quantity="one">%d neues/geändertes Element gefunden</item>
@@ -116,7 +118,7 @@
     <string name="homepage_weightlifting_schwedt">Homepage der Abteilung Gewichtheben \n gewichtheben-schwedt.de</string>
     <string name="homepage_club">Homepage des TSV Blau-Weiß 65 Schwedt \n blauweiss65-schwedt.de</string>
     <string name="homepage_bvdg">Bundesverband Deutscher Gewichtheber \n bvdg-online.de</string>
-    <string name="updating_in_progress">Update-Prozess wurde gestartet.</string>
+    <string name="updating_in_progress">Update-Prozess wurde bereits gestartet.</string>
     <string name="updating_already_in_progress">Update-Prozess läuft. Bitte gedulden Sie sich.</string>
 
 </resources>

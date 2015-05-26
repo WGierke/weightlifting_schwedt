@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -37,12 +38,14 @@ import de.schwedt.weightlifting.app.news.NewsItem;
 
 public class WeightliftingApp extends Application {
 
-    public static final String TAG = "Weightlifting";
+    public static final String TAG = "WeightliftingLog";
     public static final String TEAM_NAME = "KG Schwedt-Stralsund";
     public static final int DISPLAY_DELAY = 500;
     private static final int REFRESH_INTERVAL = 1000 * 60 * 60 * 24; //once a day
     public static boolean[] finishedUpdating = {false, false, false, false, false, false};
+    public static boolean[] failedUpdates = {false, false, false, false, false, false};
     public static boolean isUpdatingAll = false;
+    public boolean isInForeground = true;
     public boolean isInitialized = false;
     public boolean isUpdatingNews = false;
     public boolean isUpdatingEvents = false;
@@ -50,8 +53,6 @@ public class WeightliftingApp extends Application {
     public boolean isUpdatingCompetitions = false;
     public boolean isUpdatingTable = false;
     public boolean isUpdatingGalleries = false;
-    public boolean isOnline = true;
-    public boolean isInForeground = true;
     public MemoryCache memoryCache;
     public ImageLoader imageLoader;
 
@@ -72,9 +73,6 @@ public class WeightliftingApp extends Application {
         mainActivity = (MainActivity) activity;
         memoryCache = new MemoryCache();
         imageLoader = new ImageLoader(activity);
-
-        NetworkHelper networkHelper = new NetworkHelper(this);
-        checkConnection();
 
         refreshData();
 
@@ -116,13 +114,13 @@ public class WeightliftingApp extends Application {
 
     public void updateData() {
         //Update everything and save it on storage
-        Log.d("network", "updating everything");
+        Log.d(TAG, "updating everything");
         updateNews();
         updateEvents();
         updateTeam();
         updateCompetitions();
         updateTable();
-        updateGallery();
+        updateGalleries();
     }
 
     private void refreshData() {
@@ -138,28 +136,25 @@ public class WeightliftingApp extends Application {
         refreshHandler.postDelayed(refreshRunnable, REFRESH_INTERVAL);
     }
 
-    public void checkConnection() {
-        Log.d(TAG, "checking connection");
-        isOnline = NetworkHelper.isOnline();
-    }
-
-
     public News getNews() {
         if (news == null) {
             news = new News();
             String newsFileContent = DataHelper.readIntern("news.json", getApplicationContext());
-            if (newsFileContent != "") {
+            if (!newsFileContent.equals("")) {
                 news.parseFromString(newsFileContent, imageLoader);
                 news.setLastUpdate(new File(getFilesDir() + "/news.json").lastModified());
+                Log.d(TAG, "News: read from memory:" + newsFileContent);
             }
         }
 
-        if (news.needsUpdate() && !isUpdatingNews && !isUpdatingAll && isOnline) {
+        if (news.needsUpdate() && !isUpdatingNews && !isUpdatingAll) {
             updateNews();
-        }
-
-        if (!isOnline) {
-            Log.d(TAG, "No connection");
+            if (failedUpdates[0]) {
+                if (isInForeground) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Neuigkeiten"), Toast.LENGTH_LONG).show();
+                }
+                failedUpdates[0] = false;
+            }
         }
         return news;
     }
@@ -167,6 +162,7 @@ public class WeightliftingApp extends Application {
     public void updateNews() {
         Log.i(TAG, "Updating news...");
         isUpdatingNews = true;
+        failedUpdates[0] = false;
         setLoading(true);
         Handler callBackHandler = new Handler() {
             @Override
@@ -174,10 +170,11 @@ public class WeightliftingApp extends Application {
                 try {
                     Bundle data = msg.getData();
                     String result = data.getString("result");
-                    if (result == null) {
-                        checkConnection();
+                    if (result == null || result.equals("")) {
+                        Log.d(TAG, "News page returned nothing");
                         isUpdatingNews = false;
                         setLoading(false);
+                        failedUpdates[0] = true;
                         return;
                     }
                     DataHelper.saveIntern(result, "news.json", getApplicationContext());
@@ -219,15 +216,18 @@ public class WeightliftingApp extends Application {
             if (eventsFileContent != "") {
                 events.parseFromString(eventsFileContent, imageLoader);
                 events.setLastUpdate(new File(getFilesDir() + "/events.json").lastModified());
+                Log.d(TAG, "Events: read from memory:" + eventsFileContent);
             }
         }
 
-        if (events.needsUpdate() && !isUpdatingEvents && !isUpdatingAll && isOnline) {
+        if (events.needsUpdate() && !isUpdatingEvents && !isUpdatingAll) {
             updateEvents();
-            //Toast.makeText(getApplicationContext(), "Updating events", Toast.LENGTH_LONG).show();
-        }
-        if (!isOnline) {
-            Log.d(TAG, "No connection");
+            if (failedUpdates[1]) {
+                if (isInForeground) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Veranstaltungs"), Toast.LENGTH_LONG).show();
+                }
+                failedUpdates[1] = false;
+            }
         }
         return events;
     }
@@ -235,6 +235,7 @@ public class WeightliftingApp extends Application {
     public void updateEvents() {
         Log.i(TAG, "Updating events...");
         isUpdatingEvents = true;
+        failedUpdates[1] = false;
         setLoading(true);
         Handler callBackHandler = new Handler() {
             @Override
@@ -242,10 +243,11 @@ public class WeightliftingApp extends Application {
                 try {
                     Bundle data = msg.getData();
                     String result = data.getString("result");
-                    if (result == null) {
-                        checkConnection();
+                    if (result == null || result.equals("")) {
+                        Log.d(TAG, "Events page returned nothing");
                         isUpdatingEvents = false;
                         setLoading(false);
+                        failedUpdates[1] = true;
                         return;
                     }
                     DataHelper.saveIntern(result, "events.json", getApplicationContext());
@@ -288,11 +290,18 @@ public class WeightliftingApp extends Application {
             if (teamFileContent != "") {
                 team.parseFromString(teamFileContent, imageLoader);
                 team.setLastUpdate(new File(getFilesDir() + "/team.json").lastModified());
+                Log.d(TAG, "Team: read from memory:" + teamFileContent);
             }
         }
 
-        if (team.needsUpdate() && !isUpdatingTeam && !isUpdatingAll && isOnline) {
+        if (team.needsUpdate() && !isUpdatingTeam && !isUpdatingAll) {
             updateTeam();
+            if (failedUpdates[2]) {
+                if (isInForeground) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Team"), Toast.LENGTH_LONG).show();
+                }
+                failedUpdates[2] = false;
+            }
         }
 
         return team;
@@ -301,6 +310,7 @@ public class WeightliftingApp extends Application {
     public void updateTeam() {
         Log.i(TAG, "Updating team...");
         isUpdatingTeam = true;
+        failedUpdates[2] = false;
         setLoading(true);
         Handler callBackHandler = new Handler() {
             @Override
@@ -308,10 +318,11 @@ public class WeightliftingApp extends Application {
                 try {
                     Bundle data = msg.getData();
                     String result = data.getString("result");
-                    if (result == null) {
-                        checkConnection();
+                    if (result == null || result.equals("")) {
+                        Log.d(TAG, "Team page returned nothing");
                         isUpdatingTeam = false;
                         setLoading(false);
+                        failedUpdates[2] = true;
                         return;
                     }
                     DataHelper.saveIntern(result, "team.json", getApplicationContext());
@@ -353,11 +364,18 @@ public class WeightliftingApp extends Application {
             if (competitionsFileContent != "") {
                 competitions.parseFromString(competitionsFileContent, imageLoader);
                 competitions.setLastUpdate(new File(getFilesDir() + "/competitions.json").lastModified());
+                Log.d(TAG, "Competitions: read from memory:" + competitionsFileContent);
             }
         }
 
-        if (competitions.needsUpdate() && !isUpdatingCompetitions && !isUpdatingAll && isOnline) {
+        if (competitions.needsUpdate() && !isUpdatingCompetitions && !isUpdatingAll) {
             updateCompetitions();
+            if (failedUpdates[3]) {
+                if (isInForeground) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Wettkampf"), Toast.LENGTH_LONG).show();
+                }
+                failedUpdates[3] = false;
+            }
         }
 
         return competitions;
@@ -366,6 +384,7 @@ public class WeightliftingApp extends Application {
     public void updateCompetitions() {
         Log.i(TAG, "Updating team...");
         isUpdatingCompetitions = true;
+        failedUpdates[3] = false;
         setLoading(true);
         Handler callBackHandler = new Handler() {
             @Override
@@ -373,10 +392,11 @@ public class WeightliftingApp extends Application {
                 try {
                     Bundle data = msg.getData();
                     String result = data.getString("result");
-                    if (result == null) {
-                        checkConnection();
+                    if (result == null || result.equals("")) {
+                        Log.d(TAG, "Competitions page returned nothing");
                         isUpdatingCompetitions = false;
                         setLoading(false);
+                        failedUpdates[3] = true;
                         return;
                     }
                     DataHelper.saveIntern(result, "competitions.json", getApplicationContext());
@@ -418,11 +438,18 @@ public class WeightliftingApp extends Application {
             if (tableFileContent != "") {
                 table.parseFromString(tableFileContent, imageLoader);
                 table.setLastUpdate(new File(getFilesDir() + "/table.json").lastModified());
+                Log.d(TAG, "Table: read from memory:" + tableFileContent);
             }
         }
 
-        if (table.needsUpdate() && !isUpdatingTable && !isUpdatingAll && isOnline) {
+        if (table.needsUpdate() && !isUpdatingTable && !isUpdatingAll) {
             updateTable();
+            if (failedUpdates[4]) {
+                if (isInForeground) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Tabellen"), Toast.LENGTH_LONG).show();
+                }
+                failedUpdates[4] = false;
+            }
         }
 
         return table;
@@ -431,6 +458,7 @@ public class WeightliftingApp extends Application {
     public void updateTable() {
         Log.i(TAG, "Updating table...");
         isUpdatingTable = true;
+        failedUpdates[4] = false;
         setLoading(true);
         Handler callBackHandler = new Handler() {
             @Override
@@ -438,10 +466,11 @@ public class WeightliftingApp extends Application {
                 try {
                     Bundle data = msg.getData();
                     String result = data.getString("result");
-                    if (result == null) {
-                        checkConnection();
+                    if (result == null || result.equals("")) {
+                        Log.d(TAG, "Table page returned nothing");
                         isUpdatingTable = false;
                         setLoading(false);
+                        failedUpdates[4] = true;
                         return;
                     }
                     DataHelper.saveIntern(result, "table.json", getApplicationContext());
@@ -483,19 +512,27 @@ public class WeightliftingApp extends Application {
             if (galleriesFileContent != "") {
                 galleries.parseFromString(galleriesFileContent, imageLoader);
                 galleries.setLastUpdate(new File(getFilesDir() + "/galleries.json").lastModified());
+                Log.d(TAG, "Galleries: read from memory:" + galleriesFileContent);
             }
         }
 
-        if (galleries.needsUpdate() && !isUpdatingGalleries && !isUpdatingAll && isOnline) {
-            updateGallery();
+        if (galleries.needsUpdate() && !isUpdatingGalleries && !isUpdatingAll) {
+            updateGalleries();
+            if (failedUpdates[5]) {
+                if (isInForeground) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Galerien"), Toast.LENGTH_LONG).show();
+                }
+                failedUpdates[5] = false;
+            }
         }
 
         return galleries;
     }
 
-    public void updateGallery() {
-        Log.i(TAG, "Updating Gallery...");
+    public void updateGalleries() {
+        Log.i(TAG, "Updating Galleries...");
         isUpdatingGalleries = true;
+        failedUpdates[5] = false;
         setLoading(true);
         Handler callBackHandler = new Handler() {
             @Override
@@ -503,10 +540,11 @@ public class WeightliftingApp extends Application {
                 try {
                     Bundle data = msg.getData();
                     String result = data.getString("result");
-                    if (result == null) {
-                        checkConnection();
+                    if (result == null || result.equals("")) {
+                        Log.d(TAG, "Galleries page returned nothing");
                         isUpdatingGalleries = false;
                         setLoading(false);
+                        failedUpdates[5] = true;
                         return;
                     }
                     DataHelper.saveIntern(result, "galleries.json", getApplicationContext());
@@ -528,9 +566,9 @@ public class WeightliftingApp extends Application {
                         showNotification(getResources().getQuantityString(R.plurals.new_gallery, Galleries.itemsToMark.size(), Galleries.itemsToMark.size()), Galleries.getNotificationMessage(), 2);
                     }
                     galleries = newGalleries;
-                    Log.i(TAG, "Gallery updated");
+                    Log.i(TAG, "Galleries updated");
                 } catch (Exception ex) {
-                    Log.e(TAG, "Gallery update failed");
+                    Log.e(TAG, "Galleries update failed");
                     ex.printStackTrace();
                 }
                 finishedUpdating[5] = true;
@@ -538,7 +576,7 @@ public class WeightliftingApp extends Application {
                 setLoading(false);
             }
         };
-        NetworkHelper.getWebRequest(NetworkHelper.URL_GALLERY, callBackHandler);
+        NetworkHelper.getWebRequest(NetworkHelper.URL_GALLERIES, callBackHandler);
     }
 
 

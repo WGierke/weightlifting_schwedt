@@ -7,10 +7,10 @@ public abstract class UpdateableWrapper {
 
 
     // Refresh if older than 30 minutes
-    public static final long TIMER_INVALIDATE = 1000 * 10;
+    public static final long TIMER_INVALIDATE = 1000 * 60 * 30;
 
-    // If not yet ready, try again in 30 second
-    public static final long TIMER_RETRY = 30 * 1000;
+    // If not yet ready, try again in 30 seconds
+    public static final long TIMER_RETRY = 1000 * 30;
     public static ArrayList<UpdateableItem> itemsToMark = new ArrayList<UpdateableItem>();
 
     protected long lastUpdate = 0;

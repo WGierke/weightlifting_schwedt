@@ -46,8 +46,6 @@ public class MainActivity extends FragmentActivity {
     private CharSequence mDrawerTitle;
     // used to store app title
     private CharSequence mTitle;
-    // store current fragment
-    private int mCurFragment;
     private NavDrawerListAdapter adapter;
 
     @Override
@@ -127,6 +125,15 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void showAsyncUpdateResults() {
+        // if one update failed show the number of new elements until now and return
+        for (int i = 0; i < app.failedUpdates.length; i++) {
+            if (app.failedUpdates[i]) {
+                showCountedNewElements(false);
+                app.isUpdatingAll = false;
+                return;
+            }
+        }
+        // if one update isn't ready yet check again in 200 ms
         for (int i = 0; i < app.finishedUpdating.length; i++) {
             if (!app.finishedUpdating[i]) {
                 Runnable refreshRunnable = new Runnable() {
@@ -140,9 +147,17 @@ public class MainActivity extends FragmentActivity {
                 return;
             }
         }
-        int newElements = News.itemsToMark.size() + Events.itemsToMark.size() + Team.itemsToMark.size() + Competitions.itemsToMark.size() + Table.itemsToMark.size() + Galleries.itemsToMark.size();
-        Toast.makeText(getApplicationContext(), getResources().getQuantityString(R.plurals.new_elements, newElements, newElements), Toast.LENGTH_SHORT).show();
+        showCountedNewElements(true);
         app.isUpdatingAll = false;
+    }
+
+    private void showCountedNewElements(boolean updatedSuccessfully) {
+        int newElements = News.itemsToMark.size() + Events.itemsToMark.size() + Team.itemsToMark.size() + Competitions.itemsToMark.size() + Table.itemsToMark.size() + Galleries.itemsToMark.size();
+        if (updatedSuccessfully)
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.updated_all_successfully), Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.updated_all_unsuccessfully), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), getResources().getQuantityString(R.plurals.new_elements, newElements, newElements), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -154,20 +169,19 @@ public class MainActivity extends FragmentActivity {
         // Handle action bar actions click
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                app.checkConnection();
-                if (app.isOnline) {
-                    if (app.isUpdatingAll) {
-                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.updating_in_progress), Toast.LENGTH_LONG).show();
-                    } else {
-                        app.isUpdatingAll = true;
-                        for (int i = 0; i < app.finishedUpdating.length; i++) {
-                            app.finishedUpdating[i] = false;
-                        }
+                if (app.isUpdatingAll) {
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.updating_in_progress), Toast.LENGTH_LONG).show();
+                } else {
+                    app.isUpdatingAll = true;
+                    for (int i = 0; i < app.finishedUpdating.length; i++) {
+                        app.finishedUpdating[i] = false;
+                    }
+                    try {
                         app.updateData();
                         showAsyncUpdateResults();
+                    } catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), R.string.updated_all_unsuccessfully, Toast.LENGTH_LONG).show();
                     }
-                } else {
-                    Toast.makeText(getApplicationContext(), R.string.not_connected, Toast.LENGTH_SHORT).show();
                 }
                 return true;
             default:
@@ -182,7 +196,7 @@ public class MainActivity extends FragmentActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         // if nav drawer is opened, hide the action items
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        menu.findItem(R.id.action_refresh).setVisible(!drawerOpen);
+        //menu.findItem(R.id.action_refresh).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -222,7 +236,6 @@ public class MainActivity extends FragmentActivity {
                 break;
         }
 
-        mCurFragment = position;
         replaceFragment(fragment, mTitle.toString());
 
         // update selected item and title, then close the drawer
