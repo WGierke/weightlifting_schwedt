@@ -127,6 +127,8 @@ def create_news_file():
             n += 1
             page = urllib2.urlopen(basic_url + str(n)).read()
     except Exception, e:
+        print e
+        print articles
         if e.code == 404 and articles[len(articles)-1]["heading"] == "Qualifikation DM C-Jugend":
             pass
         else:
