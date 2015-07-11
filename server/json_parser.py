@@ -82,7 +82,7 @@ def add_gallery_images(gallery_entry):
 def create_news_file():
     """Save posts in news.json"""
     global error_occured
-    basic_url = 'http://gewichtheben.blauweiss65-schwedt.de/?page_id=171&paged='
+    basic_url = 'http://gewichtheben.blauweiss65-schwedt.de/?page_id=6858&paged='
     re_href = re.compile(ur'(?<=href=")[^"]*(?=")')
     re_date = re.compile(ur'(?<=class="date">).*(?=<\/span>)')
 
@@ -127,8 +127,6 @@ def create_news_file():
             n += 1
             page = urllib2.urlopen(basic_url + str(n)).read()
     except Exception, e:
-        print e
-        print articles
         if e.code == 404 and articles[len(articles)-1]["heading"] == "Qualifikation DM C-Jugend":
             pass
         else:
