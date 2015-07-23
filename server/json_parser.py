@@ -147,7 +147,8 @@ def create_events_file():
     global error_occured
     print "Parsing events ..."
     try:
-        months = urllib2.urlopen("http://gewichtheben.blauweiss65-schwedt.de/?page_id=31").read().replace('<div class="fixed"></div>', '', 3).split('<div class="fixed"></div>')[0].split('<strong>')[1:]
+        months_data = urllib2.urlopen("http://gewichtheben.blauweiss65-schwedt.de/?page_id=31").read().replace('<div class="content">', '').split('<div class="content">')[0].split('<strong>')[1:]
+        months_data[-1] = months_data[-1].split('<div class="fixed">')[0]
     except Exception, e:
         print 'Error while downloading events ', e
         error_occured = True
@@ -156,18 +157,18 @@ def create_events_file():
     events_dict = {}
     final_events = []
 
-    for i in range(len(months)):
-        month = months[i].split('<')[0]
-        month_events = months[i].split('<p>')[1:]
+    for i in range(len(months_data)):
+        month = months_data[i].split('<')[0]
+        month_events = months_data[i].split('<p>')[1:]
         month_events = filter(None, month_events)
+        month_events = filter(lambda x: x != "&nbsp;</p>\n", month_events) 
         for j in range(len(month_events)):
             event_entry = {}
-            event = month_events[j].replace('&#8221;', '"').replace('&#8220;', '"').replace('&#8211;', '-')
+            event = month_events[j].replace('&#8221;', '"').replace('&#8220;', '"').replace('&#8211;', '-').replace('\xa0', '').replace('\xc2', '')
+            
             event_entry["date"] = event.split(".")[0] + ". " + month
             event_entry["location"] = event.split('(')[1].split(')')[0] if event.find(")") != -1 else ''
-            title = re.sub('\d+\.', '', event, 1).replace('&nbsp;', '').replace('\n', '')
-            title = re.sub('\s*(?=.)', '', title, 1).split("</p>")[0]
-            event_entry["title"] = title.replace('(' + event_entry["location"] + ')', '')
+            event_entry["title"] = re.sub('\d+\.\s+', '', event.split("</p>")[0])
 
             final_events.append(event_entry)
 
