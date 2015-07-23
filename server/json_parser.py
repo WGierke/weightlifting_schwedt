@@ -82,7 +82,7 @@ def add_gallery_images(gallery_entry):
 def create_news_file():
     """Save posts in news.json"""
     global error_occured
-    basic_url = 'http://gewichtheben.blauweiss65-schwedt.de/?page_id=171&paged='
+    basic_url = 'http://gewichtheben.blauweiss65-schwedt.de/?page_id=6858&paged='
     re_href = re.compile(ur'(?<=href=")[^"]*(?=")')
     re_date = re.compile(ur'(?<=class="date">).*(?=<\/span>)')
 
