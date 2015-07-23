@@ -165,11 +165,9 @@ def create_events_file():
         for j in range(len(month_events)):
             event_entry = {}
             event = month_events[j].replace('&#8221;', '"').replace('&#8220;', '"').replace('&#8211;', '-').replace('\xa0', '').replace('\xc2', '')
-            
             event_entry["date"] = event.split(".")[0] + ". " + month
             event_entry["location"] = event.split('(')[1].split(')')[0] if event.find(")") != -1 else ''
-            event_entry["title"] = re.sub('\d+\.\s+', '', event.split("</p>")[0])
-
+            event_entry["title"] = re.sub('\d+\.\s+', '', event.split("</p>")[0], 1)
             final_events.append(event_entry)
 
     events_dict["events"] = final_events
