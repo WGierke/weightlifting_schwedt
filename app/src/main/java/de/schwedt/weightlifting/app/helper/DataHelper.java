@@ -194,7 +194,6 @@ public class DataHelper {
             FileOutputStream fos = context.getApplicationContext().openFileOutput(fileName, Context.MODE_PRIVATE);
             fos.write(content.getBytes());
             fos.close();
-            Log.d("storage", "saved in " + fileName + " content: " + content);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

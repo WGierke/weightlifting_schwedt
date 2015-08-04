@@ -12,11 +12,12 @@ import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.UpdateableItem;
 import de.schwedt.weightlifting.app.UpdateableWrapper;
 import de.schwedt.weightlifting.app.WeightliftingApp;
-import de.schwedt.weightlifting.app.helper.ImageLoader;
 import de.schwedt.weightlifting.app.helper.JsonParser;
 import de.schwedt.weightlifting.app.helper.UiHelper;
 
 public class Team extends UpdateableWrapper {
+
+    public static final String fileName = "team.json";
 
     public static ArrayList<TeamMember> itemsToMark = new ArrayList<TeamMember>();
 
@@ -28,24 +29,6 @@ public class Team extends UpdateableWrapper {
         return convertedItems;
     }
 
-    public static void markNewItems(ArrayList<TeamMember> oldItems, ArrayList<TeamMember> newItems) {
-        int navigationPosition = MainActivity.FRAGMENT_BULI;
-        int subPosition = 0;
-        for (int i = 0; i < newItems.size(); i++) {
-            boolean isNew = true;
-            for (int j = 0; j < oldItems.size(); j++) {
-                if (newItems.get(i).getName().equals(oldItems.get(j).getName()) && newItems.get(i).getSnatching().equals(oldItems.get(j).getSnatching()) && newItems.get(i).getJerking().equals(oldItems.get(j).getJerking()) && newItems.get(i).getMaxScore().equals(oldItems.get(j).getMaxScore()) && newItems.get(i).getYear().equals(oldItems.get(j).getYear()) && newItems.get(i).getImageURL().equals(oldItems.get(j).getImageURL())) {
-                    isNew = false;
-                    break;
-                }
-            }
-            if (isNew) {
-                itemsToMark.add(newItems.get(i));
-            }
-        }
-        UiHelper.refreshCounterNav(navigationPosition, subPosition, itemsToMark.size());
-    }
-
     public static String getNotificationMessage() {
         String content = "";
         for (TeamMember item : itemsToMark) {
@@ -54,7 +37,53 @@ public class Team extends UpdateableWrapper {
         return content;
     }
 
-    public void parseFromString(String jsonString, ImageLoader imageLoader) {
+    public static void markNewItems(ArrayList<UpdateableItem> oldItems, ArrayList<UpdateableItem> newItems) {
+        ArrayList<TeamMember> oldTeamItems = casteArray(oldItems);
+        ArrayList<TeamMember> newTeamItems = casteArray(newItems);
+        int navigationPosition = MainActivity.FRAGMENT_BULI;
+        int subPosition = 0;
+        for (int i = 0; i < newTeamItems.size(); i++) {
+            boolean isNew = true;
+            for (int j = 0; j < oldTeamItems.size(); j++) {
+                if (newTeamItems.get(i).getName().equals(oldTeamItems.get(j).getName()) && newTeamItems.get(i).getSnatching().equals(oldTeamItems.get(j).getSnatching()) && newTeamItems.get(i).getJerking().equals(oldTeamItems.get(j).getJerking()) && newTeamItems.get(i).getMaxScore().equals(oldTeamItems.get(j).getMaxScore()) && newTeamItems.get(i).getYear().equals(oldTeamItems.get(j).getYear()) && newTeamItems.get(i).getImageURL().equals(oldTeamItems.get(j).getImageURL())) {
+                    isNew = false;
+                    break;
+                }
+            }
+            if (isNew) {
+                itemsToMark.add(newTeamItems.get(i));
+            }
+        }
+        UiHelper.refreshCounterNav(navigationPosition, subPosition, itemsToMark.size());
+    }
+
+    public void update() {
+        super.update("https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/team.json", fileName, "Team");
+    }
+
+    protected void updateWrapper(String result) {
+        Team newItems = new Team();
+        newItems.parseFromString(result);
+        if (items.size() > 0) {
+            keepOldReferences(items, newItems.getItems());
+            markNewItems(items, newItems.getItems());
+        }
+        items = newItems.getItems();
+    }
+
+    private void keepOldReferences(ArrayList<UpdateableItem> oldItems, ArrayList<UpdateableItem> newItems) {
+        ArrayList<TeamMember> oldTeamMember = casteArray(oldItems);
+        ArrayList<TeamMember> newTeamMember = casteArray(newItems);
+        for (int i = 0; i < newTeamMember.size(); i++) {
+            for (int j = 0; j < oldTeamMember.size(); j++) {
+                if ((newTeamMember.get(i)).equals(oldTeamMember.get(j))) {
+                    newTeamMember.set(i, oldTeamMember.get(j));
+                }
+            }
+        }
+    }
+
+    public void parseFromString(String jsonString) {
         Log.d(WeightliftingApp.TAG, "Parsing buliTeam JSON...");
         try {
             ArrayList<UpdateableItem> newItems = new ArrayList<UpdateableItem>();
@@ -76,7 +105,6 @@ public class Team extends UpdateableWrapper {
                     member.setMaxScore(jsonMember.getString("max_score"));
                     member.setImageURL(jsonMember.getString("image"));
 
-                    imageLoader.preloadImage(member.getImageURL());
                     newItems.add(member);
                 } catch (Exception ex) {
                     Log.e(WeightliftingApp.TAG, "Error while parsing buli team member #" + i);

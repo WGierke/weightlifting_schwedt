@@ -13,13 +13,6 @@ import de.schwedt.weightlifting.app.WeightliftingApp;
 
 public class NetworkHelper {
 
-    public static final String URL_NEWS = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/news.json";
-    public static final String URL_EVENTS = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/events.json";
-    public static final String URL_BULI_TEAM = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/team.json";
-    public static final String URL_BULI_COMPETITIONS = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/past_competitions.json";
-    public static final String URL_BULI_TABLE = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/table.json";
-    public static final String URL_GALLERIES = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/galleries.json";
-
     public static void getWebRequest(final String url, Handler handler) {
         final Handler mHandler = handler;
         (new Thread() {
@@ -43,7 +36,7 @@ public class NetworkHelper {
         }).start();
     }
 
-    private static String getRequest(String myurl) throws Exception {
+    public static String getRequest(String myurl) throws Exception {
         InputStream is = null;
         String result = null;
 

@@ -12,11 +12,12 @@ import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.UpdateableItem;
 import de.schwedt.weightlifting.app.UpdateableWrapper;
 import de.schwedt.weightlifting.app.WeightliftingApp;
-import de.schwedt.weightlifting.app.helper.ImageLoader;
 import de.schwedt.weightlifting.app.helper.JsonParser;
 import de.schwedt.weightlifting.app.helper.UiHelper;
 
 public class Competitions extends UpdateableWrapper {
+
+    public static final String fileName = "competitions.json";
 
     public static ArrayList<PastCompetition> itemsToMark = new ArrayList<PastCompetition>();
 
@@ -28,24 +29,6 @@ public class Competitions extends UpdateableWrapper {
         return convertedItems;
     }
 
-    public static void markNewItems(ArrayList<PastCompetition> oldItems, ArrayList<PastCompetition> newItems) {
-        int navigationPosition = MainActivity.FRAGMENT_BULI;
-        int subPosition = 1;
-        for (int i = 0; i < newItems.size(); i++) {
-            boolean isNew = true;
-            for (int j = 0; j < oldItems.size(); j++) {
-                if (newItems.get(i).getLocation().equals(oldItems.get(j).getLocation()) && newItems.get(i).getDate().equals(oldItems.get(j).getDate()) && newItems.get(i).getGuest().equals(oldItems.get(j).getGuest()) && newItems.get(i).getHome().equals(oldItems.get(j).getHome()) && newItems.get(i).getProtocolUrl().equals(oldItems.get(j).getProtocolUrl()) && newItems.get(i).getScore().equals(oldItems.get(j).getScore())) {
-                    isNew = false;
-                    break;
-                }
-            }
-            if (isNew) {
-                itemsToMark.add(newItems.get(i));
-            }
-        }
-        UiHelper.refreshCounterNav(navigationPosition, subPosition, itemsToMark.size());
-    }
-
     public static String getNotificationMessage() {
         String content = "";
         for (PastCompetition item : itemsToMark) {
@@ -54,7 +37,41 @@ public class Competitions extends UpdateableWrapper {
         return content;
     }
 
-    public void parseFromString(String jsonString, ImageLoader imageLoader) {
+    public static void markNewItems(ArrayList<UpdateableItem> oldItems, ArrayList<UpdateableItem> newItems) {
+        ArrayList<PastCompetition> oldCompetitionItems = casteArray(oldItems);
+        ArrayList<PastCompetition> newCompetitionItems = casteArray(newItems);
+        int navigationPosition = MainActivity.FRAGMENT_BULI;
+        int subPosition = 1;
+        for (int i = 0; i < newCompetitionItems.size(); i++) {
+            boolean isNew = true;
+            for (int j = 0; j < oldCompetitionItems.size(); j++) {
+                if (newCompetitionItems.get(i).getLocation().equals(oldCompetitionItems.get(j).getLocation()) && newCompetitionItems.get(i).getDate().equals(oldCompetitionItems.get(j).getDate()) && newCompetitionItems.get(i).getGuest().equals(oldCompetitionItems.get(j).getGuest()) && newCompetitionItems.get(i).getHome().equals(oldCompetitionItems.get(j).getHome()) && newCompetitionItems.get(i).getProtocolUrl().equals(oldCompetitionItems.get(j).getProtocolUrl()) && newCompetitionItems.get(i).getScore().equals(oldCompetitionItems.get(j).getScore())) {
+                    isNew = false;
+                    break;
+                }
+            }
+            if (isNew) {
+                itemsToMark.add(newCompetitionItems.get(i));
+            }
+        }
+        UiHelper.refreshCounterNav(navigationPosition, subPosition, itemsToMark.size());
+    }
+
+    public void update() {
+        super.update("https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/past_competitions.json", fileName, "Competitions");
+    }
+
+    protected void updateWrapper(String result) {
+        Competitions newItems = new Competitions();
+        newItems.parseFromString(result);
+        if (items.size() > 0) {
+            keepOldReferences(items, newItems.getItems());
+            markNewItems(items, newItems.getItems());
+        }
+        items = newItems.getItems();
+    }
+
+    public void parseFromString(String jsonString) {
         Log.d(WeightliftingApp.TAG, "Parsing competitions JSON...");
         try {
             ArrayList<UpdateableItem> newItems = new ArrayList<UpdateableItem>();
@@ -90,4 +107,17 @@ public class Competitions extends UpdateableWrapper {
             ex.printStackTrace();
         }
     }
+
+    private void keepOldReferences(ArrayList<UpdateableItem> oldItems, ArrayList<UpdateableItem> newItems) {
+        ArrayList<PastCompetition> oldCompetitions = casteArray(oldItems);
+        ArrayList<PastCompetition> newCompetitions = casteArray(newItems);
+        for (int i = 0; i < newCompetitions.size(); i++) {
+            for (int j = 0; j < oldCompetitions.size(); j++) {
+                if ((newCompetitions.get(i)).equals(oldCompetitions.get(j))) {
+                    newCompetitions.set(i, oldCompetitions.get(j));
+                }
+            }
+        }
+    }
+
 }

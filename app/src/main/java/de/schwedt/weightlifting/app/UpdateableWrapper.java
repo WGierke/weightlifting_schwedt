@@ -1,10 +1,24 @@
 package de.schwedt.weightlifting.app;
 
+import android.content.Context;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Date;
 
+import de.schwedt.weightlifting.app.helper.DataHelper;
+import de.schwedt.weightlifting.app.helper.NetworkHelper;
+
+/**
+    This class holds the updateable items and information about the last update, update status and update timer.
+ */
+
 public abstract class UpdateableWrapper {
 
+    protected Context context;
 
     // Refresh if older than 30 minutes
     public static final long TIMER_INVALIDATE = 1000 * 60 * 30;
@@ -13,8 +27,12 @@ public abstract class UpdateableWrapper {
     public static final long TIMER_RETRY = 1000 * 30;
     public static ArrayList<UpdateableItem> itemsToMark = new ArrayList<UpdateableItem>();
 
+    protected boolean isUpdating = false;
+    protected boolean updateFailed = false;
+    protected boolean finishedUpdating = false;
+
     protected long lastUpdate = 0;
-    // holds all news items
+
     protected ArrayList<UpdateableItem> items;
 
     public UpdateableWrapper() {
@@ -50,5 +68,53 @@ public abstract class UpdateableWrapper {
         } else {
             return false;
         }
+    }
+
+    /**
+     Parse the given JSON string to the concrete wrapper
+     @param jsonResult JSON string to parse
+     */
+    protected abstract void updateWrapper(String jsonResult);
+
+    /**
+    Download the JSON result from the given URL to the specified file
+    @param url URL to download JSON file from
+    @param fileName File name to save received data in
+    @param tag Name of the concrete wrapper that should be displayed in the logs
+     */
+    protected void update(String url, String fileName, String tag) {
+        final String FILENAME = fileName;
+        final String TAG = tag;
+        Log.i(WeightliftingApp.TAG, "Updating " + TAG + " ...");
+        isUpdating = true;
+        updateFailed = false;
+
+        Handler callBackHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                try {
+                    Bundle data = msg.getData();
+                    String result = data.getString("result");
+                    if (result == null || result.equals("")) {
+                        Log.d(WeightliftingApp.TAG, TAG + " returned nothing");
+                        isUpdating = false;
+                        updateFailed = true;
+                        return;
+                    }
+                    Log.d("lu", FILENAME);
+                    DataHelper.saveIntern(result, FILENAME, context);
+
+                    updateWrapper(result);
+
+                    Log.i(WeightliftingApp.TAG, TAG + " updated");
+                } catch (Exception ex) {
+                    Log.e(WeightliftingApp.TAG, TAG + " update failed");
+                    ex.printStackTrace();
+                }
+                finishedUpdating = true;
+                isUpdating = false;
+            }
+        };
+        NetworkHelper.getWebRequest(url, callBackHandler);
     }
 }

@@ -19,11 +19,9 @@ import java.io.File;
 import java.util.Date;
 
 import de.schwedt.weightlifting.app.buli.Competitions;
-import de.schwedt.weightlifting.app.buli.PastCompetition;
 import de.schwedt.weightlifting.app.buli.Table;
 import de.schwedt.weightlifting.app.buli.TableEntry;
 import de.schwedt.weightlifting.app.buli.Team;
-import de.schwedt.weightlifting.app.buli.TeamMember;
 import de.schwedt.weightlifting.app.faq.FaqItem;
 import de.schwedt.weightlifting.app.gallery.Galleries;
 import de.schwedt.weightlifting.app.gallery.GalleryItem;
@@ -31,10 +29,8 @@ import de.schwedt.weightlifting.app.helper.DataHelper;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
 import de.schwedt.weightlifting.app.helper.MemoryCache;
 import de.schwedt.weightlifting.app.helper.NetworkHelper;
-import de.schwedt.weightlifting.app.news.EventItem;
 import de.schwedt.weightlifting.app.news.Events;
 import de.schwedt.weightlifting.app.news.News;
-import de.schwedt.weightlifting.app.news.NewsItem;
 
 public class WeightliftingApp extends Application {
 
@@ -47,12 +43,6 @@ public class WeightliftingApp extends Application {
     public static boolean isUpdatingAll = false;
     public boolean isInForeground = true;
     public boolean isInitialized = false;
-    public boolean isUpdatingNews = false;
-    public boolean isUpdatingEvents = false;
-    public boolean isUpdatingTeam = false;
-    public boolean isUpdatingCompetitions = false;
-    public boolean isUpdatingTable = false;
-    public boolean isUpdatingGalleries = false;
     public MemoryCache memoryCache;
     public ImageLoader imageLoader;
 
@@ -83,7 +73,6 @@ public class WeightliftingApp extends Application {
 
         loadSettings();
 
-        isInitialized = true;
         long dateDiff = (new Date().getTime() - dateStart);
 
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
@@ -94,6 +83,8 @@ public class WeightliftingApp extends Application {
                 .defaultDisplayImageOptions(defaultOptions)
                 .build();
         com.nostra13.universalimageloader.core.ImageLoader.getInstance().init(config);
+
+        isInitialized = true;
 
         Log.i(TAG, "Initialized (" + String.valueOf(dateDiff) + "ms)");
     }
@@ -115,12 +106,12 @@ public class WeightliftingApp extends Application {
     public void updateData() {
         //Update everything and save it on storage
         Log.d(TAG, "updating everything");
-        updateNews();
-        updateEvents();
-        updateTeam();
-        updateCompetitions();
-        updateTable();
-        updateGalleries();
+        news.update();
+        events.update();
+        team.update();
+        competitions.update();
+        table.update();
+        galleries.update();
     }
 
     private void refreshData() {
@@ -139,370 +130,156 @@ public class WeightliftingApp extends Application {
     public News getNews() {
         if (news == null) {
             news = new News();
-            String newsFileContent = DataHelper.readIntern("news.json", getApplicationContext());
-            if (!newsFileContent.equals("")) {
-                news.parseFromString(newsFileContent, imageLoader);
-                news.setLastUpdate(new File(getFilesDir() + "/news.json").lastModified());
-                Log.d(TAG, "News: read from memory:" + newsFileContent);
+            File file = new File(News.fileName);
+            if (file.exists()) {
+                String newsFileContent = DataHelper.readIntern(News.fileName, getApplicationContext());
+                if (!newsFileContent.equals("")) {
+                    news.parseFromString(newsFileContent);
+                    news.setLastUpdate(new File(getFilesDir() + "/" + News.fileName).lastModified());
+                    Log.d(TAG, "News: read from memory:" + newsFileContent);
+                }
             }
         }
 
-        if (news.needsUpdate() && !isUpdatingNews && !isUpdatingAll) {
-            updateNews();
+        if (news.needsUpdate() && !news.isUpdating && !isUpdatingAll) {
+            setLoading(true);
+            news.update();
+            setLoading(false);
             if (failedUpdates[0]) {
                 if (isInForeground) {
                     Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Neuigkeiten"), Toast.LENGTH_LONG).show();
                 }
                 failedUpdates[0] = false;
             }
+            if (News.itemsToMark.size() > 0) {
+                showNotification(getResources().getQuantityString(R.plurals.new_news, News.itemsToMark.size(), News.itemsToMark.size()), News.getNotificationMessage(), 0);
+            }
         }
         return news;
-    }
-
-    public void updateNews() {
-        Log.i(TAG, "Updating news...");
-        isUpdatingNews = true;
-        failedUpdates[0] = false;
-        setLoading(true);
-        Handler callBackHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                try {
-                    Bundle data = msg.getData();
-                    String result = data.getString("result");
-                    if (result == null || result.equals("")) {
-                        Log.d(TAG, "News page returned nothing");
-                        isUpdatingNews = false;
-                        setLoading(false);
-                        failedUpdates[0] = true;
-                        return;
-                    }
-                    DataHelper.saveIntern(result, "news.json", getApplicationContext());
-
-                    News newNews = new News();
-                    newNews.parseFromString(result, imageLoader);
-
-                    //Keep references to old items
-                    for (int i = 0; i < newNews.getItems().size(); i++) {
-                        for (int j = 0; j < news.getItems().size(); j++) {
-                            if (((NewsItem) newNews.getItems().get(i)).equals((NewsItem) news.getItems().get(j))) {
-                                newNews.getItems().set(i, news.getItems().get(j));
-                            }
-                        }
-                    }
-
-                    News.markNewItems(News.casteArray(news.getItems()), News.casteArray(newNews.getItems()));
-                    if (News.itemsToMark.size() > 0) {
-                        showNotification(getResources().getQuantityString(R.plurals.new_news, News.itemsToMark.size(), News.itemsToMark.size()), News.getNotificationMessage(), 0);
-                    }
-                    news = newNews;
-                    Log.i(TAG, "News updated");
-                } catch (Exception ex) {
-                    Log.e(TAG, "News update failed");
-                    ex.printStackTrace();
-                }
-                finishedUpdating[0] = true;
-                isUpdatingNews = false;
-                setLoading(false);
-            }
-        };
-        NetworkHelper.getWebRequest(NetworkHelper.URL_NEWS, callBackHandler);
     }
 
     public Events getEvents() {
         if (events == null) {
             events = new Events();
-            String eventsFileContent = DataHelper.readIntern("events.json", getApplicationContext());
-            if (eventsFileContent != "") {
-                events.parseFromString(eventsFileContent, imageLoader);
-                events.setLastUpdate(new File(getFilesDir() + "/events.json").lastModified());
-                Log.d(TAG, "Events: read from memory:" + eventsFileContent);
+            File file = new File(Events.fileName);
+            if (file.exists()) {
+                String eventsFileContent = DataHelper.readIntern(Events.fileName, getApplicationContext());
+                if (eventsFileContent != "") {
+                    events.parseFromString(eventsFileContent);
+                    events.setLastUpdate(new File(getFilesDir() + "/" + Events.fileName).lastModified());
+                    Log.d(TAG, "Events: read from memory:" + eventsFileContent);
+                }
             }
         }
 
-        if (events.needsUpdate() && !isUpdatingEvents && !isUpdatingAll) {
-            updateEvents();
+        if (events.needsUpdate() && !events.isUpdating && !isUpdatingAll) {
+            setLoading(true);
+            events.update();
+            setLoading(false);
             if (failedUpdates[1]) {
                 if (isInForeground) {
                     Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Veranstaltungs"), Toast.LENGTH_LONG).show();
                 }
                 failedUpdates[1] = false;
             }
+            if (Events.itemsToMark.size() > 0) {
+                showNotification(getResources().getQuantityString(R.plurals.new_events, Events.itemsToMark.size(), Events.itemsToMark.size()), Events.getNotificationMessage(), 1);
+            }
         }
         return events;
-    }
-
-    public void updateEvents() {
-        Log.i(TAG, "Updating events...");
-        isUpdatingEvents = true;
-        failedUpdates[1] = false;
-        setLoading(true);
-        Handler callBackHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                try {
-                    Bundle data = msg.getData();
-                    String result = data.getString("result");
-                    if (result == null || result.equals("")) {
-                        Log.d(TAG, "Events page returned nothing");
-                        isUpdatingEvents = false;
-                        setLoading(false);
-                        failedUpdates[1] = true;
-                        return;
-                    }
-                    DataHelper.saveIntern(result, "events.json", getApplicationContext());
-
-                    Events newEvents = new Events();
-                    newEvents.parseFromString(result, imageLoader);
-
-                    //Keep references to old items
-                    for (int i = 0; i < newEvents.getItems().size(); i++) {
-                        for (int j = 0; j < events.getItems().size(); j++) {
-                            if (((EventItem) newEvents.getItems().get(i)).equals((EventItem) events.getItems().get(j))) {
-                                newEvents.getItems().set(i, events.getItems().get(j));
-                            }
-                        }
-                    }
-
-                    Events.markNewItems(Events.casteArray(events.getItems()), Events.casteArray(newEvents.getItems()));
-                    if (Events.itemsToMark.size() > 0) {
-                        showNotification(getResources().getQuantityString(R.plurals.new_events, Events.itemsToMark.size(), Events.itemsToMark.size()), Events.getNotificationMessage(), 1);
-                    }
-
-                    events = newEvents;
-                    Log.i(TAG, "Events updated");
-                } catch (Exception ex) {
-                    Log.e(TAG, "Events update failed");
-                    ex.printStackTrace();
-                }
-                finishedUpdating[1] = true;
-                isUpdatingEvents = false;
-                setLoading(false);
-            }
-        };
-        NetworkHelper.getWebRequest(NetworkHelper.URL_EVENTS, callBackHandler);
     }
 
     public Team getTeam() {
         if (team == null) {
             team = new Team();
-            String teamFileContent = DataHelper.readIntern("team.json", getApplicationContext());
-            if (teamFileContent != "") {
-                team.parseFromString(teamFileContent, imageLoader);
-                team.setLastUpdate(new File(getFilesDir() + "/team.json").lastModified());
-                Log.d(TAG, "Team: read from memory:" + teamFileContent);
+            File file = new File(Team.fileName);
+            if (file.exists()) {
+                String teamFileContent = DataHelper.readIntern(Team.fileName, getApplicationContext());
+                if (teamFileContent != "") {
+                    team.parseFromString(teamFileContent);
+                    team.setLastUpdate(new File(getFilesDir() + "/" + Team.fileName).lastModified());
+                    Log.d(TAG, "Team: read from memory:" + teamFileContent);
+                }
             }
         }
 
-        if (team.needsUpdate() && !isUpdatingTeam && !isUpdatingAll) {
-            updateTeam();
+        if (team.needsUpdate() && !team.isUpdating && !isUpdatingAll) {
+            setLoading(true);
+            team.update();
+            setLoading(false);
             if (failedUpdates[2]) {
                 if (isInForeground) {
                     Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Team"), Toast.LENGTH_LONG).show();
                 }
                 failedUpdates[2] = false;
             }
-        }
-
-        return team;
-    }
-
-    public void updateTeam() {
-        Log.i(TAG, "Updating team...");
-        isUpdatingTeam = true;
-        failedUpdates[2] = false;
-        setLoading(true);
-        Handler callBackHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                try {
-                    Bundle data = msg.getData();
-                    String result = data.getString("result");
-                    if (result == null || result.equals("")) {
-                        Log.d(TAG, "Team page returned nothing");
-                        isUpdatingTeam = false;
-                        setLoading(false);
-                        failedUpdates[2] = true;
-                        return;
-                    }
-                    DataHelper.saveIntern(result, "team.json", getApplicationContext());
-
-                    Team newTeam = new Team();
-                    newTeam.parseFromString(result, imageLoader);
-
-                    //Keep references to old items
-                    for (int i = 0; i < newTeam.getItems().size(); i++) {
-                        for (int j = 0; j < team.getItems().size(); j++) {
-                            if (((TeamMember) newTeam.getItems().get(i)).equals((TeamMember) team.getItems().get(j))) {
-                                newTeam.getItems().set(i, team.getItems().get(j));
-                            }
-                        }
-                    }
-
-                    Team.markNewItems(Team.casteArray(team.getItems()), Team.casteArray(newTeam.getItems()));
-                    if (Team.itemsToMark.size() > 0) {
-                        showNotification(getResources().getQuantityString(R.plurals.new_member, Team.itemsToMark.size(), Team.itemsToMark.size()), Team.getNotificationMessage(), 2);
-                    }
-                    team = newTeam;
-                    Log.i(TAG, "Team updated");
-                } catch (Exception ex) {
-                    Log.e(TAG, "Team update failed");
-                    ex.printStackTrace();
-                }
-                finishedUpdating[2] = true;
-                isUpdatingTeam = false;
-                setLoading(false);
+            if (Team.itemsToMark.size() > 0) {
+                showNotification(getResources().getQuantityString(R.plurals.new_member, Team.itemsToMark.size(), Team.itemsToMark.size()), Team.getNotificationMessage(), 2);
             }
-        };
-        NetworkHelper.getWebRequest(NetworkHelper.URL_BULI_TEAM, callBackHandler);
+        }
+        return team;
     }
 
     public Competitions getCompetitions() {
         if (competitions == null) {
             competitions = new Competitions();
-            String competitionsFileContent = DataHelper.readIntern("competitions.json", getApplicationContext());
-            if (competitionsFileContent != "") {
-                competitions.parseFromString(competitionsFileContent, imageLoader);
-                competitions.setLastUpdate(new File(getFilesDir() + "/competitions.json").lastModified());
-                Log.d(TAG, "Competitions: read from memory:" + competitionsFileContent);
+            File file = new File(Competitions.fileName);
+            if (file.exists()) {
+                String competitionsFileContent = DataHelper.readIntern(Competitions.fileName, getApplicationContext());
+                if (competitionsFileContent != "") {
+                    competitions.parseFromString(competitionsFileContent);
+                    competitions.setLastUpdate(new File(getFilesDir() + "/" + Competitions.fileName).lastModified());
+                    Log.d(TAG, "Competitions: read from memory:" + competitionsFileContent);
+                }
             }
         }
 
-        if (competitions.needsUpdate() && !isUpdatingCompetitions && !isUpdatingAll) {
-            updateCompetitions();
+        if (competitions.needsUpdate() && !competitions.isUpdating && !isUpdatingAll) {
+            setLoading(true);
+            competitions.update();
+            setLoading(false);
             if (failedUpdates[3]) {
                 if (isInForeground) {
                     Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Wettkampf"), Toast.LENGTH_LONG).show();
                 }
                 failedUpdates[3] = false;
             }
-        }
-
-        return competitions;
-    }
-
-    public void updateCompetitions() {
-        Log.i(TAG, "Updating team...");
-        isUpdatingCompetitions = true;
-        failedUpdates[3] = false;
-        setLoading(true);
-        Handler callBackHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                try {
-                    Bundle data = msg.getData();
-                    String result = data.getString("result");
-                    if (result == null || result.equals("")) {
-                        Log.d(TAG, "Competitions page returned nothing");
-                        isUpdatingCompetitions = false;
-                        setLoading(false);
-                        failedUpdates[3] = true;
-                        return;
-                    }
-                    DataHelper.saveIntern(result, "competitions.json", getApplicationContext());
-
-                    Competitions newCompetitions = new Competitions();
-                    newCompetitions.parseFromString(result, imageLoader);
-
-                    //Keep references to old items
-                    for (int i = 0; i < newCompetitions.getItems().size(); i++) {
-                        for (int j = 0; j < competitions.getItems().size(); j++) {
-                            if (((PastCompetition) newCompetitions.getItems().get(i)).equals((PastCompetition) competitions.getItems().get(j))) {
-                                newCompetitions.getItems().set(i, competitions.getItems().get(j));
-                            }
-                        }
-                    }
-
-                    Competitions.markNewItems(Competitions.casteArray(competitions.getItems()), Competitions.casteArray(newCompetitions.getItems()));
-                    if (Competitions.itemsToMark.size() > 0) {
-                        showNotification(getResources().getQuantityString(R.plurals.new_competitions, Competitions.itemsToMark.size(), Competitions.itemsToMark.size()), Competitions.getNotificationMessage(), 3);
-                    }
-                    competitions = newCompetitions;
-                    Log.i(TAG, "Competitions updated");
-                } catch (Exception ex) {
-                    Log.e(TAG, "Competitions update failed");
-                    ex.printStackTrace();
-                }
-                finishedUpdating[3] = true;
-                isUpdatingCompetitions = false;
-                setLoading(false);
+            if (Competitions.itemsToMark.size() > 0) {
+                showNotification(getResources().getQuantityString(R.plurals.new_competitions, Competitions.itemsToMark.size(), Competitions.itemsToMark.size()), Competitions.getNotificationMessage(), 3);
             }
-        };
-        NetworkHelper.getWebRequest(NetworkHelper.URL_BULI_COMPETITIONS, callBackHandler);
+        }
+        return competitions;
     }
 
     public Table getTable() {
         if (table == null) {
             table = new Table();
-            String tableFileContent = DataHelper.readIntern("table.json", getApplicationContext());
-            if (tableFileContent != "") {
-                table.parseFromString(tableFileContent, imageLoader);
-                table.setLastUpdate(new File(getFilesDir() + "/table.json").lastModified());
-                Log.d(TAG, "Table: read from memory:" + tableFileContent);
+            File file = new File(Table.fileName);
+            if (file.exists()) {
+                String tableFileContent = DataHelper.readIntern(Table.fileName, getApplicationContext());
+                if (tableFileContent != "") {
+                    table.parseFromString(tableFileContent);
+                    table.setLastUpdate(new File(getFilesDir() + "/" + Table.fileName).lastModified());
+                    Log.d(TAG, "Table: read from memory:" + tableFileContent);
+                }
             }
         }
 
-        if (table.needsUpdate() && !isUpdatingTable && !isUpdatingAll) {
-            updateTable();
+        if (table.needsUpdate() && !table.isUpdating && !isUpdatingAll) {
+            setLoading(true);
+            table.update();
+            setLoading(false);
             if (failedUpdates[4]) {
                 if (isInForeground) {
                     Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Tabellen"), Toast.LENGTH_LONG).show();
                 }
                 failedUpdates[4] = false;
             }
-        }
-
-        return table;
-    }
-
-    public void updateTable() {
-        Log.i(TAG, "Updating table...");
-        isUpdatingTable = true;
-        failedUpdates[4] = false;
-        setLoading(true);
-        Handler callBackHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                try {
-                    Bundle data = msg.getData();
-                    String result = data.getString("result");
-                    if (result == null || result.equals("")) {
-                        Log.d(TAG, "Table page returned nothing");
-                        isUpdatingTable = false;
-                        setLoading(false);
-                        failedUpdates[4] = true;
-                        return;
-                    }
-                    DataHelper.saveIntern(result, "table.json", getApplicationContext());
-
-                    Table newTable = new Table();
-                    newTable.parseFromString(result, imageLoader);
-
-                    //Keep references to old items
-                    for (int i = 0; i < newTable.getItems().size(); i++) {
-                        for (int j = 0; j < table.getItems().size(); j++) {
-                            if (((TableEntry) newTable.getItems().get(i)).equals((TableEntry) table.getItems().get(j))) {
-                                newTable.getItems().set(i, table.getItems().get(j));
-                            }
-                        }
-                    }
-
-                    Table.markNewItems(Table.casteArray(table.getItems()), Table.casteArray(newTable.getItems()));
-                    if (Table.itemsToMark.size() > 0) {
-                        showNotification(getResources().getQuantityString(R.plurals.new_table, Table.itemsToMark.size(), Table.itemsToMark.size()), Table.getNotificationMessage(), 2);
-                    }
-                    table = newTable;
-                    Log.i(TAG, "Table updated");
-                } catch (Exception ex) {
-                    Log.e(TAG, "Table update failed");
-                    ex.printStackTrace();
-                }
-                finishedUpdating[4] = true;
-                isUpdatingTable = false;
-                setLoading(false);
+            if (Table.itemsToMark.size() > 0) {
+                showNotification(getResources().getQuantityString(R.plurals.new_table, Table.itemsToMark.size(), Table.itemsToMark.size()), Table.getNotificationMessage(), 2);
             }
-        };
-        NetworkHelper.getWebRequest(NetworkHelper.URL_BULI_TABLE, callBackHandler);
+        }
+        return table;
     }
 
     public Galleries getGalleries() {
@@ -510,75 +287,26 @@ public class WeightliftingApp extends Application {
             galleries = new Galleries();
             String galleriesFileContent = DataHelper.readIntern("galleries.json", getApplicationContext());
             if (galleriesFileContent != "") {
-                galleries.parseFromString(galleriesFileContent, imageLoader);
+                galleries.parseFromString(galleriesFileContent);
                 galleries.setLastUpdate(new File(getFilesDir() + "/galleries.json").lastModified());
                 Log.d(TAG, "Galleries: read from memory:" + galleriesFileContent);
             }
         }
 
-        if (galleries.needsUpdate() && !isUpdatingGalleries && !isUpdatingAll) {
-            updateGalleries();
+        if (galleries.needsUpdate() && !galleries.isUpdating && !isUpdatingAll) {
+            galleries.update();
             if (failedUpdates[5]) {
                 if (isInForeground) {
                     Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Galerien"), Toast.LENGTH_LONG).show();
                 }
                 failedUpdates[5] = false;
             }
+            if (Galleries.itemsToMark.size() > 0) {
+                showNotification(getResources().getQuantityString(R.plurals.new_gallery, Galleries.itemsToMark.size(), Galleries.itemsToMark.size()), Galleries.getNotificationMessage(), 2);
+            }
         }
-
         return galleries;
     }
-
-    public void updateGalleries() {
-        Log.i(TAG, "Updating Galleries...");
-        isUpdatingGalleries = true;
-        failedUpdates[5] = false;
-        setLoading(true);
-        Handler callBackHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                try {
-                    Bundle data = msg.getData();
-                    String result = data.getString("result");
-                    if (result == null || result.equals("")) {
-                        Log.d(TAG, "Galleries page returned nothing");
-                        isUpdatingGalleries = false;
-                        setLoading(false);
-                        failedUpdates[5] = true;
-                        return;
-                    }
-                    DataHelper.saveIntern(result, "galleries.json", getApplicationContext());
-
-                    Galleries newGalleries = new Galleries();
-                    newGalleries.parseFromString(result, imageLoader);
-
-                    //Keep references to old items
-                    for (int i = 0; i < newGalleries.getItems().size(); i++) {
-                        for (int j = 0; j < galleries.getItems().size(); j++) {
-                            if (((GalleryItem) newGalleries.getItems().get(i)).equals((GalleryItem) galleries.getItems().get(j))) {
-                                newGalleries.getItems().set(i, galleries.getItems().get(j));
-                            }
-                        }
-                    }
-
-                    Galleries.markNewItems(Galleries.casteArray(galleries.getItems()), Galleries.casteArray(newGalleries.getItems()));
-                    if (Galleries.itemsToMark.size() > 0) {
-                        showNotification(getResources().getQuantityString(R.plurals.new_gallery, Galleries.itemsToMark.size(), Galleries.itemsToMark.size()), Galleries.getNotificationMessage(), 2);
-                    }
-                    galleries = newGalleries;
-                    Log.i(TAG, "Galleries updated");
-                } catch (Exception ex) {
-                    Log.e(TAG, "Galleries update failed");
-                    ex.printStackTrace();
-                }
-                finishedUpdating[5] = true;
-                isUpdatingGalleries = false;
-                setLoading(false);
-            }
-        };
-        NetworkHelper.getWebRequest(NetworkHelper.URL_GALLERIES, callBackHandler);
-    }
-
 
     public void setLoading(boolean value) {
         try {

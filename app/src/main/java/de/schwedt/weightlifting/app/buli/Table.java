@@ -12,11 +12,12 @@ import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.UpdateableItem;
 import de.schwedt.weightlifting.app.UpdateableWrapper;
 import de.schwedt.weightlifting.app.WeightliftingApp;
-import de.schwedt.weightlifting.app.helper.ImageLoader;
 import de.schwedt.weightlifting.app.helper.JsonParser;
 import de.schwedt.weightlifting.app.helper.UiHelper;
 
 public class Table extends UpdateableWrapper {
+
+    public static final String fileName = "table.json";
 
     public static ArrayList<TableEntry> itemsToMark = new ArrayList<TableEntry>();
 
@@ -28,25 +29,6 @@ public class Table extends UpdateableWrapper {
         return convertedItems;
     }
 
-    public static void markNewItems(ArrayList<TableEntry> oldItems, ArrayList<TableEntry> newItems) {
-        int navigationPosition = MainActivity.FRAGMENT_BULI;
-        int subPosition = 2;
-        for (int i = 0; i < newItems.size(); i++) {
-            boolean isNew = true;
-            for (int j = 0; j < oldItems.size(); j++) {
-                if (newItems.get(i).getClub().equals(oldItems.get(j).getClub()) && newItems.get(i).getScore().equals(oldItems.get(j).getScore()) && newItems.get(i).getCardinalPoints().equals(oldItems.get(j).getCardinalPoints()) && newItems.get(i).getMaxScore().equals(oldItems.get(j).getMaxScore()) && newItems.get(i).getPlace().equals(oldItems.get(j).getPlace())) {
-                    isNew = false;
-                    break;
-                }
-            }
-            if (isNew) {
-                itemsToMark.add(newItems.get(i));
-            }
-        }
-        UiHelper.refreshCounterNav(navigationPosition, subPosition, itemsToMark.size());
-    }
-
-
     public static String getNotificationMessage() {
         String content = "";
         for (TableEntry item : itemsToMark) {
@@ -55,7 +37,41 @@ public class Table extends UpdateableWrapper {
         return content;
     }
 
-    public void parseFromString(String jsonString, ImageLoader imageLoader) {
+    public static void markNewItems(ArrayList<UpdateableItem> oldItems, ArrayList<UpdateableItem> newItems) {
+        ArrayList<TableEntry> oldTableItems = casteArray(oldItems);
+        ArrayList<TableEntry> newTableItems = casteArray(newItems);
+        int navigationPosition = MainActivity.FRAGMENT_BULI;
+        int subPosition = 2;
+        for (int i = 0; i < newTableItems.size(); i++) {
+            boolean isNew = true;
+            for (int j = 0; j < oldTableItems.size(); j++) {
+                if (newTableItems.get(i).getClub().equals(oldTableItems.get(j).getClub()) && newTableItems.get(i).getScore().equals(oldTableItems.get(j).getScore()) && newTableItems.get(i).getCardinalPoints().equals(oldTableItems.get(j).getCardinalPoints()) && newTableItems.get(i).getMaxScore().equals(oldTableItems.get(j).getMaxScore()) && newTableItems.get(i).getPlace().equals(oldTableItems.get(j).getPlace())) {
+                    isNew = false;
+                    break;
+                }
+            }
+            if (isNew) {
+                itemsToMark.add(newTableItems.get(i));
+            }
+        }
+        UiHelper.refreshCounterNav(navigationPosition, subPosition, itemsToMark.size());
+    }
+
+    public void update() {
+        super.update("https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/table.json", fileName, "Table");
+    }
+
+    protected void updateWrapper(String result) {
+        Table newItems = new Table();
+        newItems.parseFromString(result);
+        if (items.size() > 0) {
+            keepOldReferences(items, newItems.getItems());
+            markNewItems(items, newItems.getItems());
+        }
+        items = newItems.getItems();
+    }
+
+    public void parseFromString(String jsonString) {
         Log.d(WeightliftingApp.TAG, "Parsing buli table JSON...");
         try {
             ArrayList<UpdateableItem> newBuliTableItems = new ArrayList<UpdateableItem>();
@@ -63,7 +79,6 @@ public class Table extends UpdateableWrapper {
             JsonParser jsonParser = new JsonParser();
             jsonParser.getJsonFromString(jsonString);
 
-            // parse past competitions
             JSONArray table = jsonParser.getJsonArray("table");
             Log.d(WeightliftingApp.TAG, table.length() + " table entries found");
             for (int i = 0; i < table.length(); i++) {
@@ -88,6 +103,18 @@ public class Table extends UpdateableWrapper {
         } catch (Exception ex) {
             Log.e(WeightliftingApp.TAG, "Error while parsing buli table");
             ex.printStackTrace();
+        }
+    }
+
+    private void keepOldReferences(ArrayList<UpdateableItem> oldItems, ArrayList<UpdateableItem> newItems) {
+        ArrayList<TableEntry> oldTableItems = casteArray(oldItems);
+        ArrayList<TableEntry> newTableItems = casteArray(newItems);
+        for (int i = 0; i < newTableItems.size(); i++) {
+            for (int j = 0; j < oldTableItems.size(); j++) {
+                if ((newTableItems.get(i)).equals(oldTableItems.get(j))) {
+                    newTableItems.set(i, oldTableItems.get(j));
+                }
+            }
         }
     }
 }
