@@ -1,6 +1,5 @@
 package de.schwedt.weightlifting.app;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,12 +12,10 @@ import de.schwedt.weightlifting.app.helper.DataHelper;
 import de.schwedt.weightlifting.app.helper.NetworkHelper;
 
 /**
-    This class holds the updateable items and information about the last update, update status and update timer.
+ * This class holds the updateable items and information about the last update, update status and update timer.
  */
 
 public abstract class UpdateableWrapper {
-
-    protected Context context;
 
     // Refresh if older than 30 minutes
     public static final long TIMER_INVALIDATE = 1000 * 60 * 30;
@@ -29,7 +26,7 @@ public abstract class UpdateableWrapper {
 
     protected boolean isUpdating = false;
     protected boolean updateFailed = false;
-    protected boolean finishedUpdating = false;
+    protected boolean finishedUpdate = false;
 
     protected long lastUpdate = 0;
 
@@ -71,16 +68,18 @@ public abstract class UpdateableWrapper {
     }
 
     /**
-     Parse the given JSON string to the concrete wrapper
-     @param jsonResult JSON string to parse
+     * Parse the given JSON string to the concrete wrapper
+     *
+     * @param jsonResult JSON string to parse
      */
     protected abstract void updateWrapper(String jsonResult);
 
     /**
-    Download the JSON result from the given URL to the specified file
-    @param url URL to download JSON file from
-    @param fileName File name to save received data in
-    @param tag Name of the concrete wrapper that should be displayed in the logs
+     * Download the JSON result from the given URL to the specified file
+     *
+     * @param url      URL to download JSON file from
+     * @param fileName File name to save received data in
+     * @param tag      Name of the concrete wrapper that should be displayed in the logs
      */
     protected void update(String url, String fileName, String tag) {
         final String FILENAME = fileName;
@@ -101,8 +100,7 @@ public abstract class UpdateableWrapper {
                         updateFailed = true;
                         return;
                     }
-                    Log.d("lu", FILENAME);
-                    DataHelper.saveIntern(result, FILENAME, context);
+                    DataHelper.saveIntern(result, FILENAME, WeightliftingApp.mContext);
 
                     updateWrapper(result);
 
@@ -111,7 +109,7 @@ public abstract class UpdateableWrapper {
                     Log.e(WeightliftingApp.TAG, TAG + " update failed");
                     ex.printStackTrace();
                 }
-                finishedUpdating = true;
+                finishedUpdate = true;
                 isUpdating = false;
             }
         };

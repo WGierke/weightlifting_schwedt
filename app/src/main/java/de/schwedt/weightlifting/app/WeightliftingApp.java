@@ -4,10 +4,9 @@ import android.app.Activity;
 import android.app.Application;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
@@ -20,15 +19,12 @@ import java.util.Date;
 
 import de.schwedt.weightlifting.app.buli.Competitions;
 import de.schwedt.weightlifting.app.buli.Table;
-import de.schwedt.weightlifting.app.buli.TableEntry;
 import de.schwedt.weightlifting.app.buli.Team;
 import de.schwedt.weightlifting.app.faq.FaqItem;
 import de.schwedt.weightlifting.app.gallery.Galleries;
-import de.schwedt.weightlifting.app.gallery.GalleryItem;
 import de.schwedt.weightlifting.app.helper.DataHelper;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
 import de.schwedt.weightlifting.app.helper.MemoryCache;
-import de.schwedt.weightlifting.app.helper.NetworkHelper;
 import de.schwedt.weightlifting.app.news.Events;
 import de.schwedt.weightlifting.app.news.News;
 
@@ -38,27 +34,25 @@ public class WeightliftingApp extends Application {
     public static final String TEAM_NAME = "KG Schwedt-Stralsund";
     public static final int DISPLAY_DELAY = 500;
     private static final int REFRESH_INTERVAL = 1000 * 60 * 60 * 24; //once a day
-    public static boolean[] finishedUpdating = {false, false, false, false, false, false};
-    public static boolean[] failedUpdates = {false, false, false, false, false, false};
+    public static Context mContext;
     public static boolean isUpdatingAll = false;
     public boolean isInForeground = true;
     public boolean isInitialized = false;
     public MemoryCache memoryCache;
     public ImageLoader imageLoader;
 
-    private News news;
-    private Events events;
-    private Team team;
-    private Competitions competitions;
-    private Table table;
-    private Galleries galleries;
-    private MainActivity mainActivity;
+    public News news;
+    public Events events;
+    public Team team;
+    public Competitions competitions;
+    public Table table;
+    public Galleries galleries;
+    public MainActivity mainActivity;
 
 
     public void initialize(Activity activity) {
         Log.i(TAG, "Initializing...");
         long dateStart = new Date().getTime();
-
 
         mainActivity = (MainActivity) activity;
         memoryCache = new MemoryCache();
@@ -83,6 +77,8 @@ public class WeightliftingApp extends Application {
                 .defaultDisplayImageOptions(defaultOptions)
                 .build();
         com.nostra13.universalimageloader.core.ImageLoader.getInstance().init(config);
+
+        mContext = getApplicationContext();
 
         isInitialized = true;
 
@@ -130,7 +126,7 @@ public class WeightliftingApp extends Application {
     public News getNews() {
         if (news == null) {
             news = new News();
-            File file = new File(News.fileName);
+            File file = getApplicationContext().getFileStreamPath(News.fileName);
             if (file.exists()) {
                 String newsFileContent = DataHelper.readIntern(News.fileName, getApplicationContext());
                 if (!newsFileContent.equals("")) {
@@ -145,11 +141,11 @@ public class WeightliftingApp extends Application {
             setLoading(true);
             news.update();
             setLoading(false);
-            if (failedUpdates[0]) {
+            if (news.updateFailed) {
                 if (isInForeground) {
                     Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Neuigkeiten"), Toast.LENGTH_LONG).show();
                 }
-                failedUpdates[0] = false;
+                news.updateFailed = false;
             }
             if (News.itemsToMark.size() > 0) {
                 showNotification(getResources().getQuantityString(R.plurals.new_news, News.itemsToMark.size(), News.itemsToMark.size()), News.getNotificationMessage(), 0);
@@ -161,7 +157,7 @@ public class WeightliftingApp extends Application {
     public Events getEvents() {
         if (events == null) {
             events = new Events();
-            File file = new File(Events.fileName);
+            File file = getApplicationContext().getFileStreamPath(Events.fileName);
             if (file.exists()) {
                 String eventsFileContent = DataHelper.readIntern(Events.fileName, getApplicationContext());
                 if (eventsFileContent != "") {
@@ -176,11 +172,11 @@ public class WeightliftingApp extends Application {
             setLoading(true);
             events.update();
             setLoading(false);
-            if (failedUpdates[1]) {
+            if (events.updateFailed) {
                 if (isInForeground) {
                     Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Veranstaltungs"), Toast.LENGTH_LONG).show();
                 }
-                failedUpdates[1] = false;
+                events.updateFailed = false;
             }
             if (Events.itemsToMark.size() > 0) {
                 showNotification(getResources().getQuantityString(R.plurals.new_events, Events.itemsToMark.size(), Events.itemsToMark.size()), Events.getNotificationMessage(), 1);
@@ -192,7 +188,7 @@ public class WeightliftingApp extends Application {
     public Team getTeam() {
         if (team == null) {
             team = new Team();
-            File file = new File(Team.fileName);
+            File file = getApplicationContext().getFileStreamPath(Team.fileName);
             if (file.exists()) {
                 String teamFileContent = DataHelper.readIntern(Team.fileName, getApplicationContext());
                 if (teamFileContent != "") {
@@ -207,11 +203,11 @@ public class WeightliftingApp extends Application {
             setLoading(true);
             team.update();
             setLoading(false);
-            if (failedUpdates[2]) {
+            if (team.updateFailed) {
                 if (isInForeground) {
                     Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Team"), Toast.LENGTH_LONG).show();
                 }
-                failedUpdates[2] = false;
+                team.updateFailed = false;
             }
             if (Team.itemsToMark.size() > 0) {
                 showNotification(getResources().getQuantityString(R.plurals.new_member, Team.itemsToMark.size(), Team.itemsToMark.size()), Team.getNotificationMessage(), 2);
@@ -223,7 +219,7 @@ public class WeightliftingApp extends Application {
     public Competitions getCompetitions() {
         if (competitions == null) {
             competitions = new Competitions();
-            File file = new File(Competitions.fileName);
+            File file = getApplicationContext().getFileStreamPath(Competitions.fileName);
             if (file.exists()) {
                 String competitionsFileContent = DataHelper.readIntern(Competitions.fileName, getApplicationContext());
                 if (competitionsFileContent != "") {
@@ -238,11 +234,11 @@ public class WeightliftingApp extends Application {
             setLoading(true);
             competitions.update();
             setLoading(false);
-            if (failedUpdates[3]) {
+            if (competitions.updateFailed) {
                 if (isInForeground) {
                     Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Wettkampf"), Toast.LENGTH_LONG).show();
                 }
-                failedUpdates[3] = false;
+                competitions.updateFailed = false;
             }
             if (Competitions.itemsToMark.size() > 0) {
                 showNotification(getResources().getQuantityString(R.plurals.new_competitions, Competitions.itemsToMark.size(), Competitions.itemsToMark.size()), Competitions.getNotificationMessage(), 3);
@@ -254,7 +250,7 @@ public class WeightliftingApp extends Application {
     public Table getTable() {
         if (table == null) {
             table = new Table();
-            File file = new File(Table.fileName);
+            File file = getApplicationContext().getFileStreamPath(Table.fileName);
             if (file.exists()) {
                 String tableFileContent = DataHelper.readIntern(Table.fileName, getApplicationContext());
                 if (tableFileContent != "") {
@@ -269,11 +265,11 @@ public class WeightliftingApp extends Application {
             setLoading(true);
             table.update();
             setLoading(false);
-            if (failedUpdates[4]) {
+            if (table.updateFailed) {
                 if (isInForeground) {
                     Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Tabellen"), Toast.LENGTH_LONG).show();
                 }
-                failedUpdates[4] = false;
+                table.updateFailed = false;
             }
             if (Table.itemsToMark.size() > 0) {
                 showNotification(getResources().getQuantityString(R.plurals.new_table, Table.itemsToMark.size(), Table.itemsToMark.size()), Table.getNotificationMessage(), 2);
@@ -285,21 +281,24 @@ public class WeightliftingApp extends Application {
     public Galleries getGalleries() {
         if (galleries == null) {
             galleries = new Galleries();
-            String galleriesFileContent = DataHelper.readIntern("galleries.json", getApplicationContext());
-            if (galleriesFileContent != "") {
-                galleries.parseFromString(galleriesFileContent);
-                galleries.setLastUpdate(new File(getFilesDir() + "/galleries.json").lastModified());
-                Log.d(TAG, "Galleries: read from memory:" + galleriesFileContent);
+            File file = getApplicationContext().getFileStreamPath(Galleries.fileName);
+            if (file.exists()) {
+                String galleriesFileContent = DataHelper.readIntern(Galleries.fileName, getApplicationContext());
+                if (galleriesFileContent != "") {
+                    galleries.parseFromString(galleriesFileContent);
+                    galleries.setLastUpdate(new File(getFilesDir() + "/" + Galleries.fileName).lastModified());
+                    Log.d(TAG, "Galleries: read from memory:" + galleriesFileContent);
+                }
             }
         }
 
         if (galleries.needsUpdate() && !galleries.isUpdating && !isUpdatingAll) {
             galleries.update();
-            if (failedUpdates[5]) {
+            if (galleries.updateFailed) {
                 if (isInForeground) {
                     Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Galerien"), Toast.LENGTH_LONG).show();
                 }
-                failedUpdates[5] = false;
+                galleries.updateFailed = false;
             }
             if (Galleries.itemsToMark.size() > 0) {
                 showNotification(getResources().getQuantityString(R.plurals.new_gallery, Galleries.itemsToMark.size(), Galleries.itemsToMark.size()), Galleries.getNotificationMessage(), 2);

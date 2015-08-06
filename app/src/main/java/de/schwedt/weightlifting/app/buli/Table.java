@@ -1,5 +1,6 @@
 package de.schwedt.weightlifting.app.buli;
 
+import android.content.Context;
 import android.util.Log;
 
 import org.json.JSONArray;

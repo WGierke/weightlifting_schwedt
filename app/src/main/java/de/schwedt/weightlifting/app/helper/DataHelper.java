@@ -178,10 +178,10 @@ public class DataHelper {
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             StringBuilder sb = new StringBuilder();
             String line;
-            Log.d("storage", "read from " + fileName);
             while ((line = bufferedReader.readLine()) != null) {
                 sb.append(line);
             }
+            Log.d("storage", "read from " + fileName + " following content: " + sb.toString());
             return sb.toString();
         } catch (Exception e) {
             e.printStackTrace();
@@ -194,6 +194,7 @@ public class DataHelper {
             FileOutputStream fos = context.getApplicationContext().openFileOutput(fileName, Context.MODE_PRIVATE);
             fos.write(content.getBytes());
             fos.close();
+            Log.d("storage", "saved in " + fileName + " content: " + content);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

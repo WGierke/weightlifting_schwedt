@@ -125,27 +125,25 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void showAsyncUpdateResults() {
+        //Log
+        Log.d("update", app.news.finishedUpdate + " " + app.events.finishedUpdate + " " + app.team.finishedUpdate + " " + app.competitions.finishedUpdate + " " + app.table.finishedUpdate + " " + app.galleries.finishedUpdate);
         // if one update failed show the number of new elements until now and return
-        for (int i = 0; i < app.failedUpdates.length; i++) {
-            if (app.failedUpdates[i]) {
-                showCountedNewElements(false);
-                app.isUpdatingAll = false;
-                return;
-            }
+        if (app.news.updateFailed || app.events.updateFailed || app.team.updateFailed || app.competitions.updateFailed || app.table.updateFailed || app.galleries.updateFailed) {
+            showCountedNewElements(false);
+            app.isUpdatingAll = false;
+            return;
         }
         // if one update isn't ready yet check again in 200 ms
-        for (int i = 0; i < app.finishedUpdating.length; i++) {
-            if (!app.finishedUpdating[i]) {
-                Runnable refreshRunnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        showAsyncUpdateResults();
-                    }
-                };
-                Handler refreshHandler = new Handler();
-                refreshHandler.postDelayed(refreshRunnable, 200);
-                return;
-            }
+        if (!app.news.finishedUpdate || !app.events.finishedUpdate || !app.team.finishedUpdate || !app.competitions.finishedUpdate || !app.table.finishedUpdate || !app.galleries.finishedUpdate) {
+            Runnable refreshRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    showAsyncUpdateResults();
+                }
+            };
+            Handler refreshHandler = new Handler();
+            refreshHandler.postDelayed(refreshRunnable, 200);
+            return;
         }
         showCountedNewElements(true);
         app.isUpdatingAll = false;
@@ -173,9 +171,12 @@ public class MainActivity extends FragmentActivity {
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.updating_in_progress), Toast.LENGTH_LONG).show();
                 } else {
                     app.isUpdatingAll = true;
-                    for (int i = 0; i < app.finishedUpdating.length; i++) {
-                        app.finishedUpdating[i] = false;
-                    }
+                    app.news.finishedUpdate = false;
+                    app.events.finishedUpdate = false;
+                    app.team.finishedUpdate = false;
+                    app.competitions.finishedUpdate = false;
+                    app.table.finishedUpdate = false;
+                    app.galleries.finishedUpdate = false;
                     try {
                         app.updateData();
                         showAsyncUpdateResults();

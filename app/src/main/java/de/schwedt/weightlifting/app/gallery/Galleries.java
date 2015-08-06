@@ -1,5 +1,6 @@
 package de.schwedt.weightlifting.app.gallery;
 
+import android.content.Context;
 import android.util.Log;
 
 import org.json.JSONArray;

@@ -54,10 +54,11 @@ public class News extends UpdateableWrapper {
                 itemsToMark.add(newNewsItems.get(i));
             }
         }
-        UiHelper.refreshCounterNav(navigationPosition, subPosition, itemsToMark.size());}
+        UiHelper.refreshCounterNav(navigationPosition, subPosition, itemsToMark.size());
+    }
 
     public void update() {
-        super.update("https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/news.json", "news.json", "News");
+        super.update("https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/news.json", fileName, "News");
     }
 
     protected void updateWrapper(String result) {
