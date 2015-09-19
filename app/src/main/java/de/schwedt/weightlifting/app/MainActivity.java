@@ -1,8 +1,13 @@
 package de.schwedt.weightlifting.app;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -26,6 +31,8 @@ import de.schwedt.weightlifting.app.buli.Team;
 import de.schwedt.weightlifting.app.gallery.Galleries;
 import de.schwedt.weightlifting.app.news.Events;
 import de.schwedt.weightlifting.app.news.News;
+import de.schwedt.weightlifting.app.service.GCMPreferences;
+import de.schwedt.weightlifting.app.service.RegistrationIntentService;
 
 public class MainActivity extends FragmentActivity {
 
@@ -47,6 +54,7 @@ public class MainActivity extends FragmentActivity {
     // used to store app title
     private CharSequence mTitle;
     private NavDrawerListAdapter adapter;
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +123,23 @@ public class MainActivity extends FragmentActivity {
             // on first time display view for first nav item
             showFragment(FRAGMENT_HOME);
         }
+
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                SharedPreferences sharedPreferences =
+                        PreferenceManager.getDefaultSharedPreferences(context);
+                boolean sentToken = sharedPreferences
+                        .getBoolean(GCMPreferences.SENT_TOKEN_TO_SERVER, false);
+                if (sentToken) {
+                    Log.d("GCM", "Sent");
+                } else {
+                    Log.d("GCM", "Error");
+                }
+            }
+        };
+        Intent intent = new Intent(this, RegistrationIntentService.class);
+        startService(intent);
     }
 
     @Override

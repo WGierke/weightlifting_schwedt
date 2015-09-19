@@ -7,9 +7,9 @@ import android.util.Log;
  * Receive GCM messages
  */
 
-public class GcmListenerService extends com.google.android.gms.gcm.GcmListenerService {
+public class MyGcmListenerService extends com.google.android.gms.gcm.GcmListenerService {
 
-    public GcmListenerService() {
+    public MyGcmListenerService() {
     }
 
     @Override
