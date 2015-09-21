@@ -33,7 +33,6 @@ public class WeightliftingApp extends Application {
     public static final String TAG = "WeightliftingLog";
     public static final String TEAM_NAME = "KG Schwedt-Stralsund";
     public static final int DISPLAY_DELAY = 500;
-    private static final int REFRESH_INTERVAL = 1000 * 60 * 60 * 24; //once a day
     public static Context mContext;
     public static boolean isUpdatingAll = false;
     public boolean isInForeground = true;
@@ -58,8 +57,6 @@ public class WeightliftingApp extends Application {
         memoryCache = new MemoryCache();
         imageLoader = new ImageLoader(activity);
 
-        refreshData();
-
         FaqFragment.faqEntries.add(new FaqItem(getString(R.string.faq_off_signal_heading), getString(R.string.faq_off_signal_question), getString(R.string.faq_off_signal_answer)));
         FaqFragment.faqEntries.add(new FaqItem(getString(R.string.faq_bad_attempt_jerking_heading), getString(R.string.faq_bad_attempt_jerking_question), getString(R.string.faq_bad_attempt_jerking_answer)));
         FaqFragment.faqEntries.add(new FaqItem(getString(R.string.winner_single_competition_heading), getString(R.string.winner_single_competition_question), getString(R.string.winner_single_competition_answer)));
@@ -80,6 +77,8 @@ public class WeightliftingApp extends Application {
 
         mContext = getApplicationContext();
 
+        getData();
+
         isInitialized = true;
 
         Log.i(TAG, "Initialized (" + String.valueOf(dateDiff) + "ms)");
@@ -99,7 +98,7 @@ public class WeightliftingApp extends Application {
         getGalleries();
     }
 
-    public void updateData() {
+    public void updateData(boolean showNotification) {
         //Update everything and save it on storage
         Log.d(TAG, "updating everything");
         news.update();
@@ -108,19 +107,27 @@ public class WeightliftingApp extends Application {
         competitions.update();
         table.update();
         galleries.update();
-    }
-
-    private void refreshData() {
-        //update everything periodically
-        getData();
-        Runnable refreshRunnable = new Runnable() {
-            @Override
-            public void run() {
-                refreshData();
+        if(showNotification) {
+            if (News.itemsToMark.size() > 0) {
+                showNotification(getResources().getQuantityString(R.plurals.new_news, News.itemsToMark.size(), News.itemsToMark.size()), News.getNotificationMessage(), 0);
             }
-        };
-        Handler refreshHandler = new Handler();
-        refreshHandler.postDelayed(refreshRunnable, REFRESH_INTERVAL);
+            Log.d(TAG, Events.itemsToMark.size() + "");
+            if (Events.itemsToMark.size() > 0) {
+                showNotification(getResources().getQuantityString(R.plurals.new_events, Events.itemsToMark.size(), Events.itemsToMark.size()), Events.getNotificationMessage(), 1);
+            }
+            if (Team.itemsToMark.size() > 0) {
+                showNotification(getResources().getQuantityString(R.plurals.new_member, Team.itemsToMark.size(), Team.itemsToMark.size()), Team.getNotificationMessage(), 2);
+            }
+            if (Competitions.itemsToMark.size() > 0) {
+                showNotification(getResources().getQuantityString(R.plurals.new_competitions, Competitions.itemsToMark.size(), Competitions.itemsToMark.size()), Competitions.getNotificationMessage(), 3);
+            }
+            if (Table.itemsToMark.size() > 0) {
+                showNotification(getResources().getQuantityString(R.plurals.new_table, Table.itemsToMark.size(), Table.itemsToMark.size()), Table.getNotificationMessage(), 2);
+            }
+            if (Galleries.itemsToMark.size() > 0) {
+                showNotification(getResources().getQuantityString(R.plurals.new_gallery, Galleries.itemsToMark.size(), Galleries.itemsToMark.size()), Galleries.getNotificationMessage(), 2);
+            }
+        }
     }
 
     public News getNews() {
@@ -146,9 +153,6 @@ public class WeightliftingApp extends Application {
                     Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Neuigkeiten"), Toast.LENGTH_LONG).show();
                 }
                 news.updateFailed = false;
-            }
-            if (News.itemsToMark.size() > 0) {
-                showNotification(getResources().getQuantityString(R.plurals.new_news, News.itemsToMark.size(), News.itemsToMark.size()), News.getNotificationMessage(), 0);
             }
         }
         return news;
@@ -178,9 +182,6 @@ public class WeightliftingApp extends Application {
                 }
                 events.updateFailed = false;
             }
-            if (Events.itemsToMark.size() > 0) {
-                showNotification(getResources().getQuantityString(R.plurals.new_events, Events.itemsToMark.size(), Events.itemsToMark.size()), Events.getNotificationMessage(), 1);
-            }
         }
         return events;
     }
@@ -208,9 +209,6 @@ public class WeightliftingApp extends Application {
                     Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Team"), Toast.LENGTH_LONG).show();
                 }
                 team.updateFailed = false;
-            }
-            if (Team.itemsToMark.size() > 0) {
-                showNotification(getResources().getQuantityString(R.plurals.new_member, Team.itemsToMark.size(), Team.itemsToMark.size()), Team.getNotificationMessage(), 2);
             }
         }
         return team;
@@ -240,9 +238,6 @@ public class WeightliftingApp extends Application {
                 }
                 competitions.updateFailed = false;
             }
-            if (Competitions.itemsToMark.size() > 0) {
-                showNotification(getResources().getQuantityString(R.plurals.new_competitions, Competitions.itemsToMark.size(), Competitions.itemsToMark.size()), Competitions.getNotificationMessage(), 3);
-            }
         }
         return competitions;
     }
@@ -271,9 +266,6 @@ public class WeightliftingApp extends Application {
                 }
                 table.updateFailed = false;
             }
-            if (Table.itemsToMark.size() > 0) {
-                showNotification(getResources().getQuantityString(R.plurals.new_table, Table.itemsToMark.size(), Table.itemsToMark.size()), Table.getNotificationMessage(), 2);
-            }
         }
         return table;
     }
@@ -299,9 +291,6 @@ public class WeightliftingApp extends Application {
                     Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Galerien"), Toast.LENGTH_LONG).show();
                 }
                 galleries.updateFailed = false;
-            }
-            if (Galleries.itemsToMark.size() > 0) {
-                showNotification(getResources().getQuantityString(R.plurals.new_gallery, Galleries.itemsToMark.size(), Galleries.itemsToMark.size()), Galleries.getNotificationMessage(), 2);
             }
         }
         return galleries;

@@ -203,9 +203,11 @@ public class MainActivity extends FragmentActivity {
                     app.table.finishedUpdate = false;
                     app.galleries.finishedUpdate = false;
                     try {
-                        app.updateData();
+                        app.updateData(false);
                         showAsyncUpdateResults();
                     } catch (Exception e) {
+                        Log.d(app.TAG, "Error while updating all");
+                        e.printStackTrace();
                         Toast.makeText(getApplicationContext(), R.string.updated_all_unsuccessfully, Toast.LENGTH_LONG).show();
                     }
                 }

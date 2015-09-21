@@ -41,3 +41,6 @@ build/
 *.iml
 
 !production/*.apk
+
+api_key.txt
+registration_ids.txt

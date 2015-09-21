@@ -1,13 +1,19 @@
 package de.schwedt.weightlifting.app.service;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
+
+import de.schwedt.weightlifting.app.WeightliftingApp;
 
 /**
  * Receive GCM messages
  */
 
 public class MyGcmListenerService extends com.google.android.gms.gcm.GcmListenerService {
+
+    private WeightliftingApp app;
 
     public MyGcmListenerService() {
     }
@@ -37,5 +43,10 @@ public class MyGcmListenerService extends com.google.android.gms.gcm.GcmListener
     // a GCM message.
     private void sendNotification(String msg) {
         Log.d("Logger", msg);
+        Looper.prepare();
+        app = (WeightliftingApp) getApplicationContext();
+        app.updateData(true);
+        /*Intent launchIntent = getPackageManager().getLaunchIntentForPackage("de.schwedt.weightlifting.MainActivity");
+        startActivity(launchIntent);*/
     }
 }
