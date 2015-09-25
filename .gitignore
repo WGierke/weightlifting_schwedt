@@ -42,5 +42,5 @@ build/
 
 !production/*.apk
 
-api_key.txt
-registration_ids.txt
+*config.ini
+app/libs/*

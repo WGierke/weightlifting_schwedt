@@ -1,11 +1,11 @@
 package de.schwedt.weightlifting.app.service;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
 
 import de.schwedt.weightlifting.app.WeightliftingApp;
+import de.schwedt.weightlifting.app.helper.UiHelper;
 
 /**
  * Receive GCM messages
@@ -13,14 +13,12 @@ import de.schwedt.weightlifting.app.WeightliftingApp;
 
 public class MyGcmListenerService extends com.google.android.gms.gcm.GcmListenerService {
 
-    private WeightliftingApp app;
-
     public MyGcmListenerService() {
     }
 
     @Override
     public void onMessageReceived(String from, Bundle data) {
-        sendNotification("Received GCM Message: " + data.toString());
+        sendNotification(data.getString("update"));
     }
 
     @Override
@@ -38,15 +36,9 @@ public class MyGcmListenerService extends com.google.android.gms.gcm.GcmListener
         sendNotification("Upstream message send error. Id=" + msgId + ", error" + error);
     }
 
-    // Put the message into a notification and post it.
-    // This is just one simple example of what you might choose to do with
-    // a GCM message.
     private void sendNotification(String msg) {
-        Log.d("Logger", msg);
+        Log.d(WeightliftingApp.TAG, msg);
         Looper.prepare();
-        app = (WeightliftingApp) getApplicationContext();
-        app.updateData(true);
-        /*Intent launchIntent = getPackageManager().getLaunchIntentForPackage("de.schwedt.weightlifting.MainActivity");
-        startActivity(launchIntent);*/
+        UiHelper.showNotification("Update verfügbar", msg, 4, this);
     }
 }

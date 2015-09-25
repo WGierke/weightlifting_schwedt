@@ -2,17 +2,13 @@ package de.schwedt.weightlifting.app;
 
 import android.app.Activity;
 import android.app.Application;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Handler;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.parse.Parse;
 
 import java.io.File;
 import java.util.Date;
@@ -25,6 +21,7 @@ import de.schwedt.weightlifting.app.gallery.Galleries;
 import de.schwedt.weightlifting.app.helper.DataHelper;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
 import de.schwedt.weightlifting.app.helper.MemoryCache;
+import de.schwedt.weightlifting.app.helper.UiHelper;
 import de.schwedt.weightlifting.app.news.Events;
 import de.schwedt.weightlifting.app.news.News;
 
@@ -48,6 +45,13 @@ public class WeightliftingApp extends Application {
     public Galleries galleries;
     public MainActivity mainActivity;
 
+
+    public void onCreate() {
+        super.onCreate();
+        Parse.enableLocalDatastore(this);
+        DataHelper.loadConfig();
+        Parse.initialize(this, DataHelper.CONFIG_APP_ID, DataHelper.CONFIG_CLIENT_KEY);
+    }
 
     public void initialize(Activity activity) {
         Log.i(TAG, "Initializing...");
@@ -107,25 +111,25 @@ public class WeightliftingApp extends Application {
         competitions.update();
         table.update();
         galleries.update();
-        if(showNotification) {
+        if (showNotification) {
             if (News.itemsToMark.size() > 0) {
-                showNotification(getResources().getQuantityString(R.plurals.new_news, News.itemsToMark.size(), News.itemsToMark.size()), News.getNotificationMessage(), 0);
+                UiHelper.showNotification(getResources().getQuantityString(R.plurals.new_news, News.itemsToMark.size(), News.itemsToMark.size()), News.getNotificationMessage(), 0, this);
             }
             Log.d(TAG, Events.itemsToMark.size() + "");
             if (Events.itemsToMark.size() > 0) {
-                showNotification(getResources().getQuantityString(R.plurals.new_events, Events.itemsToMark.size(), Events.itemsToMark.size()), Events.getNotificationMessage(), 1);
+                UiHelper.showNotification(getResources().getQuantityString(R.plurals.new_events, Events.itemsToMark.size(), Events.itemsToMark.size()), Events.getNotificationMessage(), 1, this);
             }
             if (Team.itemsToMark.size() > 0) {
-                showNotification(getResources().getQuantityString(R.plurals.new_member, Team.itemsToMark.size(), Team.itemsToMark.size()), Team.getNotificationMessage(), 2);
+                UiHelper.showNotification(getResources().getQuantityString(R.plurals.new_member, Team.itemsToMark.size(), Team.itemsToMark.size()), Team.getNotificationMessage(), 2, this);
             }
             if (Competitions.itemsToMark.size() > 0) {
-                showNotification(getResources().getQuantityString(R.plurals.new_competitions, Competitions.itemsToMark.size(), Competitions.itemsToMark.size()), Competitions.getNotificationMessage(), 3);
+                UiHelper.showNotification(getResources().getQuantityString(R.plurals.new_competitions, Competitions.itemsToMark.size(), Competitions.itemsToMark.size()), Competitions.getNotificationMessage(), 3, this);
             }
             if (Table.itemsToMark.size() > 0) {
-                showNotification(getResources().getQuantityString(R.plurals.new_table, Table.itemsToMark.size(), Table.itemsToMark.size()), Table.getNotificationMessage(), 2);
+                UiHelper.showNotification(getResources().getQuantityString(R.plurals.new_table, Table.itemsToMark.size(), Table.itemsToMark.size()), Table.getNotificationMessage(), 2, this);
             }
             if (Galleries.itemsToMark.size() > 0) {
-                showNotification(getResources().getQuantityString(R.plurals.new_gallery, Galleries.itemsToMark.size(), Galleries.itemsToMark.size()), Galleries.getNotificationMessage(), 2);
+                UiHelper.showNotification(getResources().getQuantityString(R.plurals.new_gallery, Galleries.itemsToMark.size(), Galleries.itemsToMark.size()), Galleries.getNotificationMessage(), 2, this);
             }
         }
     }
@@ -302,31 +306,5 @@ public class WeightliftingApp extends Application {
         } catch (Exception ex) {
             // Not supported. Wayne.
         }
-    }
-
-    private void showNotification(String title, String message, int notificationId) {
-
-        Intent resultIntent = new Intent(this, MainActivity.class);
-        resultIntent.setAction(Intent.ACTION_MAIN);
-        resultIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        NotificationCompat.Builder normal = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_launcher)
-                .setContentTitle(title)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true);
-
-        NotificationCompat.InboxStyle big = new NotificationCompat.InboxStyle(normal);
-
-        //big.setSummaryText("this is the summary text");
-        String[] parts = message.split("\\|");
-        for (int i = 0; i < parts.length; i++) {
-            big.addLine(parts[i]);
-        }
-
-        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        manager.notify(notificationId, big.build());
     }
 }

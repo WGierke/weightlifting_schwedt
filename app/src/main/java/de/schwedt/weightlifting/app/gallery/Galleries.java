@@ -1,6 +1,5 @@
 package de.schwedt.weightlifting.app.gallery;
 
-import android.content.Context;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -23,6 +22,8 @@ public class Galleries extends UpdateableWrapper {
     public static final String fileName = "galleries.json";
 
     public static ArrayList<GalleryItem> itemsToMark = new ArrayList<GalleryItem>();
+
+    private final String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/galleries.json";
 
     public static ArrayList<GalleryItem> casteArray(ArrayList<UpdateableItem> array) {
         ArrayList<GalleryItem> convertedItems = new ArrayList<GalleryItem>();
@@ -61,7 +62,7 @@ public class Galleries extends UpdateableWrapper {
     }
 
     public void update() {
-        super.update("https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/galleries.json", fileName, "Galleries");
+        super.update(UPDATE_URL, fileName, "Galleries");
     }
 
     protected void updateWrapper(String result) {

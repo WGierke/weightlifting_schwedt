@@ -22,12 +22,12 @@ public class NetworkHelper {
                 try {
                     Log.d(WeightliftingApp.TAG, "Requesting " + url);
                     String result = getRequest(url);
-                    Log.d("Network", result);
+                    Log.d(WeightliftingApp.TAG, result);
                     if (result.indexOf("!DOCTYPE") != -1)
                         result = null;
                     data.putString("result", result);
                 } catch (Exception ex) {
-                    Log.d("Network", "Error while fetching " + url + ":" + ex.getMessage());
+                    Log.d(WeightliftingApp.TAG, "Error while fetching " + url + ":" + ex.getMessage());
                     data.putString("result", "");
                 }
                 Message message = new Message();

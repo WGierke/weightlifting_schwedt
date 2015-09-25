@@ -9,11 +9,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import de.schwedt.weightlifting.app.MainActivity;
-import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.UpdateableItem;
 import de.schwedt.weightlifting.app.UpdateableWrapper;
 import de.schwedt.weightlifting.app.WeightliftingApp;
-import de.schwedt.weightlifting.app.buli.Competitions;
 import de.schwedt.weightlifting.app.helper.JsonParser;
 import de.schwedt.weightlifting.app.helper.UiHelper;
 
@@ -21,10 +19,9 @@ public class Events extends UpdateableWrapper {
 
     public final static String fileName = "events.json";
 
-    private final String UPDATE_UR = "http://pastebin.com/raw.php?i=M0qfJ2qF";
-    //https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/events.json"
-
     public static ArrayList<EventItem> itemsToMark = new ArrayList<EventItem>();
+
+    private final String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/events.json";
 
     public static ArrayList<EventItem> casteArray(ArrayList<UpdateableItem> array) {
         ArrayList<EventItem> convertedItems = new ArrayList<EventItem>();
@@ -66,7 +63,7 @@ public class Events extends UpdateableWrapper {
     }
 
     public void update() {
-        super.update(UPDATE_UR, fileName, "Events");
+        super.update(UPDATE_URL, fileName, "Events");
     }
 
     protected void updateWrapper(String result) {

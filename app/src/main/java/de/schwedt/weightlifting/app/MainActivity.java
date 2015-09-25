@@ -23,6 +23,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.parse.ParseAnalytics;
+
 import java.util.ArrayList;
 
 import de.schwedt.weightlifting.app.buli.Competitions;
@@ -74,6 +76,8 @@ public class MainActivity extends FragmentActivity {
         mTitle = mDrawerTitle = getTitle();
 
         initNavigation(savedInstanceState);
+
+        ParseAnalytics.trackAppOpenedInBackground(getIntent());
     }
 
     private void initNavigation(Bundle savedInstanceState) {

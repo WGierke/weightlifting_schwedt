@@ -30,6 +30,8 @@ public abstract class UpdateableWrapper {
 
     protected long lastUpdate = 0;
 
+    protected String UPDATE_URL;
+
     protected ArrayList<UpdateableItem> items;
 
     public UpdateableWrapper() {
