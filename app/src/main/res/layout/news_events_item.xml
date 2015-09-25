@@ -8,32 +8,32 @@
     <TextView
         android:id="@+id/event_title"
         style="@style/NewsHeading"
-        android:text="Title"
-        android:layout_marginTop="5dip"
-        android:layout_marginLeft="10dip"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:layout_marginTop="5dip"
+        android:text="Title" />
 
 
     <TextView
         android:id="@+id/event_date"
         style="@style/NewsPreview"
-        android:text="Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/event_title"
         android:layout_marginBottom="5dip"
         android:layout_marginLeft="10dip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:text="Date" />
 
     <TextView
         android:id="@+id/event_location"
         style="@style/NewsPreview"
-        android:text="Location"
-        android:layout_toRightOf="@id/event_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/event_title"
         android:layout_marginBottom="5dip"
         android:layout_marginLeft="10dip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_toRightOf="@id/event_date"
+        android:text="Location" />
 
 </RelativeLayout>

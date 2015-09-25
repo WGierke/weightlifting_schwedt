@@ -7,55 +7,55 @@
 
     <ImageView
         android:id="@+id/news_icon"
-        android:src="@drawable/ic_launcher_xx"
         android:layout_width="70dip"
         android:layout_height="70dip"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="5dip"
         android:layout_marginTop="5dip"
         android:scaleType="centerCrop"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_margin="5dip"/>
+        android:src="@drawable/ic_launcher_xx" />
 
     <TextView
         android:id="@+id/event_title"
         style="@style/NewsHeading"
-        android:text="Title"
-        android:layout_toRightOf="@id/news_icon"
-        android:layout_marginTop="5dip"
-        android:layout_marginRight="40dip"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginRight="40dip"
+        android:layout_marginTop="5dip"
+        android:layout_toRightOf="@id/news_icon"
+        android:text="Title" />
 
     <TextView
         android:id="@+id/event_preview"
         style="@style/NewsPreview"
-        android:text="Preview"
-        android:layout_marginRight="40dip"
-        android:layout_toRightOf="@id/news_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/event_title"
         android:layout_marginBottom="5dip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_marginRight="40dip"
+        android:layout_toRightOf="@id/news_icon"
+        android:text="Preview" />
 
     <TextView
         android:id="@+id/event_date"
         style="@style/NewsPreview"
-        android:text="Date"
-        android:layout_marginRight="40dip"
-        android:layout_toRightOf="@id/news_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/event_preview"
         android:layout_marginBottom="5dip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_marginRight="40dip"
+        android:layout_toRightOf="@id/news_icon"
+        android:text="Date" />
 
     <ImageView
         android:id="@+id/news_show"
-        android:src="@drawable/arrow_right"
         android:layout_width="40dip"
         android:layout_height="match_parent"
-        android:scaleType="centerInside"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:padding="5dip" />
+        android:padding="5dip"
+        android:scaleType="centerInside"
+        android:src="@drawable/arrow_right" />
 
 </RelativeLayout>

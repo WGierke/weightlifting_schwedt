@@ -8,57 +8,57 @@
     <TextView
         android:id="@+id/buli_table_place"
         style="@style/NewsHeading"
-        android:text="1. Platz"
-        android:layout_marginTop="3dip"
-        android:layout_marginLeft="10dip"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:layout_marginTop="3dip"
+        android:text="1. Platz" />
 
     <TextView
         android:id="@+id/buli_table_club"
         style="@style/NewsHeading"
-        android:text="AC Chemnitz"
-        android:layout_marginTop="3dip"
-        android:layout_marginLeft="10dip"
-        android:layout_toRightOf="@id/buli_table_place"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:layout_marginTop="3dip"
+        android:layout_toRightOf="@id/buli_table_place"
+        android:text="AC Chemnitz" />
 
     <TextView
         android:id="@+id/buli_table_score"
-        android:text="4319.8 : 3244.7"
-        android:layout_marginTop="1dip"
-        android:layout_marginLeft="10dip"
-        android:layout_below="@id/buli_table_club"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buli_table_club"
+        android:layout_marginLeft="10dip"
+        android:layout_marginTop="1dip"
+        android:text="4319.8 : 3244.7" />
 
     <TextView
         android:id="@+id/buli_table_cardinal_points"
-        android:text="12 : 6"
-        android:layout_marginTop="1dip"
-        android:layout_marginLeft="10dip"
-        android:layout_below="@id/buli_table_score"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buli_table_score"
+        android:layout_marginLeft="10dip"
+        android:layout_marginTop="1dip"
+        android:text="12 : 6" />
 
     <TextView
         android:id="@+id/buli_table_max_score"
-        android:text="890.0"
-        android:layout_marginTop="1dip"
-        android:layout_marginLeft="10dip"
-        android:layout_below="@id/buli_table_cardinal_points"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buli_table_cardinal_points"
+        android:layout_marginLeft="10dip"
+        android:layout_marginTop="1dip"
+        android:text="890.0" />
 
     <ImageView
         android:id="@+id/buli_competition_protocol"
-        android:src="@drawable/arrow_right"
         android:layout_width="40dip"
         android:layout_height="match_parent"
-        android:scaleType="centerInside"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:padding="5dip" />
+        android:padding="5dip"
+        android:scaleType="centerInside"
+        android:src="@drawable/arrow_right" />
 
 </RelativeLayout>
