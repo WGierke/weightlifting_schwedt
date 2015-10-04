@@ -129,8 +129,10 @@ public class UiHelper {
      *
      * @param title   Ttile of the notification
      * @param message Message, lines are seperated by a pipe
+     * @param description Description of the notification
+     * @param notificationId Identifier of the notification
      */
-    public static void showNotification(String title, String message, int notificationId, Context context) {
+    public static void showNotification(String title, String message, String description, int notificationId, Context context) {
 
         Intent resultIntent = new Intent(context, MainActivity.class);
         resultIntent.setAction(Intent.ACTION_MAIN);
@@ -145,6 +147,7 @@ public class UiHelper {
                 .setAutoCancel(true);
 
         NotificationCompat.InboxStyle big = new NotificationCompat.InboxStyle(normal);
+        big.setSummaryText(description);
 
         String[] parts = message.split("\\|");
         for (int i = 0; i < parts.length; i++) {

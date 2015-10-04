@@ -6,5 +6,6 @@ do
 	git add --all
 	git commit -m "Update: $CHANGES"
 	git push
+	python server/push.py
 	sleep 1800 #30 minutes
 done

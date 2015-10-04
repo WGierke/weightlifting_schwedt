@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.parse.Parse;
+//import com.parse.ParseCrashReporting;
 
 import java.io.File;
 import java.util.Date;
@@ -21,7 +22,6 @@ import de.schwedt.weightlifting.app.gallery.Galleries;
 import de.schwedt.weightlifting.app.helper.DataHelper;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
 import de.schwedt.weightlifting.app.helper.MemoryCache;
-import de.schwedt.weightlifting.app.helper.UiHelper;
 import de.schwedt.weightlifting.app.news.Events;
 import de.schwedt.weightlifting.app.news.News;
 
@@ -49,6 +49,7 @@ public class WeightliftingApp extends Application {
     public void onCreate() {
         super.onCreate();
         Parse.enableLocalDatastore(this);
+        //ParseCrashReporting.enable(this);
         DataHelper.loadConfig();
         Parse.initialize(this, DataHelper.CONFIG_APP_ID, DataHelper.CONFIG_CLIENT_KEY);
     }
@@ -111,7 +112,7 @@ public class WeightliftingApp extends Application {
         competitions.update();
         table.update();
         galleries.update();
-        if (showNotification) {
+        /*if (showNotification) {
             if (News.itemsToMark.size() > 0) {
                 UiHelper.showNotification(getResources().getQuantityString(R.plurals.new_news, News.itemsToMark.size(), News.itemsToMark.size()), News.getNotificationMessage(), 0, this);
             }
@@ -131,7 +132,7 @@ public class WeightliftingApp extends Application {
             if (Galleries.itemsToMark.size() > 0) {
                 UiHelper.showNotification(getResources().getQuantityString(R.plurals.new_gallery, Galleries.itemsToMark.size(), Galleries.itemsToMark.size()), Galleries.getNotificationMessage(), 2, this);
             }
-        }
+        }*/
     }
 
     public News getNews() {
