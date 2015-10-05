@@ -2,6 +2,7 @@ package de.schwedt.weightlifting.app.service;
 
 import android.os.Bundle;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.util.Log;
 
 import de.schwedt.weightlifting.app.WeightliftingApp;
@@ -36,19 +37,21 @@ public class MyGcmListenerService extends com.google.android.gms.gcm.GcmListener
         sendNotification("Upstream message send error. Id=" + msgId + ", error" + error);
     }
 
-    //Example message: Update#New Article#Victory in Görlitz#Push the button ...#4
+    //Example message: New Article#Victory in Görlitz#Push the button ...#4
     private void sendNotification(String msg) {
         Log.d(WeightliftingApp.TAG, msg);
         String [] parts = msg.split("#");
-        Log.d(WeightliftingApp.TAG, parts[0]);
-        assert parts.length == 5;
-        if(parts[0].equals("Update")) {
+        Log.d(WeightliftingApp.TAG, "GCM message: " + parts[0]);
+
+        if(parts.length != 4 || !TextUtils.isDigitsOnly(parts[3])) {
+            Log.e(WeightliftingApp.TAG, "Number of parts: " + String.valueOf(parts.length) + ", notificationID: " + parts[3]);
+        } else {
+            Log.d(WeightliftingApp.TAG, parts[0]);
             Log.d(WeightliftingApp.TAG, parts[1]);
             Log.d(WeightliftingApp.TAG, parts[2]);
             Log.d(WeightliftingApp.TAG, parts[3]);
-            Log.d(WeightliftingApp.TAG, parts[4]);
             Looper.prepare();
-            UiHelper.showNotification(parts[1], parts[2], parts[3], Integer.parseInt(parts[4]), this);
+            UiHelper.showNotification(parts[0], parts[1], parts[2], Integer.parseInt(parts[3]), this);
         }
     }
 }

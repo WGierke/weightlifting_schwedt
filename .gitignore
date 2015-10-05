@@ -43,4 +43,6 @@ build/
 !production/*.apk
 
 *config.ini
+*Keys.java
 app/libs/*
+server/push_messages.txt

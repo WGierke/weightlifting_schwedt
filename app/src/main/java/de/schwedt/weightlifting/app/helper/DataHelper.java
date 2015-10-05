@@ -25,8 +25,6 @@ public class DataHelper {
 
     public static final String PREF_FILE_NAME = "hpi_preferences";
     private static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
-    public static String CONFIG_APP_ID;
-    public static String CONFIG_CLIENT_KEY;
 
     public static byte[] encodeUTF8(String string) {
         return string.getBytes(UTF8_CHARSET);
@@ -202,19 +200,6 @@ public class DataHelper {
             Log.d("storage", "saved in " + fileName + " content: " + content);
         } catch (Exception ex) {
             ex.printStackTrace();
-        }
-    }
-
-    public static void loadConfig() {
-        Properties configuration = new Properties();
-        String configurationFile = "config.ini";
-        try {
-            configuration.load(new FileInputStream(configurationFile));
-            CONFIG_APP_ID = configuration.getProperty("applicationId");
-            CONFIG_CLIENT_KEY = configuration.getProperty("clientKey");
-        }
-        catch (IOException e) {
-            Log.d(WeightliftingApp.TAG, "Configuration file error: " + e.getMessage());
         }
     }
 }

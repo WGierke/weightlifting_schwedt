@@ -23,7 +23,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.parse.Parse;
 import com.parse.ParseAnalytics;
+import com.parse.ParseCrashReporting;
 
 import java.util.ArrayList;
 
@@ -31,6 +33,7 @@ import de.schwedt.weightlifting.app.buli.Competitions;
 import de.schwedt.weightlifting.app.buli.Table;
 import de.schwedt.weightlifting.app.buli.Team;
 import de.schwedt.weightlifting.app.gallery.Galleries;
+import de.schwedt.weightlifting.app.helper.Keys;
 import de.schwedt.weightlifting.app.news.Events;
 import de.schwedt.weightlifting.app.news.News;
 import de.schwedt.weightlifting.app.service.GCMPreferences;
@@ -76,6 +79,9 @@ public class MainActivity extends FragmentActivity {
         mTitle = mDrawerTitle = getTitle();
 
         initNavigation(savedInstanceState);
+
+        Parse.enableLocalDatastore(this);
+        Parse.initialize(this, Keys.CONFIG_APP_ID, Keys.CONFIG_CLIENT_KEY);
 
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
     }

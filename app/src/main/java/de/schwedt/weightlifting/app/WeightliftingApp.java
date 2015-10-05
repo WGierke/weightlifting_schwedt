@@ -9,7 +9,8 @@ import android.widget.Toast;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.parse.Parse;
-//import com.parse.ParseCrashReporting;
+import com.parse.ParseObject;
+import com.parse.ParseCrashReporting;
 
 import java.io.File;
 import java.util.Date;
@@ -21,6 +22,7 @@ import de.schwedt.weightlifting.app.faq.FaqItem;
 import de.schwedt.weightlifting.app.gallery.Galleries;
 import de.schwedt.weightlifting.app.helper.DataHelper;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
+import de.schwedt.weightlifting.app.helper.Keys;
 import de.schwedt.weightlifting.app.helper.MemoryCache;
 import de.schwedt.weightlifting.app.news.Events;
 import de.schwedt.weightlifting.app.news.News;
@@ -48,10 +50,6 @@ public class WeightliftingApp extends Application {
 
     public void onCreate() {
         super.onCreate();
-        Parse.enableLocalDatastore(this);
-        //ParseCrashReporting.enable(this);
-        DataHelper.loadConfig();
-        Parse.initialize(this, DataHelper.CONFIG_APP_ID, DataHelper.CONFIG_CLIENT_KEY);
     }
 
     public void initialize(Activity activity) {
