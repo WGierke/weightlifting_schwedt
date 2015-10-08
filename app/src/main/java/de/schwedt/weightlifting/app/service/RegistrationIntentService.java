@@ -67,11 +67,11 @@ public class RegistrationIntentService extends IntentService {
      * @param sent_token Flag that indicates if token was already sent
      */
     private void sendRegistrationToServer(String token, boolean sent_token) {
-        //if(!sent_token) {
+        if(!sent_token) {
             Log.i(TAG, "Sent token");
             ParseObject GcmToken = new ParseObject("GcmToken");
             GcmToken.put("token", token);
             GcmToken.saveInBackground();
-        //}
+        }
     }
 }

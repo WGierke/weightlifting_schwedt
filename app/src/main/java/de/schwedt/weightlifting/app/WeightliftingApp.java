@@ -47,11 +47,6 @@ public class WeightliftingApp extends Application {
     public Galleries galleries;
     public MainActivity mainActivity;
 
-
-    public void onCreate() {
-        super.onCreate();
-    }
-
     public void initialize(Activity activity) {
         Log.i(TAG, "Initializing...");
         long dateStart = new Date().getTime();
@@ -101,7 +96,7 @@ public class WeightliftingApp extends Application {
         getGalleries();
     }
 
-    public void updateData(boolean showNotification) {
+    public void updateData() {
         //Update everything and save it on storage
         Log.d(TAG, "updating everything");
         news.update();
@@ -110,27 +105,6 @@ public class WeightliftingApp extends Application {
         competitions.update();
         table.update();
         galleries.update();
-        /*if (showNotification) {
-            if (News.itemsToMark.size() > 0) {
-                UiHelper.showNotification(getResources().getQuantityString(R.plurals.new_news, News.itemsToMark.size(), News.itemsToMark.size()), News.getNotificationMessage(), 0, this);
-            }
-            Log.d(TAG, Events.itemsToMark.size() + "");
-            if (Events.itemsToMark.size() > 0) {
-                UiHelper.showNotification(getResources().getQuantityString(R.plurals.new_events, Events.itemsToMark.size(), Events.itemsToMark.size()), Events.getNotificationMessage(), 1, this);
-            }
-            if (Team.itemsToMark.size() > 0) {
-                UiHelper.showNotification(getResources().getQuantityString(R.plurals.new_member, Team.itemsToMark.size(), Team.itemsToMark.size()), Team.getNotificationMessage(), 2, this);
-            }
-            if (Competitions.itemsToMark.size() > 0) {
-                UiHelper.showNotification(getResources().getQuantityString(R.plurals.new_competitions, Competitions.itemsToMark.size(), Competitions.itemsToMark.size()), Competitions.getNotificationMessage(), 3, this);
-            }
-            if (Table.itemsToMark.size() > 0) {
-                UiHelper.showNotification(getResources().getQuantityString(R.plurals.new_table, Table.itemsToMark.size(), Table.itemsToMark.size()), Table.getNotificationMessage(), 2, this);
-            }
-            if (Galleries.itemsToMark.size() > 0) {
-                UiHelper.showNotification(getResources().getQuantityString(R.plurals.new_gallery, Galleries.itemsToMark.size(), Galleries.itemsToMark.size()), Galleries.getNotificationMessage(), 2, this);
-            }
-        }*/
     }
 
     public News getNews() {

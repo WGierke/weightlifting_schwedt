@@ -7,5 +7,5 @@ do
 	git commit -m "Update: $CHANGES"
 	git push
 	python server/push.py
-	sleep 10 #30 minutes
+	sleep 1800 #30 minutes
 done

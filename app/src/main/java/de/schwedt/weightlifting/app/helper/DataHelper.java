@@ -184,7 +184,7 @@ public class DataHelper {
             while ((line = bufferedReader.readLine()) != null) {
                 sb.append(line);
             }
-            Log.d("storage", "read from " + fileName + " following content: " + sb.toString());
+            Log.d(WeightliftingApp.TAG, "read from " + fileName + " following content: " + sb.toString());
             return sb.toString();
         } catch (Exception e) {
             e.printStackTrace();
@@ -197,7 +197,7 @@ public class DataHelper {
             FileOutputStream fos = context.getApplicationContext().openFileOutput(fileName, Context.MODE_PRIVATE);
             fos.write(content.getBytes());
             fos.close();
-            Log.d("storage", "saved in " + fileName + " content: " + content);
+            Log.d(WeightliftingApp.TAG, "saved in " + fileName + " content: " + content);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

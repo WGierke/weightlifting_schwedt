@@ -141,11 +141,6 @@ public class MainActivity extends FragmentActivity {
                         PreferenceManager.getDefaultSharedPreferences(context);
                 boolean sentToken = sharedPreferences
                         .getBoolean(GCMPreferences.SENT_TOKEN_TO_SERVER, false);
-                if (sentToken) {
-                    Log.d("GCM", "Sent");
-                } else {
-                    Log.d("GCM", "Error");
-                }
             }
         };
         Intent intent = new Intent(this, RegistrationIntentService.class);
@@ -161,7 +156,7 @@ public class MainActivity extends FragmentActivity {
 
     private void showAsyncUpdateResults() {
         //Log
-        Log.d("update", app.news.finishedUpdate + " " + app.events.finishedUpdate + " " + app.team.finishedUpdate + " " + app.competitions.finishedUpdate + " " + app.table.finishedUpdate + " " + app.galleries.finishedUpdate);
+        Log.d(WeightliftingApp.TAG, app.news.finishedUpdate + " " + app.events.finishedUpdate + " " + app.team.finishedUpdate + " " + app.competitions.finishedUpdate + " " + app.table.finishedUpdate + " " + app.galleries.finishedUpdate);
         // if one update failed show the number of new elements until now and return
         if (app.news.updateFailed || app.events.updateFailed || app.team.updateFailed || app.competitions.updateFailed || app.table.updateFailed || app.galleries.updateFailed) {
             showCountedNewElements(false);
@@ -213,7 +208,7 @@ public class MainActivity extends FragmentActivity {
                     app.table.finishedUpdate = false;
                     app.galleries.finishedUpdate = false;
                     try {
-                        app.updateData(false);
+                        app.updateData();
                         showAsyncUpdateResults();
                     } catch (Exception e) {
                         Log.d(app.TAG, "Error while updating all");
