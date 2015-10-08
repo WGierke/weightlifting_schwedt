@@ -1,6 +1,5 @@
 package de.schwedt.weightlifting.app.buli;
 
-import android.content.Context;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -21,6 +20,8 @@ public class Table extends UpdateableWrapper {
     public static final String fileName = "table.json";
 
     public static ArrayList<TableEntry> itemsToMark = new ArrayList<TableEntry>();
+
+    private final String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/table.json";
 
     public static ArrayList<TableEntry> casteArray(ArrayList<UpdateableItem> array) {
         ArrayList<TableEntry> convertedItems = new ArrayList<TableEntry>();
@@ -59,7 +60,7 @@ public class Table extends UpdateableWrapper {
     }
 
     public void update() {
-        super.update("https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/table.json", fileName, "Table");
+        super.update(UPDATE_URL, fileName, "Table");
     }
 
     protected void updateWrapper(String result) {

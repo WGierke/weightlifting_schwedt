@@ -21,6 +21,8 @@ public class News extends UpdateableWrapper {
 
     public static ArrayList<NewsItem> itemsToMark = new ArrayList<NewsItem>();
 
+    private final String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/news.json";
+
     public static ArrayList<NewsItem> casteArray(ArrayList<UpdateableItem> array) {
         ArrayList<NewsItem> convertedItems = new ArrayList<NewsItem>();
         for (int i = 0; i < array.size(); i++) {
@@ -58,7 +60,7 @@ public class News extends UpdateableWrapper {
     }
 
     public void update() {
-        super.update("https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/news.json", fileName, "News");
+        super.update(UPDATE_URL, fileName, "News");
     }
 
     protected void updateWrapper(String result) {

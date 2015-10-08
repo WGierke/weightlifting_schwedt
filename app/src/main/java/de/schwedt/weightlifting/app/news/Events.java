@@ -21,6 +21,8 @@ public class Events extends UpdateableWrapper {
 
     public static ArrayList<EventItem> itemsToMark = new ArrayList<EventItem>();
 
+    private final String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/events.json";
+
     public static ArrayList<EventItem> casteArray(ArrayList<UpdateableItem> array) {
         ArrayList<EventItem> convertedItems = new ArrayList<EventItem>();
         for (int i = 0; i < array.size(); i++) {
@@ -61,7 +63,7 @@ public class Events extends UpdateableWrapper {
     }
 
     public void update() {
-        super.update("https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/events.json", fileName, "Events");
+        super.update(UPDATE_URL, fileName, "Events");
     }
 
     protected void updateWrapper(String result) {
