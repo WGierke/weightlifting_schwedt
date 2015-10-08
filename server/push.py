@@ -31,7 +31,7 @@ else:
     sys.exit()
 
 push_messages = [line for line in push_messages if line != '']
-print "Push Messages: " + push_messages
+print "Push Messages: " + push_messages.join('\n')
 receivers = []
 
 #Example Message: 'New Article#Victory in Görlitz#Push the button ...#4'
