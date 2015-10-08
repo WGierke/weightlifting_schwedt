@@ -1,1 +1,53 @@
-[{"table": [{"club": "AC Mei\u00dfen", "max_score": "0.0", "score": "0 : 0", "place": "1", "cardinal_points": "0 : 0"}, {"club": "Chemnitzer AC", "max_score": "0.0", "score": "0 : 0", "place": "2", "cardinal_points": "0 : 0"}, {"club": "SSV Samswegen", "max_score": "0.0", "score": "0 : 0", "place": "3", "cardinal_points": "0 : 0"}, {"club": "Berliner TSC", "max_score": "0.0", "score": "0 : 0", "place": "4", "cardinal_points": "0 : 0"}, {"club": "SG Fortschritt Eibau", "max_score": "0.0", "score": "0 : 0", "place": "5", "cardinal_points": "0 : 0"}, {"club": "Athletenteam Vogtland", "max_score": "0.0", "score": "0 : 0", "place": "6", "cardinal_points": "0 : 0"}, {"club": "Oder-Sund-Team ", "max_score": "0.0", "score": "0 : 0", "place": "7", "cardinal_points": "0 : 0"}]}]
+[{
+    "table": [
+        {
+            "cardinal_points": "0 : 0",
+            "club": "Berliner TSC",
+            "max_score": "0.0",
+            "place": "1",
+            "score": "0 : 0"
+        },
+        {
+            "cardinal_points": "0 : 0",
+            "club": "SG Fortschritt Eibau",
+            "max_score": "0.0",
+            "place": "2",
+            "score": "0 : 0"
+        },
+        {
+            "cardinal_points": "0 : 0",
+            "club": "Athletenteam Vogtland",
+            "max_score": "0.0",
+            "place": "3",
+            "score": "0 : 0"
+        },
+        {
+            "cardinal_points": "0 : 0",
+            "club": "Oder-Sund-Team ",
+            "max_score": "0.0",
+            "place": "4",
+            "score": "0 : 0"
+        },
+        {
+            "cardinal_points": "0 : 0",
+            "club": "AC Mei\u00dfen",
+            "max_score": "0.0",
+            "place": "5",
+            "score": "0 : 0"
+        },
+        {
+            "cardinal_points": "0 : 0",
+            "club": "Chemnitzer AC",
+            "max_score": "0.0",
+            "place": "6",
+            "score": "0 : 0"
+        },
+        {
+            "cardinal_points": "0 : 0",
+            "club": "SSV Samswegen",
+            "max_score": "0.0",
+            "place": "7",
+            "score": "0 : 0"
+        }
+    ]
+}]

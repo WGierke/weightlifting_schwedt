@@ -1,1 +1,28 @@
-[{"past_competitions": [{"guest": "AC Mei\u00dfen", "url": "https://www.iat.uni-leipzig.de/datenbanken/blgew1516/start.php?pid='123'&protokoll=1&wkid=AB18EC4B801341AFABF8DE9D840D015E", "score": "565.4 : 496.4", "location": "Schwedt/Stralsund", "date": "26.09.2015", "home": "Oder-Sund-Team "}, {"guest": "Chemnitzer AC", "url": "https://www.iat.uni-leipzig.de/datenbanken/blgew1516/start.php?pid='123'&protokoll=1&wkid=DA7732D95D6342DBAF45C069D50FA3C4", "score": "590.2 : 656.6", "location": "Eibau", "date": "26.09.2015", "home": "SG Fortschritt Eibau"}, {"guest": "Athletenteam Vogtland", "url": "https://www.iat.uni-leipzig.de/datenbanken/blgew1516/start.php?pid='123'&protokoll=1&wkid=71FE462665CA484BA1CDE3EC2752C790", "score": "759.8 : 598.0", "location": "Berlin", "date": "26.09.2015", "home": "Berliner TSC"}]}]
+[{
+    "past_competitions": [
+        {
+            "date": "26.09.2015",
+            "guest": "AC Mei\u00dfen",
+            "home": "Oder-Sund-Team ",
+            "location": "Schwedt/Stralsund",
+            "score": "565.4 : 496.4",
+            "url": "https://www.iat.uni-leipzig.de/datenbanken/blgew1516/start.php?pid='123'&protokoll=1&wkid=AB18EC4B801341AFABF8DE9D840D015E"
+        },
+        {
+            "date": "26.09.2015",
+            "guest": "Chemnitzer AC",
+            "home": "SG Fortschritt Eibau",
+            "location": "Eibau",
+            "score": "590.2 : 656.6",
+            "url": "https://www.iat.uni-leipzig.de/datenbanken/blgew1516/start.php?pid='123'&protokoll=1&wkid=DA7732D95D6342DBAF45C069D50FA3C4"
+        },
+        {
+            "date": "26.09.2015",
+            "guest": "Athletenteam Vogtland",
+            "home": "Berliner TSC",
+            "location": "Berlin",
+            "score": "759.8 : 598.0",
+            "url": "https://www.iat.uni-leipzig.de/datenbanken/blgew1516/start.php?pid='123'&protokoll=1&wkid=71FE462665CA484BA1CDE3EC2752C790"
+        }
+    ]
+}]

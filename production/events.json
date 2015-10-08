@@ -1,1 +1,69 @@
-[{"events": [{"date": "19. September", "location": "Rovaniemi/FIN", "title": "WM Masters"}, {"date": "19. September", "location": "Schwedt", "title": "2. Durchgang Athletikliga"}, {"date": "26. September", "location": "", "title": "1./2. Bundesliga"}, {"date": "10. Oktober", "location": "Frankfurt/Oder", "title": "LM Jugend bis Masters"}, {"date": "17. Oktober", "location": "", "title": "1./2. Bundesliga"}, {"date": "31. Oktober", "location": "Chemnitz", "title": "DM M\u00e4nner und Frauen"}, {"date": "07. November", "location": "", "title": "1./2. Bundesliga"}, {"date": "21. November", "location": "Rodewisch", "title": "Sch\u00fclerpokal der Deutschen Gewichtheberjugend"}, {"date": "28. November", "location": "Frankfurt/Oder", "title": "Internationale Deutsche Jugend-Mehrkampfmeisterschaft / Oderpokal"}, {"date": "28. November", "location": "USA", "title": "WM M\u00e4nner und Frauen"}, {"date": "05. Dezember", "location": "", "title": "Landesliga"}, {"date": "12. Dezember", "location": "Schwedt", "title": "Finale Athletikliga"}, {"date": "19. Dezember", "location": "", "title": "1./2. Bundesliga"}]}]
+[{
+    "events": [
+        {
+            "date": "19. September",
+            "location": "Rovaniemi/FIN",
+            "title": "WM Masters"
+        },
+        {
+            "date": "19. September",
+            "location": "Schwedt",
+            "title": "2. Durchgang Athletikliga"
+        },
+        {
+            "date": "26. September",
+            "location": "",
+            "title": "1./2. Bundesliga"
+        },
+        {
+            "date": "10. Oktober",
+            "location": "Frankfurt/Oder",
+            "title": "LM Jugend bis Masters"
+        },
+        {
+            "date": "17. Oktober",
+            "location": "",
+            "title": "1./2. Bundesliga"
+        },
+        {
+            "date": "31. Oktober",
+            "location": "Chemnitz",
+            "title": "DM M\u00e4nner und Frauen"
+        },
+        {
+            "date": "07. November",
+            "location": "",
+            "title": "1./2. Bundesliga"
+        },
+        {
+            "date": "21. November",
+            "location": "Rodewisch",
+            "title": "Sch\u00fclerpokal der Deutschen Gewichtheberjugend"
+        },
+        {
+            "date": "28. November",
+            "location": "Frankfurt/Oder",
+            "title": "Internationale Deutsche Jugend-Mehrkampfmeisterschaft / Oderpokal"
+        },
+        {
+            "date": "28. November",
+            "location": "USA",
+            "title": "WM M\u00e4nner und Frauen"
+        },
+        {
+            "date": "05. Dezember",
+            "location": "",
+            "title": "Landesliga"
+        },
+        {
+            "date": "12. Dezember",
+            "location": "Schwedt",
+            "title": "Finale Athletikliga"
+        },
+        {
+            "date": "19. Dezember",
+            "location": "",
+            "title": "1./2. Bundesliga"
+        }
+    ]
+}]
