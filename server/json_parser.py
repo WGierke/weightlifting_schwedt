@@ -156,7 +156,7 @@ def create_news_file():
         old_news = f.read()
 
     news_dict["articles"] = articles
-    json_news = json.dumps(news_dict)
+    json_news = json.dumps(news_dict, sort_keys=True, indent=4, separators=(',', ': '))
     news_dict_json = "[" + json_news + "]"
 
     if sorted(old_news.decode('utf-8')) != sorted(news_dict_json.decode('utf-8')):
@@ -205,7 +205,7 @@ def create_events_file():
         old_events = f.read()
 
     events_dict["events"] = final_events
-    json_events = json.dumps(events_dict)
+    json_events = json.dumps(events_dict, sort_keys=True, indent=4, separators=(',', ': '))
     events_dict_json = "[" + json_events + "]"
 
     if sorted(old_events.decode('utf-8')) != sorted(events_dict_json.decode('utf-8')):
@@ -264,7 +264,7 @@ def create_competitions_file():
         old_competitions = f.read()
 
     competitions_dict["past_competitions"] = final_competitions
-    json_competitions = json.dumps(competitions_dict, encoding='latin1')
+    json_competitions = json.dumps(competitions_dict, encoding='latin1', sort_keys=True, indent=4, separators=(',', ': '))
     competitions_dict_json = "[" + json_competitions + "]"
 
     if sorted(competitions_dict_json.decode('utf-8')) != sorted(old_competitions.decode('utf-8')):
@@ -316,7 +316,7 @@ def create_table_file():
         old_table = f.read()
 
     table_dict["table"] = final_entries
-    json_table = json.dumps(table_dict, encoding='latin1')
+    json_table = json.dumps(table_dict, encoding='latin1', sort_keys=True, indent=4, separators=(',', ': '))
     table_dict_json = "[" + json_table + "]"
 
     if sorted(old_table.decode('utf-8')) != sorted(table_dict_json.decode('utf-8')):
@@ -376,7 +376,7 @@ def create_galleries_file():
         old_galleries = f.read()
 
     gallery_dict["galleries"] = final_entries
-    json_galleries = json.dumps(gallery_dict)
+    json_galleries = json.dumps(gallery_dict, sort_keys=True, indent=4, separators=(',', ': '))
     galleries_dict_json = "[" + json_galleries + "]"
 
     if sorted(old_galleries.decode('utf-8')) != sorted(galleries_dict_json.decode('utf-8')):
