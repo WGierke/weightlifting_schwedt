@@ -7,9 +7,9 @@
         <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>
     </style>
 
-    <style name="MyActionBar"
-        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">#153387</item><!-- blue ActionBar -->
+    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">#153387</item>
+        <!-- blue ActionBar -->
         <item name="android:icon">@drawable/icon_gewichtheben_schwedt</item>
     </style>
 
