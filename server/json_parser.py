@@ -3,9 +3,10 @@
 import urllib2
 import re
 import json
+import codecs
 from bs4 import BeautifulSoup
 
-iat_url = "https://www.iat.uni-leipzig.de/datenbanken/blgew1415/"
+iat_url = "https://www.iat.uni-leipzig.de/datenbanken/blgew1516/"
 
 # Helper functions
 
@@ -76,6 +77,20 @@ def add_gallery_images(gallery_entry):
         gallery_entry["images"] = total_links
         return gallery_entry
 
+def get_additional_entries(old_array, new_array):
+    new_entries = []
+    for new_entry in new_array:
+        if not new_entry in old_array:
+            new_entries.append(new_entry)
+    return new_entries
+
+def save_push_message(headline, message_array, notification_id):
+    msg = headline + "#" + "|".join(message_array) + u"#Dr\u00fccke in der App auf den \u21BB Knopf, um Updates herunterzuladen.#" + str(notification_id) + "\n"
+    push_file = codecs.open('server/push_messages.txt','a','utf-8')
+    push_file.write(msg)
+    push_file.close()
+
+
 # Main functions
 
 
@@ -133,13 +148,29 @@ def create_news_file():
             error_occured = True
             print 'Error while downloading news ', e
             return
-    if not error_occured:
-        news_dict["articles"] = articles
-        json_news = json.dumps(news_dict)
-        json_news = "[" + json_news.replace("\u00df", "ß").replace("\u00e4", "ä").replace("\u00fc", "ü") + "]"
+
+    if error_occured:
+        return
+
+    with open("production/news.json", "r") as f:
+        old_news = f.read()
+
+    news_dict["articles"] = articles
+    json_news = json.dumps(news_dict, sort_keys=True, indent=4, separators=(',', ': '))
+    news_dict_json = "[" + json_news + "]"
+
+    if sorted(old_news.decode('utf-8')) != sorted(news_dict_json.decode('utf-8')):
         f = open("production/news.json", "w")
-        f.write(json_news)
-        f.close()
+        f.write(news_dict_json.decode('utf-8'))
+        f.close()    
+
+        push_messages = []
+        old_news_dict = json.loads(old_news, encoding='utf-8')[0]["articles"]
+        new_news_dict = json.loads(news_dict_json, encoding='utf-8')[0]["articles"]
+
+        for article in get_additional_entries(old_news_dict, new_news_dict):
+            push_messages.append(article["heading"])
+        save_push_message("Neue Artikel", push_messages, 0)
 
 
 def create_events_file():
@@ -167,15 +198,32 @@ def create_events_file():
             event = month_events[j].replace('&#8221;', '"').replace('&#8220;', '"').replace('&#8211;', '-').replace('\xa0', '').replace('\xc2', '')
             event_entry["date"] = event.split(".")[0] + ". " + month
             event_entry["location"] = event.split('(')[1].split(')')[0] if event.find(")") != -1 else ''
-            event_entry["title"] = re.sub('\d+\.\s+', '', event.split("</p>")[0], 1)
+            event_entry["title"] = re.sub('\d+\.\s+', '', event.split("</p>")[0], 1).split(' (')[0]
             final_events.append(event_entry)
 
+    with open("production/events.json", "r") as f:
+        old_events = f.read()
+
     events_dict["events"] = final_events
-    json_events = json.dumps(events_dict)
-    events_dict = "[" + json_events + "]"
-    f = open("production/events.json", "w")
-    f.write(events_dict)
-    f.close()
+    json_events = json.dumps(events_dict, sort_keys=True, indent=4, separators=(',', ': '))
+    events_dict_json = "[" + json_events + "]"
+
+    if sorted(old_events.decode('utf-8')) != sorted(events_dict_json.decode('utf-8')):
+        f = open("production/events.json", "w")
+        f.write(events_dict_json.decode('utf-8'))
+        f.close()
+
+        push_messages = []
+        old_events_dict = json.loads(old_events, encoding='utf-8')[0]["events"]
+        new_events_dict = json.loads(events_dict_json, encoding='utf-8')[0]["events"]
+
+        for event in get_additional_entries(old_events_dict, new_events_dict):
+            if event["location"]:
+                push_messages.append(event["title"] + " in " + event["location"])
+            else:
+                push_messages.append(event["title"] + " am " + event["date"])
+        save_push_message("Neue Veranstaltungen", push_messages, 1)
+
 
 def create_competitions_file():
     """Save past competitions in past_competitions.json"""
@@ -188,9 +236,10 @@ def create_competitions_file():
         print 'Error while downloading competitions ', e
         error_occured = True
         return
-    re_competition_entry = re.compile(ur'(?<=class=font4>).*(?=<\/TD>)')
+    re_competition_entry = re.compile(ur'(?<=class=font4>).*(?=[\r\n]?<\/TD>)')
     re_href = re.compile(ur'(?<=href=)[^>]*(?=>)')
     competition_entries = re.findall(re_competition_entry, competitions)
+    competition_entries = [w.replace('\r', '') for w in competition_entries]
 
     competitions_dict = {}
     final_competitions = []
@@ -207,21 +256,31 @@ def create_competitions_file():
 
         final_competitions.append(entry)
 
+    if len(final_competitions) == 0:
+        return
+
     # Handle swapping of competitions due to IAT database
     with open("production/past_competitions.json", "r") as f:
         old_competitions = f.read()
-    old_competitions = get_competitions_array(old_competitions)
 
     competitions_dict["past_competitions"] = final_competitions
-    json_competitions = json.dumps(competitions_dict, encoding='latin1')
-    json_competitions = "[" + json_competitions + "]"
+    json_competitions = json.dumps(competitions_dict, encoding='latin1', sort_keys=True, indent=4, separators=(',', ': '))
+    competitions_dict_json = "[" + json_competitions + "]"
 
-    new_competitions = get_competitions_array(json_competitions)
-    if sorted(new_competitions) != sorted(old_competitions):
-        f = open("production/past_competitions.json", "w")
-        f.write(json_competitions)
-        f.close()
+    if sorted(competitions_dict_json.decode('utf-8')) != sorted(old_competitions.decode('utf-8')):
         print "Competitions: Change detected"
+        f = open("production/past_competitions.json", "w")
+        f.write(competitions_dict_json.decode('utf-8'))
+        f.close() 
+
+        push_messages = []
+        old_competitions_dict = json.loads(old_competitions, encoding='utf-8')[0]["past_competitions"]
+        new_competitions_dict = json.loads(competitions_dict_json, encoding='utf-8')[0]["past_competitions"]
+
+        for competition in get_additional_entries(old_competitions_dict, new_competitions_dict):
+            push_messages.append(competition["home"] + " vs. " + competition["guest"] + " - " + competition["score"])
+        save_push_message("Neue Wettkampfergebnisse", push_messages, 2)
+
 
 def create_table_file():
     """Save table entries in table.json"""
@@ -234,8 +293,9 @@ def create_table_file():
         print 'Error while downloading table ', e
         error_occured = True
         return
-    re_table_entry = re.compile(ur'(?<=class=font4>).*(?=<\/TD>)')
+    re_table_entry = re.compile(ur'(?<=class=font4>).*(?=[\r\n]?<\/TD>)')
     table_entries = re.findall(re_table_entry, table)
+    table_entries = [w.replace('\r', '') for w in table_entries]
 
     table_dict = {}
     final_entries = []
@@ -249,13 +309,28 @@ def create_table_file():
         entry["cardinal_points"] = table_entries[i+3]
         final_entries.append(entry)
 
-    table_dict["table"] = final_entries
-    json_table = json.dumps(table_dict, encoding='latin1')
-    json_table = "[" + json_table + "]"
-    f = open("production/table.json", "w")
-    f.write(json_table)
-    f.close()
+    if len(final_entries) == 0:
+        return
 
+    with open("production/table.json", "r") as f:
+        old_table = f.read()
+
+    table_dict["table"] = final_entries
+    json_table = json.dumps(table_dict, encoding='latin1', sort_keys=True, indent=4, separators=(',', ': '))
+    table_dict_json = "[" + json_table + "]"
+
+    if sorted(old_table.decode('utf-8')) != sorted(table_dict_json.decode('utf-8')):
+        f = open("production/table.json", "w")
+        f.write(table_dict_json.decode('utf-8'))
+        f.close()
+
+        push_messages = []
+        old_table_dict = json.loads(old_table, encoding='utf-8')[0]["table"]
+        new_table_dict = json.loads(table_dict_json, encoding='utf-8')[0]["table"]
+
+        for table_entry in get_additional_entries(old_table_dict, new_table_dict):
+            push_messages.append(table_entry["place"] + ". " + table_entry["club"])
+        save_push_message("Neue Tabellenergebnisse", push_messages, 3)
 
 def create_galleries_file():
     """Save gallery images in galleries.json"""
@@ -263,45 +338,60 @@ def create_galleries_file():
     try:
         print "Parsing galleries ..."
         page = urllib2.urlopen("http://www.gewichtheben-schwedt.de").read().split('class="page_item page-item-28 page_item_has_children">')[1].split("javascript:void(0);")[0]
-        re_gallery_link = re.compile(ur'(?<=href=").*(?=<\/a>)')
-
-        gallery_links = re.findall(re_gallery_link, page)[1:]
-
-        gallery_dict = {}
-        final_entries = []
-
-        # Check if a new gallery appeared.
-        first_gallery_link = "http://gewichtheben.blauweiss65-schwedt.de/index.php/nggallery/page/1?" + gallery_links[0].split('">')[0].split("?")[1]
-        with open('production/galleries.json') as galleries_json:
-            old_json = json.load(galleries_json)
-
-        # Cancel the process if the first gallery is already saved.
-        if first_gallery_link == old_json[0]["galleries"][0]["url"]:
-            print "No new galleries"
-            return
-
-        for i in range(len(gallery_links)):
-            gallery_entry = {}
-            gallery_entry["url"] = gallery_links[i].split('">')[0]
-            gallery_entry["title"] = gallery_links[i].split('">')[1].replace('&#8211;', '-')
-            print gallery_entry["title"]
-            first_page_url = "http://gewichtheben.blauweiss65-schwedt.de/index.php/nggallery/page/1?" + gallery_entry["url"].split("?")[1]
-            gallery_entry["url"] = first_page_url
-
-            gallery_entry = add_gallery_images(gallery_entry)
-
-            final_entries.append(gallery_entry)
-
-        gallery_dict["galleries"] = final_entries
-        json_galleries = json.dumps(gallery_dict)
-        json_galleries = "[" + json_galleries + "]"
-        f = open("production/galleries.json", "w")
-        f.write(json_galleries)
-        f.close()
     except Exception, e:
         print 'Error while downloading galleries ', e
         error_occured = True
         return
+
+    re_gallery_link = re.compile(ur'(?<=href=").*(?=<\/a>)')
+
+    gallery_links = re.findall(re_gallery_link, page)[1:]
+
+    gallery_dict = {}
+    final_entries = []
+
+    # Check if a new gallery appeared.
+    first_gallery_link = "http://gewichtheben.blauweiss65-schwedt.de/index.php/nggallery/page/1?" + gallery_links[0].split('">')[0].split("?")[1]
+    with open('production/galleries.json') as galleries_json:
+        old_json = json.load(galleries_json)
+
+    # Cancel the process if the first gallery is already saved.
+    if first_gallery_link == old_json[0]["galleries"][0]["url"]:
+        print "No new galleries"
+        return
+
+    for i in range(len(gallery_links)):
+        gallery_entry = {}
+        gallery_entry["url"] = gallery_links[i].split('">')[0]
+        gallery_entry["title"] = gallery_links[i].split('">')[1].replace('&#8211;', '-')
+        print gallery_entry["title"]
+        first_page_url = "http://gewichtheben.blauweiss65-schwedt.de/index.php/nggallery/page/1?" + gallery_entry["url"].split("?")[1]
+        gallery_entry["url"] = first_page_url
+
+        gallery_entry = add_gallery_images(gallery_entry)
+
+        final_entries.append(gallery_entry)
+
+    with open("production/galleries.json", "r") as f:
+        old_galleries = f.read()
+
+    gallery_dict["galleries"] = final_entries
+    json_galleries = json.dumps(gallery_dict, sort_keys=True, indent=4, separators=(',', ': '))
+    galleries_dict_json = "[" + json_galleries + "]"
+
+    if sorted(old_galleries.decode('utf-8')) != sorted(galleries_dict_json.decode('utf-8')):
+        f = open("production/galleries.json", "w")
+        f.write(galleries_dict_json.decode('utf-8'))
+        f.close()
+
+        push_messages = []
+        old_galleries_dict = json.loads(old_galleries, encoding='utf-8')[0]["galleries"]
+        new_galleries_dict = json.loads(galleries_dict_json, encoding='utf-8')[0]["galleries"]
+
+        for gallery_entry in get_additional_entries(old_galleries_dict, new_galleries_dict):
+            push_messages.append(gallery_entry["title"])
+        save_push_message("Neue Gallerie", push_messages, 4)
+
 
 if __name__ == '__main__':
     error_occured = False

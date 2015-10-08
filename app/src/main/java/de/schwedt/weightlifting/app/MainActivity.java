@@ -1,8 +1,13 @@
 package de.schwedt.weightlifting.app;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -18,14 +23,21 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.parse.Parse;
+import com.parse.ParseAnalytics;
+import com.parse.ParseCrashReporting;
+
 import java.util.ArrayList;
 
 import de.schwedt.weightlifting.app.buli.Competitions;
 import de.schwedt.weightlifting.app.buli.Table;
 import de.schwedt.weightlifting.app.buli.Team;
 import de.schwedt.weightlifting.app.gallery.Galleries;
+import de.schwedt.weightlifting.app.helper.Keys;
 import de.schwedt.weightlifting.app.news.Events;
 import de.schwedt.weightlifting.app.news.News;
+import de.schwedt.weightlifting.app.service.GCMPreferences;
+import de.schwedt.weightlifting.app.service.RegistrationIntentService;
 
 public class MainActivity extends FragmentActivity {
 
@@ -47,6 +59,7 @@ public class MainActivity extends FragmentActivity {
     // used to store app title
     private CharSequence mTitle;
     private NavDrawerListAdapter adapter;
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +79,11 @@ public class MainActivity extends FragmentActivity {
         mTitle = mDrawerTitle = getTitle();
 
         initNavigation(savedInstanceState);
+
+        Parse.enableLocalDatastore(this);
+        Parse.initialize(this, Keys.CONFIG_APP_ID, Keys.CONFIG_CLIENT_KEY);
+
+        ParseAnalytics.trackAppOpenedInBackground(getIntent());
     }
 
     private void initNavigation(Bundle savedInstanceState) {
@@ -115,6 +133,18 @@ public class MainActivity extends FragmentActivity {
             // on first time display view for first nav item
             showFragment(FRAGMENT_HOME);
         }
+
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                SharedPreferences sharedPreferences =
+                        PreferenceManager.getDefaultSharedPreferences(context);
+                boolean sentToken = sharedPreferences
+                        .getBoolean(GCMPreferences.SENT_TOKEN_TO_SERVER, false);
+            }
+        };
+        Intent intent = new Intent(this, RegistrationIntentService.class);
+        startService(intent);
     }
 
     @Override
@@ -126,7 +156,7 @@ public class MainActivity extends FragmentActivity {
 
     private void showAsyncUpdateResults() {
         //Log
-        Log.d("update", app.news.finishedUpdate + " " + app.events.finishedUpdate + " " + app.team.finishedUpdate + " " + app.competitions.finishedUpdate + " " + app.table.finishedUpdate + " " + app.galleries.finishedUpdate);
+        Log.d(WeightliftingApp.TAG, app.news.finishedUpdate + " " + app.events.finishedUpdate + " " + app.team.finishedUpdate + " " + app.competitions.finishedUpdate + " " + app.table.finishedUpdate + " " + app.galleries.finishedUpdate);
         // if one update failed show the number of new elements until now and return
         if (app.news.updateFailed || app.events.updateFailed || app.team.updateFailed || app.competitions.updateFailed || app.table.updateFailed || app.galleries.updateFailed) {
             showCountedNewElements(false);
@@ -181,6 +211,8 @@ public class MainActivity extends FragmentActivity {
                         app.updateData();
                         showAsyncUpdateResults();
                     } catch (Exception e) {
+                        Log.d(app.TAG, "Error while updating all");
+                        e.printStackTrace();
                         Toast.makeText(getApplicationContext(), R.string.updated_all_unsuccessfully, Toast.LENGTH_LONG).show();
                     }
                 }
