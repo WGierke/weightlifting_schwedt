@@ -32,12 +32,12 @@ else:
 
 push_messages = [line for line in push_messages if line != '']
 print "Push Messages: " + '\n'.join(push_messages)
-receivers = []
 
 #Example Message: 'New Article#Victory in Görlitz#Push the button ...#4'
 for line in push_messages:
     data = {'update': line.decode('utf-8')}
     sent_requests = 0
+    receivers = []
     for obj in gcm_token_objects:
         reg_id = obj["token"]
         if not reg_id in receivers:
