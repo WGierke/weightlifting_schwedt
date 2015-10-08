@@ -356,7 +356,7 @@ def create_galleries_file():
         old_json = json.load(galleries_json)
 
     # Cancel the process if the first gallery is already saved.
-    if first_gallery_link == old_json["galleries"][0]["url"]:
+    if first_gallery_link == old_json[0]["galleries"][0]["url"]:
         print "No new galleries"
         return
 
