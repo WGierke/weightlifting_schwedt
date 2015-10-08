@@ -50,7 +50,7 @@ public class MyGcmListenerService extends com.google.android.gms.gcm.GcmListener
             Log.d(WeightliftingApp.TAG, parts[1]);
             Log.d(WeightliftingApp.TAG, parts[2]);
             Log.d(WeightliftingApp.TAG, parts[3]);
-            Looper.prepare();
+//            Looper.prepare();
             UiHelper.showNotification(parts[0], parts[1], parts[2], Integer.parseInt(parts[3]), this);
         }
     }
