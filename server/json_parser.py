@@ -394,13 +394,12 @@ def create_galleries_file():
 
 
 if __name__ == '__main__':
-    save_push_message("Headline", ["Test"], 3)
-    # error_occured = False
-    # create_news_file()
-    # creating_functions = [create_events_file,
-    #                       create_competitions_file,
-    #                       create_table_file,
-    #                       create_galleries_file]
-    # for func in creating_functions:
-    #     if not error_occured:
-    #         func()
+    error_occured = False
+    create_news_file()
+    creating_functions = [create_events_file,
+                          create_competitions_file,
+                          create_table_file,
+                          create_galleries_file]
+    for func in creating_functions:
+        if not error_occured:
+            func()
