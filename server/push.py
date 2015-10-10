@@ -19,16 +19,16 @@ rest_key = config.get("parse", "X-Parse-REST-API-Key")
 gcm_key = config.get("gcm", "API-Key")
 push_messages_file = "server/push_messages.txt"
 
-registration_ids_response = send_parse_api_request("get", "https://api.parse.com/1/classes/GcmToken", application_id, rest_key)
-gcm_token_objects = json.loads(registration_ids_response)["results"]
-
-gcm = GCM(gcm_key)
-
 if os.path.isfile(push_messages_file):
     push_messages = open(push_messages_file,'r').read().split('\n')
 else:
     print "There is no file containing push messages that should be delivered."
     sys.exit()
+
+registration_ids_response = send_parse_api_request("get", "https://api.parse.com/1/classes/GcmToken", application_id, rest_key)
+gcm_token_objects = json.loads(registration_ids_response)["results"]
+
+gcm = GCM(gcm_key)
 
 push_messages = [line for line in push_messages if line != '']
 print "Push Messages: " + '\n'.join(push_messages)
