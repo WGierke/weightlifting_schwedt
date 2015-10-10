@@ -2,20 +2,36 @@
    {
       "team":[
          {
-            "name":"Gina Holzäpfel",
-            "year":"1995",
-            "snatching":"73",
-            "jerking":"82",
-            "max_score":"100",
-            "image": "http://gewichtheben.blauweiss65-schwedt.de/wp-content/uploads/2009/02/PicsArt_1356893928449-Kopie1-300x145.jpg"
+            "name":"Arkadiusz Michalski",
+            "year":"1990",
+            "snatching":"175",
+            "jerking":"227",
+            "max_score":"195",
+            "image": "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/team_pictures/Arkadiusz.jpg"
          },
          {
-            "name":"Lisa Marie Schweizer",
-            "year":"1995",
-            "snatching":"78",
-            "jerking":"91",
-            "max_score":"113",
-            "image": "http://gewichtheben.blauweiss65-schwedt.de/wp-content/uploads/2015/04/Lisa_Profil.jpg"
+            "name":"Roman Klis",
+            "year":"1988",
+            "snatching":"150",
+            "jerking":"187",
+            "max_score":"169",
+            "image":""
+         },
+         {
+            "name":"Thomas Rosol",
+            "year":"1989",
+            "snatching":"130",
+            "jerking":"156",
+            "max_score":"135",
+            "image": "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/team_pictures/Thomas.jpg"
+         },
+         {
+            "name":"Eik Lessing",
+            "year":"1992",
+            "snatching":"119",
+            "jerking":"147",
+            "max_score":"102",
+            "image": "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/team_pictures/Eik.jpg"
          },
          {
             "name":"Yasin Yüksel",
@@ -41,7 +57,7 @@
             "max_score":"114",
             "image": "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/team_pictures/Jon.jpg"
          },
-    {
+         {
             "name":"Martin Adler",
             "year":"1999",
             "snatching":"102",
@@ -60,9 +76,9 @@
          {
             "name":"Ken Fischer",
             "year":"1997",
-            "snatching":"98",
+            "snatching":"102",
             "jerking":"128",
-            "max_score":"85",
+            "max_score":"91",
             "image": "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/team_pictures/Ken.jpg"
          },
          {
@@ -72,30 +88,6 @@
             "jerking":"132",
             "max_score":"84",
             "image": ""
-         },
-         {
-            "name":"Thomas Rosol",
-            "year":"1989",
-            "snatching":"120",
-            "jerking":"145",
-            "max_score":"135",
-            "image": "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/team_pictures/Thomas.jpg"
-         },
-         {
-            "name":"Arkadiusz Michalski",
-            "year":"1990",
-            "snatching":"175",
-            "jerking":"222",
-            "max_score":"193",
-            "image": "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/team_pictures/Arkadiusz.jpg"
-         },
-         {
-            "name":"Eik Lessing",
-            "year":"1992",
-            "snatching":"115",
-            "jerking":"147",
-            "max_score":"102",
-            "image": "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/team_pictures/Eik.jpg"
          }
       ]
    }
