@@ -30,7 +30,7 @@ import de.schwedt.weightlifting.app.news.News;
 public class WeightliftingApp extends Application {
 
     public static final String TAG = "WeightliftingLog";
-    public static final String TEAM_NAME = "KG Schwedt-Stralsund";
+    public static final String TEAM_NAME = "Oder-Sund-Team";
     public static final int DISPLAY_DELAY = 500;
     public static Context mContext;
     public static boolean isUpdatingAll = false;
