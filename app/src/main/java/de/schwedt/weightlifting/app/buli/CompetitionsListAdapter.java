@@ -68,12 +68,12 @@ public class CompetitionsListAdapter extends BaseAdapter {
 
         TextView home = (TextView) view.findViewById(R.id.buli_competition_home);
         home.setText(items.get(position).getHome());
-        if (home.getText().equals(WeightliftingApp.TEAM_NAME))
+        if (home.getText().toString().contains(WeightliftingApp.TEAM_NAME))
             home.setText(Html.fromHtml("<u>" + home.getText() + "</u>"));
 
         TextView guest = (TextView) view.findViewById(R.id.buli_competition_guest);
         guest.setText(items.get(position).getGuest());
-        if (guest.getText().equals(WeightliftingApp.TEAM_NAME))
+        if (guest.getText().toString().contains(WeightliftingApp.TEAM_NAME))
             guest.setText(Html.fromHtml("<u>" + guest.getText() + "</u>"));
 
         TextView score = (TextView) view.findViewById(R.id.buli_competition_score);
