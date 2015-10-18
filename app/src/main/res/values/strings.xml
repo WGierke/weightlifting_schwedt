@@ -17,9 +17,6 @@
         <item quantity="other">%d neue/geänderte Elemente gefunden</item>
     </plurals>
     <string name="connected">Internetverbindung gefunden</string>
-    <string name="placeholder_long">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</string>
-    <string name="placeholder_short">At veroeos si</string>
-
 
     <!-- Navigation -->
     <string name="nav_home">Startseite</string>
@@ -105,9 +102,9 @@
     <!-- Contact -->
     <string name="contact_club">TSV Blau-Weiß 65 Schwedt e.V.</string>
     <string name="contact_department_chief">Abteilungsleiter Gewichtheben</string>
-    <string name="contact_department_name">Thorsten Teicher</string>
+    <string name="contact_department_name">Roland Taubert</string>
     <string name="contact_email">Email</string>
-    <string name="contact_department_email">t.teichert@swschwedt.de</string>
+    <string name="contact_department_email">taubert@ospff.de</string>
     <string name="contact_competition_site_headline">Trainings- und Wettkampfstätte</string>
     <string name="contact_competition_site_address">Sport- und Freizeitzentrum Külzviertel\nDr.-W.-Külzviertel 2b\n16303 Schwedt/Oder\nTel./Fax (03332) 419967</string>
     <string name="contact_competition_email">info@gewichtheben-schwedt.de</string>
