@@ -1,53 +1,53 @@
 [{
     "table": [
         {
-            "cardinal_points": "0 : 0",
-            "club": "Berliner TSC",
-            "max_score": "0.0",
-            "place": "1",
-            "score": "0 : 0"
-        },
-        {
-            "cardinal_points": "0 : 0",
-            "club": "SG Fortschritt Eibau",
-            "max_score": "0.0",
-            "place": "2",
-            "score": "0 : 0"
-        },
-        {
-            "cardinal_points": "0 : 0",
-            "club": "Athletenteam Vogtland",
-            "max_score": "0.0",
-            "place": "3",
-            "score": "0 : 0"
-        },
-        {
-            "cardinal_points": "0 : 0",
-            "club": "Oder-Sund-Team ",
-            "max_score": "0.0",
-            "place": "4",
-            "score": "0 : 0"
-        },
-        {
-            "cardinal_points": "0 : 0",
-            "club": "AC Mei\u00dfen",
-            "max_score": "0.0",
-            "place": "5",
-            "score": "0 : 0"
-        },
-        {
-            "cardinal_points": "0 : 0",
+            "cardinal_points": "6 : 0",
             "club": "Chemnitzer AC",
-            "max_score": "0.0",
-            "place": "6",
-            "score": "0 : 0"
+            "max_score": "847.8",
+            "place": "1",
+            "score": "1504.4 : 1266"
         },
         {
-            "cardinal_points": "0 : 0",
+            "cardinal_points": "3 : 0",
+            "club": "Berliner TSC",
+            "max_score": "759.8",
+            "place": "2",
+            "score": "759.8 : 598"
+        },
+        {
+            "cardinal_points": "3 : 3",
+            "club": "Athletenteam Vogtland",
+            "max_score": "624.6",
+            "place": "3",
+            "score": "1222.6 : 1349"
+        },
+        {
+            "cardinal_points": "3 : 3",
+            "club": "Oder-Sund-Team ",
+            "max_score": "589.2",
+            "place": "4",
+            "score": "1154.6 : 1121"
+        },
+        {
+            "cardinal_points": "2 : 4",
+            "club": "AC Mei\u00dfen",
+            "max_score": "613.0",
+            "place": "5",
+            "score": "1109.4 : 1168.6"
+        },
+        {
+            "cardinal_points": "1 : 5",
+            "club": "SG Fortschritt Eibau",
+            "max_score": "603.2",
+            "place": "6",
+            "score": "1193.4 : 1269.6"
+        },
+        {
+            "cardinal_points": "0 : 3",
             "club": "SSV Samswegen",
-            "max_score": "0.0",
+            "max_score": "675.8",
             "place": "7",
-            "score": "0 : 0"
+            "score": "675.8 : 847.8"
         }
     ]
 }]
