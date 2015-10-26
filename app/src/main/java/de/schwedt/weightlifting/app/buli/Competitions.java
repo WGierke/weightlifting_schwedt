@@ -31,14 +31,6 @@ public class Competitions extends UpdateableWrapper {
         return convertedItems;
     }
 
-    public static String getNotificationMessage() {
-        String content = "";
-        for (PastCompetition item : itemsToMark) {
-            content += item.getHome() + " vs. " + item.getGuest() + "|";
-        }
-        return content;
-    }
-
     public static void markNewItems(ArrayList<UpdateableItem> oldItems, ArrayList<UpdateableItem> newItems) {
         ArrayList<PastCompetition> oldCompetitionItems = casteArray(oldItems);
         ArrayList<PastCompetition> newCompetitionItems = casteArray(newItems);
@@ -59,7 +51,7 @@ public class Competitions extends UpdateableWrapper {
         UiHelper.refreshCounterNav(navigationPosition, subPosition, itemsToMark.size());
     }
 
-    public void update() {
+    public void refreshItems() {
         super.update(UPDATE_URL, fileName, "Competitions");
     }
 

@@ -31,14 +31,6 @@ public class Team extends UpdateableWrapper {
         return convertedItems;
     }
 
-    public static String getNotificationMessage() {
-        String content = "";
-        for (TeamMember item : itemsToMark) {
-            content += item.getName() + ": " + item.getSnatching() + "/" + item.getJerking() + " (" + item.getMaxScore() + " RP)|";
-        }
-        return content;
-    }
-
     public static void markNewItems(ArrayList<UpdateableItem> oldItems, ArrayList<UpdateableItem> newItems) {
         ArrayList<TeamMember> oldTeamItems = casteArray(oldItems);
         ArrayList<TeamMember> newTeamItems = casteArray(newItems);
@@ -59,7 +51,7 @@ public class Team extends UpdateableWrapper {
         UiHelper.refreshCounterNav(navigationPosition, subPosition, itemsToMark.size());
     }
 
-    public void update() {
+    public void refreshItems() {
         super.update(UPDATE_URL, fileName, "Team");
     }
 

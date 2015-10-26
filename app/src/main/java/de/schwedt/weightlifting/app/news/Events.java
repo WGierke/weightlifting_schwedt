@@ -31,17 +31,6 @@ public class Events extends UpdateableWrapper {
         return convertedItems;
     }
 
-    public static String getNotificationMessage() {
-        String content = "";
-        for (EventItem item : itemsToMark) {
-            if (item.getLocation().length() > 0)
-                content += item.getTitle() + " in " + item.getLocation() + "|";
-            else
-                content += item.getTitle() + "|";
-        }
-        return content;
-    }
-
     public static void markNewItems(ArrayList<UpdateableItem> oldItems, ArrayList<UpdateableItem> newItems) {
         ArrayList<EventItem> oldEventItems = casteArray(oldItems);
         ArrayList<EventItem> newEventItems = casteArray(newItems);
@@ -62,7 +51,7 @@ public class Events extends UpdateableWrapper {
         UiHelper.refreshCounterNav(navigationPosition, subPosition, itemsToMark.size());
     }
 
-    public void update() {
+    public void refreshItems() {
         super.update(UPDATE_URL, fileName, "Events");
     }
 

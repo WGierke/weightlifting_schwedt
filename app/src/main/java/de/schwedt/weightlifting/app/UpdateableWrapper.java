@@ -62,11 +62,7 @@ public abstract class UpdateableWrapper {
         // Update only if last refresh is older than 30 minutes
         long now = new Date().getTime();
 
-        if ((lastUpdate < now - TIMER_INVALIDATE)) {
-            return true;
-        } else {
-            return false;
-        }
+        return (lastUpdate < now - TIMER_INVALIDATE);
     }
 
     /**
@@ -75,6 +71,10 @@ public abstract class UpdateableWrapper {
      * @param jsonResult JSON string to parse
      */
     protected abstract void updateWrapper(String jsonResult);
+
+    protected abstract void parseFromString(String jsonString);
+
+    protected abstract void refreshItems();
 
     /**
      * Download the JSON result from the given URL to the specified file

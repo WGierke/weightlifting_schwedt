@@ -3,16 +3,10 @@ package de.schwedt.weightlifting.app;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.os.AsyncTask;
-import android.os.Looper;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.parse.Parse;
-import com.parse.ParseObject;
-import com.parse.ParseCrashReporting;
 
 import java.io.File;
 import java.util.Date;
@@ -24,7 +18,6 @@ import de.schwedt.weightlifting.app.faq.FaqItem;
 import de.schwedt.weightlifting.app.gallery.Galleries;
 import de.schwedt.weightlifting.app.helper.DataHelper;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
-import de.schwedt.weightlifting.app.helper.Keys;
 import de.schwedt.weightlifting.app.helper.MemoryCache;
 import de.schwedt.weightlifting.app.news.Events;
 import de.schwedt.weightlifting.app.news.News;
@@ -97,177 +90,69 @@ public class WeightliftingApp extends Application {
     public void updateData() {
         //Update everything and save it on storage
         Log.d(TAG, "updating everything");
-        news.update();
-        events.update();
-        team.update();
-        competitions.update();
-        table.update();
-        galleries.update();
+        news.refreshItems();
+        events.refreshItems();
+        team.refreshItems();
+        competitions.refreshItems();
+        table.refreshItems();
+        galleries.refreshItems();
+    }
+
+    public UpdateableWrapper getWrapperItems(UpdateableWrapper myInstance, Class<?> myClass) {
+        try {
+            if (myInstance == null) {
+                myInstance = (UpdateableWrapper) myClass.newInstance();
+                String fileName = myClass.getDeclaredField("fileName").toString();
+                File file = getApplicationContext().getFileStreamPath(fileName);
+                if (file.exists()) {
+                    String fileContent = DataHelper.readIntern(fileName, getApplicationContext());
+                    if (!fileContent.equals("")) {
+                        myInstance.parseFromString(fileContent);
+                        myInstance.setLastUpdate(new File(getFilesDir() + "/" + fileName).lastModified());
+                        Log.d(TAG, myClass.getName() + ": read from memory:" + fileContent);
+                    }
+                }
+
+                if (myInstance.needsUpdate() && !myInstance.isUpdating && !isUpdatingAll) {
+                    setLoading(true);
+                    myInstance.refreshItems();
+                    setLoading(false);
+                }
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Error in getWrapperItems");
+            e.printStackTrace();
+        }
+        return myInstance;
     }
 
     public News getNews() {
-        if (news == null) {
-            news = new News();
-            File file = getApplicationContext().getFileStreamPath(News.fileName);
-            if (file.exists()) {
-                String newsFileContent = DataHelper.readIntern(News.fileName, getApplicationContext());
-                if (!newsFileContent.equals("")) {
-                    news.parseFromString(newsFileContent);
-                    news.setLastUpdate(new File(getFilesDir() + "/" + News.fileName).lastModified());
-                    Log.d(TAG, "News: read from memory:" + newsFileContent);
-                }
-            }
-        }
-
-        if (news.needsUpdate() && !news.isUpdating && !isUpdatingAll) {
-            setLoading(true);
-            news.update();
-            setLoading(false);
-            if (news.updateFailed) {
-                if (isInForeground) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Neuigkeiten"), Toast.LENGTH_LONG).show();
-                }
-                news.updateFailed = false;
-            }
-        }
+        news = (News) getWrapperItems(news, News.class);
         return news;
     }
 
     public Events getEvents() {
-        if (events == null) {
-            events = new Events();
-            File file = getApplicationContext().getFileStreamPath(Events.fileName);
-            if (file.exists()) {
-                String eventsFileContent = DataHelper.readIntern(Events.fileName, getApplicationContext());
-                if (eventsFileContent != "") {
-                    events.parseFromString(eventsFileContent);
-                    events.setLastUpdate(new File(getFilesDir() + "/" + Events.fileName).lastModified());
-                    Log.d(TAG, "Events: read from memory:" + eventsFileContent);
-                }
-            }
-        }
-
-        if (events.needsUpdate() && !events.isUpdating && !isUpdatingAll) {
-            setLoading(true);
-            events.update();
-            setLoading(false);
-            if (events.updateFailed) {
-                if (isInForeground) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Veranstaltungs"), Toast.LENGTH_LONG).show();
-                }
-                events.updateFailed = false;
-            }
-        }
+        events = (Events) getWrapperItems(events, Events.class);
         return events;
     }
 
     public Team getTeam() {
-        if (team == null) {
-            team = new Team();
-            File file = getApplicationContext().getFileStreamPath(Team.fileName);
-            if (file.exists()) {
-                String teamFileContent = DataHelper.readIntern(Team.fileName, getApplicationContext());
-                if (teamFileContent != "") {
-                    team.parseFromString(teamFileContent);
-                    team.setLastUpdate(new File(getFilesDir() + "/" + Team.fileName).lastModified());
-                    Log.d(TAG, "Team: read from memory:" + teamFileContent);
-                }
-            }
-        }
-
-        if (team.needsUpdate() && !team.isUpdating && !isUpdatingAll) {
-            setLoading(true);
-            team.update();
-            setLoading(false);
-            if (team.updateFailed) {
-                if (isInForeground) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Team"), Toast.LENGTH_LONG).show();
-                }
-                team.updateFailed = false;
-            }
-        }
+        team = (Team) getWrapperItems(team, Team.class);
         return team;
     }
 
     public Competitions getCompetitions() {
-        if (competitions == null) {
-            competitions = new Competitions();
-            File file = getApplicationContext().getFileStreamPath(Competitions.fileName);
-            if (file.exists()) {
-                String competitionsFileContent = DataHelper.readIntern(Competitions.fileName, getApplicationContext());
-                if (competitionsFileContent != "") {
-                    competitions.parseFromString(competitionsFileContent);
-                    competitions.setLastUpdate(new File(getFilesDir() + "/" + Competitions.fileName).lastModified());
-                    Log.d(TAG, "Competitions: read from memory:" + competitionsFileContent);
-                }
-            }
-        }
-
-        if (competitions.needsUpdate() && !competitions.isUpdating && !isUpdatingAll) {
-            setLoading(true);
-            competitions.update();
-            setLoading(false);
-            if (competitions.updateFailed) {
-                if (isInForeground) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Wettkampf"), Toast.LENGTH_LONG).show();
-                }
-                competitions.updateFailed = false;
-            }
-        }
+        competitions = (Competitions) getWrapperItems(competitions, Competitions.class);
         return competitions;
     }
 
     public Table getTable() {
-        if (table == null) {
-            table = new Table();
-            File file = getApplicationContext().getFileStreamPath(Table.fileName);
-            if (file.exists()) {
-                String tableFileContent = DataHelper.readIntern(Table.fileName, getApplicationContext());
-                if (tableFileContent != "") {
-                    table.parseFromString(tableFileContent);
-                    table.setLastUpdate(new File(getFilesDir() + "/" + Table.fileName).lastModified());
-                    Log.d(TAG, "Table: read from memory:" + tableFileContent);
-                }
-            }
-        }
-
-        if (table.needsUpdate() && !table.isUpdating && !isUpdatingAll) {
-            setLoading(true);
-            table.update();
-            setLoading(false);
-            if (table.updateFailed) {
-                if (isInForeground) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Tabellen"), Toast.LENGTH_LONG).show();
-                }
-                table.updateFailed = false;
-            }
-        }
+        table = (Table) getWrapperItems(table, Table.class);
         return table;
     }
 
     public Galleries getGalleries() {
-        if (galleries == null) {
-            galleries = new Galleries();
-            File file = getApplicationContext().getFileStreamPath(Galleries.fileName);
-            if (file.exists()) {
-                String galleriesFileContent = DataHelper.readIntern(Galleries.fileName, getApplicationContext());
-                if (galleriesFileContent != "") {
-                    galleries.parseFromString(galleriesFileContent);
-                    galleries.setLastUpdate(new File(getFilesDir() + "/" + Galleries.fileName).lastModified());
-                    Log.d(TAG, "Galleries: read from memory:" + galleriesFileContent);
-                }
-            }
-        }
-
-        if (galleries.needsUpdate() && !galleries.isUpdating && !isUpdatingAll) {
-            galleries.update();
-            if (galleries.updateFailed) {
-                if (isInForeground) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Galerien"), Toast.LENGTH_LONG).show();
-                }
-                galleries.updateFailed = false;
-            }
-        }
+        galleries = (Galleries) getWrapperItems(galleries, Galleries.class);
         return galleries;
     }
 

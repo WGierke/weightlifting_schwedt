@@ -31,14 +31,6 @@ public class Table extends UpdateableWrapper {
         return convertedItems;
     }
 
-    public static String getNotificationMessage() {
-        String content = "";
-        for (TableEntry item : itemsToMark) {
-            content += item.getPlace() + ". " + item.getClub() + "|";
-        }
-        return content;
-    }
-
     public static void markNewItems(ArrayList<UpdateableItem> oldItems, ArrayList<UpdateableItem> newItems) {
         ArrayList<TableEntry> oldTableItems = casteArray(oldItems);
         ArrayList<TableEntry> newTableItems = casteArray(newItems);
@@ -59,7 +51,7 @@ public class Table extends UpdateableWrapper {
         UiHelper.refreshCounterNav(navigationPosition, subPosition, itemsToMark.size());
     }
 
-    public void update() {
+    public void refreshItems() {
         super.update(UPDATE_URL, fileName, "Table");
     }
 

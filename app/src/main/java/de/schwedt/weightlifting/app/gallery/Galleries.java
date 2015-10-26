@@ -33,14 +33,6 @@ public class Galleries extends UpdateableWrapper {
         return convertedItems;
     }
 
-    public static String getNotificationMessage() {
-        String content = "";
-        for (GalleryItem item : itemsToMark) {
-            content += item.getTitle() + "|";
-        }
-        return content;
-    }
-
     public static void markNewItems(ArrayList<UpdateableItem> oldItems, ArrayList<UpdateableItem> newItems) {
         ArrayList<GalleryItem> oldGalleryItems = casteArray(oldItems);
         ArrayList<GalleryItem> newGalleryItems = casteArray(newItems);
@@ -61,7 +53,7 @@ public class Galleries extends UpdateableWrapper {
         UiHelper.refreshCounterNav(navigationPosition, subPosition, itemsToMark.size());
     }
 
-    public void update() {
+    public void refreshItems() {
         super.update(UPDATE_URL, fileName, "Galleries");
     }
 

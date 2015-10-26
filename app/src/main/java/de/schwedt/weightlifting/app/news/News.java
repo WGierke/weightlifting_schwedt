@@ -31,14 +31,6 @@ public class News extends UpdateableWrapper {
         return convertedItems;
     }
 
-    public static String getNotificationMessage() {
-        String content = "";
-        for (NewsItem item : itemsToMark) {
-            content += item.getHeading() + "|";
-        }
-        return content;
-    }
-
     public static void markNewItems(ArrayList<UpdateableItem> oldItems, ArrayList<UpdateableItem> newItems) {
         ArrayList<NewsItem> oldNewsItems = casteArray(oldItems);
         ArrayList<NewsItem> newNewsItems = casteArray(newItems);
@@ -59,7 +51,7 @@ public class News extends UpdateableWrapper {
         UiHelper.refreshCounterNav(navigationPosition, subPosition, itemsToMark.size());
     }
 
-    public void update() {
+    public void refreshItems() {
         super.update(UPDATE_URL, fileName, "News");
     }
 
