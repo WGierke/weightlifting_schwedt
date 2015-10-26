@@ -3,6 +3,8 @@ package de.schwedt.weightlifting.app;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.os.AsyncTask;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -75,7 +77,13 @@ public class WeightliftingApp extends Application {
 
         mContext = getApplicationContext();
 
-        getData();
+        //new updatetAsk().execute(this);
+        getNews();
+        getEvents();
+        getTeam();
+        getCompetitions();
+        getTable();
+        getGalleries();
 
         isInitialized = true;
 
@@ -84,16 +92,6 @@ public class WeightliftingApp extends Application {
 
     public void loadSettings() {
         // Restore user data
-    }
-
-    public void getData() {
-        //load data either from storage or from the internet
-        getNews();
-        getEvents();
-        getTeam();
-        getCompetitions();
-        getTable();
-        getGalleries();
     }
 
     public void updateData() {
@@ -280,4 +278,22 @@ public class WeightliftingApp extends Application {
             // Not supported. Wayne.
         }
     }
+/*    private class updatetAsk extends AsyncTask<WeightliftingApp, Integer, Long> {
+
+        protected Long doInBackground(WeightliftingApp... apps) {
+            //load data either from storage or from the internet
+            WeightliftingApp app = apps[0];
+            Looper.prepare();
+            app.getNews();
+            app.getEvents();
+            app.getTeam();
+            app.getCompetitions();
+            app.getTable();
+            app.getGalleries();
+            Toast.makeText(getApplicationContext().getApplicationContext(), "ready", Toast.LENGTH_SHORT);
+            Log.d(TAG, "ready");
+            return null;
+        }
+    }
+    */
 }

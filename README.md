@@ -1,11 +1,10 @@
 # ![Logo](https://github.com/WGierke/weightlifting_schwedt/raw/master/app/src/main/res/drawable-hdpi/ic_launcher.png) weightlifting_schwedt
-=========================
 
 This Android application should promote the attractiveness of the department 'Weightlifting' of the TSV Blau-Weiß 65 Schwedt.
 
 ![Screenshot](https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/master/production/weightlifting_schwedt.jpg)
 
-
+Get it in the [PlayStore](https://play.google.com/store/apps/details?id=de.schwedt.weightlifting.app)
 ## Credits
 HPI Mobile Developer Club
 
