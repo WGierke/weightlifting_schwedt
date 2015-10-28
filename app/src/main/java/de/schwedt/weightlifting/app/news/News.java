@@ -113,4 +113,11 @@ public class News extends UpdateableWrapper {
             }
         }
     }
+
+    public ArrayList<NewsItem> getFirstElements(int n) {
+        if(n <= items.size())
+            return new ArrayList(items.subList(0, n));
+        else
+            return casteArray(items);
+    }
 }

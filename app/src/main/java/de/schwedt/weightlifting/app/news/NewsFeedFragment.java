@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -20,6 +21,9 @@ public class NewsFeedFragment extends Fragment {
     private WeightliftingApp app;
     private View fragment;
     private ListView listViewNews;
+    private NewsFeedListAdapter adapter;
+    private boolean is_loading = false;
+    private int visibleItems = 5;
 
     public NewsFeedFragment() {
         super();
@@ -72,7 +76,7 @@ public class NewsFeedFragment extends Fragment {
             // We have news items to display
             app.setLoading(false);
             try {
-                NewsFeedListAdapter adapter = new NewsFeedListAdapter(News.casteArray(news.getItems()), getActivity());
+                adapter = new NewsFeedListAdapter(news.getFirstElements(visibleItems), getActivity());
                 listViewNews.setAdapter(adapter);
                 listViewNews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
@@ -85,11 +89,33 @@ public class NewsFeedFragment extends Fragment {
                         ((MainActivity) getActivity()).addFragment(article, getString(R.string.nav_news), true);
                     }
                 });
-            } catch (Exception ex) {
+                listViewNews.setOnScrollListener(new AbsListView.OnScrollListener() {
+                    @Override
+                    public void onScrollStateChanged(AbsListView view, int scrollState) { }
+
+                    @Override
+                    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+                        if(firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount != 0) {
+                                if(!is_loading)
+                                {
+                                    is_loading = true;
+                                    addItems();
+                                }
+                            }
+                        }
+                    });
+        } catch (Exception ex) {
                 Log.e(WeightliftingApp.TAG, "Showing news feed failed");
                 ex.toString();
             }
         }
     }
 
+    private void addItems() {
+        visibleItems += 5;
+        adapter.setItems(news.getFirstElements(visibleItems));
+        adapter.notifyDataSetChanged();
+        is_loading = false;
+    }
 }
