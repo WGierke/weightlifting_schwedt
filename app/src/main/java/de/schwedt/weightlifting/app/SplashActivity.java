@@ -13,6 +13,10 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.parse.Parse;
+import com.parse.ParseAnalytics;
+
+import de.schwedt.weightlifting.app.helper.Keys;
 import de.schwedt.weightlifting.app.helper.UiHelper;
 
 public class SplashActivity extends Activity {
@@ -23,7 +27,6 @@ public class SplashActivity extends Activity {
     public static final String MESSAGE_INITIALIZED = "initialized";
     public static final int STATUS_OK = 0;
     public static final int STATUS_ERROR_NETWORK = 10;
-    public static final int STATUS_ERROR_PARSING = 11;
 
     WeightliftingApp app;
     Handler callbackHandler;
@@ -68,11 +71,6 @@ public class SplashActivity extends Activity {
                             showError(getString(R.string.error_network));
                             break;
                         }
-                        case SplashActivity.STATUS_ERROR_PARSING: {
-                            Log.d(WeightliftingApp.TAG, "Status: Parser error");
-                            showError(getString(R.string.error_parsing));
-                            break;
-                        }
                     }
 
                     // Get message
@@ -92,6 +90,11 @@ public class SplashActivity extends Activity {
                 }
             }
         };
+
+        Parse.enableLocalDatastore(this);
+        Parse.initialize(this, Keys.CONFIG_APP_ID, Keys.CONFIG_CLIENT_KEY);
+
+        ParseAnalytics.trackAppOpenedInBackground(getIntent());
         Log.d(app.TAG, "Splash created");
     }
 
@@ -115,7 +118,6 @@ public class SplashActivity extends Activity {
 
         // initialize the app
         app.initialize(callbackHandler);
-        //app.loadDefaultMensas();
     }
 
     private void switchToMainActivity() {
@@ -131,23 +133,13 @@ public class SplashActivity extends Activity {
     }
 
     private void showError(String errorMessage) {
-        //iconLogo.setVisibility(View.INVISIBLE);
+        status.setText(errorMessage);
+
+        iconLogo.setVisibility(View.INVISIBLE);
         iconError.setVisibility(View.VISIBLE);
-        iconError.setAlpha(0f);
-
-        UiHelper.fadeOutView(iconLogo, 0.015f);
-
-        Handler delayHandler = new Handler();
-        Runnable delayedRunnable = new Runnable() {
-            @Override
-            public void run() {
-                UiHelper.fadeInView(iconError, 0.02f);
-            }
-        };
-        delayHandler.postDelayed(delayedRunnable, 500);
 
         stopLoading();
-        setStatusText(errorMessage);
+        initializationDone();
     }
 
     private void setStatusText(final String text) {

@@ -187,7 +187,7 @@ public class DataHelper {
             while ((line = bufferedReader.readLine()) != null) {
                 sb.append(line);
             }
-            Log.d(WeightliftingApp.TAG, "read from " + fileName + " following content: " + sb.toString());
+            Log.d(WeightliftingApp.TAG, "read from " + fileName + " " + sb.toString().substring(0, 20) + "...");
             return sb.toString();
         } catch (Exception e) {
             e.printStackTrace();
@@ -200,7 +200,7 @@ public class DataHelper {
             FileOutputStream fos = context.getApplicationContext().openFileOutput(fileName, Context.MODE_PRIVATE);
             fos.write(content.getBytes());
             fos.close();
-            Log.d(WeightliftingApp.TAG, "saved in " + fileName + " content: " + content);
+            Log.d(WeightliftingApp.TAG, "saved in " + fileName + " content: " + content.substring(0, 20) + "...");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -210,6 +210,15 @@ public class DataHelper {
         Log.d(WeightliftingApp.TAG, "Sending message to handler: [" + key + "] " + value);
         Bundle data = new Bundle();
         data.putString(key, value);
+        Message message = new Message();
+        message.setData(data);
+        mHandler.sendMessage(message);
+    }
+
+    public static void sendMessage(Handler mHandler, String key, int value) {
+        Log.d(WeightliftingApp.TAG, "Sending message to handler: [" + key + "] " + String.valueOf(value));
+        Bundle data = new Bundle();
+        data.putInt(key, value);
         Message message = new Message();
         message.setData(data);
         mHandler.sendMessage(message);

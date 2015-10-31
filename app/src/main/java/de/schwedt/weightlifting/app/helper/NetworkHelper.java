@@ -22,7 +22,6 @@ public class NetworkHelper {
                 try {
                     Log.d(WeightliftingApp.TAG, "Requesting " + url);
                     String result = getRequest(url);
-                    Log.d(WeightliftingApp.TAG, result);
                     if (result.indexOf("!DOCTYPE") != -1)
                         result = null;
                     data.putString("result", result);

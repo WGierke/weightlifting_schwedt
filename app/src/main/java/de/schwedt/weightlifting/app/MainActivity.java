@@ -23,20 +23,14 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.parse.Parse;
-import com.parse.ParseAnalytics;
-import com.parse.ParseCrashReporting;
-
 import java.util.ArrayList;
 
 import de.schwedt.weightlifting.app.buli.Competitions;
 import de.schwedt.weightlifting.app.buli.Table;
 import de.schwedt.weightlifting.app.buli.Team;
 import de.schwedt.weightlifting.app.gallery.Galleries;
-import de.schwedt.weightlifting.app.helper.Keys;
 import de.schwedt.weightlifting.app.news.Events;
 import de.schwedt.weightlifting.app.news.News;
-import de.schwedt.weightlifting.app.service.GCMPreferences;
 import de.schwedt.weightlifting.app.service.RegistrationIntentService;
 
 public class MainActivity extends FragmentActivity {
@@ -76,11 +70,6 @@ public class MainActivity extends FragmentActivity {
         mTitle = mDrawerTitle = getTitle();
 
         initNavigation(savedInstanceState);
-
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this, Keys.CONFIG_APP_ID, Keys.CONFIG_CLIENT_KEY);
-
-        ParseAnalytics.trackAppOpenedInBackground(getIntent());
     }
 
     private void initNavigation(Bundle savedInstanceState) {
@@ -150,27 +139,24 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void showAsyncUpdateResults() {
-        Log.d(WeightliftingApp.TAG, app.news.finishedUpdate + " " + app.events.finishedUpdate + " " + app.team.finishedUpdate + " " + app.competitions.finishedUpdate + " " + app.table.finishedUpdate + " " + app.galleries.finishedUpdate);
-        // if one update failed show the number of new elements until now and return
-        if (app.news.updateFailed || app.events.updateFailed || app.team.updateFailed || app.competitions.updateFailed || app.table.updateFailed || app.galleries.updateFailed) {
-            showCountedNewElements(false);
-            app.isUpdatingAll = false;
-            return;
+        switch (app.getUpdateStatus()) {
+            case WeightliftingApp.UPDATE_STATUS_PENDING:
+                Runnable refreshRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        showAsyncUpdateResults();
+                    }
+                };
+                Handler refreshHandler = new Handler();
+                refreshHandler.postDelayed(refreshRunnable, 200);
+                return;
+            case WeightliftingApp.UPDATE_STATUS_SUCCESSFUL:
+                showCountedNewElements(true);
+                break;
+            case WeightliftingApp.UPDATE_STATUS_FAILED:
+                showCountedNewElements(false);
+                break;
         }
-        // if one update isn't ready yet check again in 200 ms
-        if (!app.news.finishedUpdate || !app.events.finishedUpdate || !app.team.finishedUpdate || !app.competitions.finishedUpdate || !app.table.finishedUpdate || !app.galleries.finishedUpdate) {
-            Runnable refreshRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    showAsyncUpdateResults();
-                }
-            };
-            Handler refreshHandler = new Handler();
-            refreshHandler.postDelayed(refreshRunnable, 200);
-            return;
-        }
-        showCountedNewElements(true);
-        app.isUpdatingAll = false;
     }
 
     private void showCountedNewElements(boolean updatedSuccessfully) {

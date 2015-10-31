@@ -10,6 +10,8 @@ HPI Mobile Developer Club
 
 Universal Image Loader https://github.com/nostra13/Android-Universal-Image-Loader
 
+[Steppschuh](https://github.com/Steppschuh)
+
 ## License
     Copyright 2015 Willi Gierke
 

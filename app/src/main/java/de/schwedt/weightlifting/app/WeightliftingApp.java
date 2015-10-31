@@ -1,11 +1,8 @@
 package de.schwedt.weightlifting.app;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -46,9 +43,14 @@ public class WeightliftingApp extends Application {
     public Galleries galleries;
     public Handler splashCallbackHandler;
 
+    public final static int UPDATE_STATUS_SUCCESSFUL = 200;
+    public final static int UPDATE_STATUS_FAILED = 201;
+    public final static int UPDATE_STATUS_PENDING = 202;
+
     public void initialize(Handler callbackHandler) {
         splashCallbackHandler = callbackHandler;
         DataHelper.sendMessage(splashCallbackHandler, SplashActivity.KEY_MESSAGE, getString(R.string.loading_data));
+
         Log.i(TAG, "Initializing...");
         long dateStart = new Date().getTime();
 
@@ -81,9 +83,35 @@ public class WeightliftingApp extends Application {
         getTable();
         getGalleries();
 
+        updateSplashScreen();
+
         isInitialized = true;
 
         Log.i(TAG, "Initialized (" + String.valueOf(dateDiff) + "ms)");
+    }
+
+    private void updateSplashScreen() {
+        switch(getUpdateStatus()) {
+            case UPDATE_STATUS_PENDING:
+                Runnable refreshRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        updateSplashScreen();
+                    }
+                };
+                Log.d(TAG, "Update status: pending");
+                Handler refreshHandler = new Handler();
+                refreshHandler.postDelayed(refreshRunnable, 200);
+                break;
+            case UPDATE_STATUS_SUCCESSFUL:
+                Log.d(TAG, "Update status: Success");
+                DataHelper.sendMessage(splashCallbackHandler, SplashActivity.KEY_MESSAGE, SplashActivity.MESSAGE_INITIALIZED);
+                break;
+            case UPDATE_STATUS_FAILED:
+                Log.d(TAG, "Update status: Failed");
+                DataHelper.sendMessage(splashCallbackHandler, SplashActivity.KEY_STATUS, SplashActivity.STATUS_ERROR_NETWORK);
+                break;
+        }
     }
 
     public void updateData() {
@@ -97,32 +125,48 @@ public class WeightliftingApp extends Application {
         galleries.refreshItems();
     }
 
+    public int getUpdateStatus() {
+        Log.d(WeightliftingApp.TAG, news.isUpToDate + " " + events.isUpToDate + " " + team.isUpToDate + " " + competitions.isUpToDate + " " + table.isUpToDate + " " + galleries.isUpToDate);
+        if (news.updateFailed || events.updateFailed || team.updateFailed || competitions.updateFailed || table.updateFailed || galleries.updateFailed) {
+            isUpdatingAll = false;
+            return UPDATE_STATUS_FAILED;
+        }
+        if (news.isUpToDate && events.isUpToDate && team.isUpToDate && competitions.isUpToDate && table.isUpToDate && galleries.isUpToDate) {
+            isUpdatingAll = false;
+            return UPDATE_STATUS_SUCCESSFUL;
+        }
+        else
+            return UPDATE_STATUS_PENDING;
+    }
+
     public void setFinishUpdateFlags(boolean value) {
-        news.finishedUpdate = value;
-        events.finishedUpdate = value;
-        team.finishedUpdate = value;
-        competitions.finishedUpdate = value;
-        table.finishedUpdate = value;
-        galleries.finishedUpdate = value;
+        news.isUpToDate = value;
+        events.isUpToDate = value;
+        team.isUpToDate = value;
+        competitions.isUpToDate = value;
+        table.isUpToDate = value;
+        galleries.isUpToDate = value;
     }
 
     public UpdateableWrapper getWrapperItems(UpdateableWrapper myInstance, Class<?> myClass) {
         try {
             if (myInstance == null) {
                 myInstance = (UpdateableWrapper) myClass.newInstance();
-                String fileName = myClass.getDeclaredField("fileName").toString();
+                String fileName = myClass.getDeclaredField("fileName").get(myInstance).toString();
                 File file = getApplicationContext().getFileStreamPath(fileName);
                 if (file.exists()) {
                     String fileContent = DataHelper.readIntern(fileName, getApplicationContext());
                     if (!fileContent.equals("")) {
                         myInstance.parseFromString(fileContent);
                         myInstance.setLastUpdate(new File(getFilesDir() + "/" + fileName).lastModified());
-                        Log.d(TAG, myClass.getName() + ": read from memory:" + fileContent);
+                        Log.d(TAG, myClass.getName() + ": read from memory:" + fileContent.substring(0 ,20) + "...");
                     }
                 }
 
                 if (myInstance.needsUpdate() && !myInstance.isUpdating && !isUpdatingAll) {
                     myInstance.refreshItems();
+                } else {
+                    myInstance.isUpToDate = true;
                 }
             }
         } catch (Exception e) {

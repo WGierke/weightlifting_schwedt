@@ -26,7 +26,7 @@ public abstract class UpdateableWrapper {
 
     protected boolean isUpdating = false;
     protected boolean updateFailed = false;
-    protected boolean finishedUpdate = false;
+    protected boolean isUpToDate = false;
 
     protected long lastUpdate = 0;
 
@@ -61,7 +61,6 @@ public abstract class UpdateableWrapper {
     public boolean needsUpdate() {
         // Update only if last refresh is older than 30 minutes
         long now = new Date().getTime();
-
         return (lastUpdate < now - TIMER_INVALIDATE);
     }
 
@@ -108,10 +107,10 @@ public abstract class UpdateableWrapper {
 
                     Log.i(WeightliftingApp.TAG, TAG + " updated");
                 } catch (Exception ex) {
-                    Log.e(WeightliftingApp.TAG, TAG + " update failed");
+                    Log.e(WeightliftingApp.TAG, TAG + " update failed: " + ex.getMessage());
                     ex.printStackTrace();
                 }
-                finishedUpdate = true;
+                isUpToDate = true;
                 isUpdating = false;
             }
         };
