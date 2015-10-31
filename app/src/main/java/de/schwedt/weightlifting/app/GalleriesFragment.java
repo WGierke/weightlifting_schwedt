@@ -55,7 +55,6 @@ public class GalleriesFragment extends Fragment {
         galleries = app.getGalleries();
         if (galleries.getItems().size() == 0) {
             // No news items yet
-            app.setLoading(true);
             Log.d(WeightliftingApp.TAG, "Waiting for galleries...");
 
             // Check again in a few seconds
@@ -69,7 +68,6 @@ public class GalleriesFragment extends Fragment {
             refreshHandler.postDelayed(refreshRunnable, News.TIMER_RETRY);
         } else {
             // We have news items to display
-            app.setLoading(false);
             try {
                 ListView listViewGalleries = (ListView) fragment.findViewById(R.id.listView_galleries);
                 GalleryOverviewAdapter adapter = new GalleryOverviewAdapter(Galleries.casteArray(galleries.getItems()), getActivity());

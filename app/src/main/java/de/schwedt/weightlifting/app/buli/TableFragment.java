@@ -50,7 +50,6 @@ public class TableFragment extends Fragment {
         buliTable = app.getTable();
         if (buliTable.getItems().size() == 0) {
             // No table items yet
-            app.setLoading(true);
             Log.d(WeightliftingApp.TAG, "Waiting for buliTable...");
 
             // Check again in a few seconds
@@ -64,7 +63,6 @@ public class TableFragment extends Fragment {
             refreshHandler.postDelayed(refreshRunnable, Table.TIMER_RETRY);
         } else {
             // We have Table items to display
-            app.setLoading(false);
             try {
                 ListView listViewTable = (ListView) fragment.findViewById(R.id.listView_Buli);
                 TableListAdapter adapter = new TableListAdapter(Table.casteArray(buliTable.getItems()), getActivity());

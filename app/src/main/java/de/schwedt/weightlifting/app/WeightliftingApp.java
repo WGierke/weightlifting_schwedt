@@ -40,15 +40,13 @@ public class WeightliftingApp extends Application {
     public Competitions competitions;
     public Table table;
     public Galleries galleries;
-    public MainActivity mainActivity;
 
     public void initialize(Activity activity) {
         Log.i(TAG, "Initializing...");
         long dateStart = new Date().getTime();
 
-        mainActivity = (MainActivity) activity;
         memoryCache = new MemoryCache();
-        imageLoader = new ImageLoader(activity);
+        imageLoader = new ImageLoader(getApplicationContext());
 
         FaqFragment.faqEntries.add(new FaqItem(getString(R.string.faq_off_signal_heading), getString(R.string.faq_off_signal_question), getString(R.string.faq_off_signal_answer)));
         FaqFragment.faqEntries.add(new FaqItem(getString(R.string.faq_bad_attempt_jerking_heading), getString(R.string.faq_bad_attempt_jerking_question), getString(R.string.faq_bad_attempt_jerking_answer)));
@@ -114,9 +112,7 @@ public class WeightliftingApp extends Application {
                 }
 
                 if (myInstance.needsUpdate() && !myInstance.isUpdating && !isUpdatingAll) {
-                    setLoading(true);
                     myInstance.refreshItems();
-                    setLoading(false);
                 }
             }
         } catch (Exception e) {
@@ -156,13 +152,6 @@ public class WeightliftingApp extends Application {
         return galleries;
     }
 
-    public void setLoading(boolean value) {
-        try {
-            mainActivity.setProgressBarIndeterminateVisibility(value);
-        } catch (Exception ex) {
-            // Not supported. Wayne.
-        }
-    }
 /*    private class updatetAsk extends AsyncTask<WeightliftingApp, Integer, Long> {
 
         protected Long doInBackground(WeightliftingApp... apps) {

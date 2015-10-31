@@ -54,7 +54,6 @@ public class NewsEventsFragment extends Fragment {
         events = app.getEvents();
         if (events.getItems().size() == 0) {
             // No events items yet
-            app.setLoading(true);
             Log.d(WeightliftingApp.TAG, "Waiting for events...");
 
             // Check again in a few seconds
@@ -68,7 +67,6 @@ public class NewsEventsFragment extends Fragment {
             refreshHandler.postDelayed(refreshRunnable, News.TIMER_RETRY);
         } else {
             // We have events items to display
-            app.setLoading(false);
             try {
                 NewsEventsListAdapter adapter = new NewsEventsListAdapter(events.getItems(), getActivity());
                 listViewEvents.setAdapter(adapter);

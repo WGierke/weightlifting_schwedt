@@ -21,7 +21,6 @@ public class FilterCompetitionsFragment extends CompetitionsFragment {
     protected void getCompetitions() {
         competitions = app.getCompetitions();
         if (competitions.getItems().size() == 0) {
-            app.setLoading(true);
             Log.d(WeightliftingApp.TAG, "Waiting for Competitions...");
 
             Runnable refreshRunnable = new Runnable() {
@@ -33,7 +32,6 @@ public class FilterCompetitionsFragment extends CompetitionsFragment {
             Handler refreshHandler = new Handler();
             refreshHandler.postDelayed(refreshRunnable, Competitions.TIMER_RETRY);
         } else {
-            app.setLoading(false);
             try {
                 Bundle bundle = this.getArguments();
                 clubName = bundle.getString("club-name");

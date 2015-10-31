@@ -50,7 +50,6 @@ public class CompetitionsFragment extends Fragment {
         competitions = app.getCompetitions();
         if (competitions.getItems().size() == 0) {
             // No news items yet
-            app.setLoading(true);
             Log.d(WeightliftingApp.TAG, "Waiting for competitions...");
 
             // Check again in a few seconds
@@ -64,7 +63,6 @@ public class CompetitionsFragment extends Fragment {
             refreshHandler.postDelayed(refreshRunnable, Competitions.TIMER_RETRY);
         } else {
             // We have competitions to display
-            app.setLoading(false);
             try {
                 CompetitionsListAdapter adapter = new CompetitionsListAdapter(Competitions.casteArray(competitions.getItems()), getActivity());
                 listViewCompetitions.setAdapter(adapter);
