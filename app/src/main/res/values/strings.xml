@@ -116,5 +116,8 @@
     <string name="homepage_bvdg">Bundesverband Deutscher Gewichtheber \n bvdg-online.de</string>
     <string name="updating_in_progress">Update-Prozess wurde bereits gestartet.</string>
     <string name="updating_already_in_progress">Update-Prozess läuft. Bitte gedulden Sie sich.</string>
+    <string name="error_network">Netzwerkfehler. Sind Sie online?</string>
+    <string name="error_parsing">Unerwartete Antwort vom Server. Bitte versuchen Sie es später nochmal.</string>
+    <string name="loading_data">Lade aktuellste Daten ...</string>
 
 </resources>

@@ -72,9 +72,6 @@ public class MainActivity extends FragmentActivity {
         setProgressBarIndeterminateVisibility(false);
 
         app = (WeightliftingApp) getApplicationContext();
-        if (!app.isInitialized) {
-            app.initialize(this);
-        }
 
         mTitle = mDrawerTitle = getTitle();
 
@@ -139,8 +136,6 @@ public class MainActivity extends FragmentActivity {
             public void onReceive(Context context, Intent intent) {
                 SharedPreferences sharedPreferences =
                         PreferenceManager.getDefaultSharedPreferences(context);
-                boolean sentToken = sharedPreferences
-                        .getBoolean(GCMPreferences.SENT_TOKEN_TO_SERVER, false);
             }
         };
         Intent intent = new Intent(this, RegistrationIntentService.class);
@@ -155,7 +150,6 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void showAsyncUpdateResults() {
-        //Log
         Log.d(WeightliftingApp.TAG, app.news.finishedUpdate + " " + app.events.finishedUpdate + " " + app.team.finishedUpdate + " " + app.competitions.finishedUpdate + " " + app.table.finishedUpdate + " " + app.galleries.finishedUpdate);
         // if one update failed show the number of new elements until now and return
         if (app.news.updateFailed || app.events.updateFailed || app.team.updateFailed || app.competitions.updateFailed || app.table.updateFailed || app.galleries.updateFailed) {
@@ -201,12 +195,7 @@ public class MainActivity extends FragmentActivity {
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.updating_in_progress), Toast.LENGTH_LONG).show();
                 } else {
                     app.isUpdatingAll = true;
-                    app.news.finishedUpdate = false;
-                    app.events.finishedUpdate = false;
-                    app.team.finishedUpdate = false;
-                    app.competitions.finishedUpdate = false;
-                    app.table.finishedUpdate = false;
-                    app.galleries.finishedUpdate = false;
+                    app.setFinishUpdateFlags(false);
                     try {
                         app.updateData();
                         showAsyncUpdateResults();

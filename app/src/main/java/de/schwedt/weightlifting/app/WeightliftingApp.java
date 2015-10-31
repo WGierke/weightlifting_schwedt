@@ -3,6 +3,9 @@ package de.schwedt.weightlifting.app;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -29,6 +32,7 @@ public class WeightliftingApp extends Application {
     public static final int DISPLAY_DELAY = 500;
     public static Context mContext;
     public static boolean isUpdatingAll = false;
+    public static boolean[] isUpdating = new boolean[6];
     public boolean isInForeground = true;
     public boolean isInitialized = false;
     public MemoryCache memoryCache;
@@ -40,8 +44,11 @@ public class WeightliftingApp extends Application {
     public Competitions competitions;
     public Table table;
     public Galleries galleries;
+    public Handler splashCallbackHandler;
 
-    public void initialize(Activity activity) {
+    public void initialize(Handler callbackHandler) {
+        splashCallbackHandler = callbackHandler;
+        DataHelper.sendMessage(splashCallbackHandler, SplashActivity.KEY_MESSAGE, getString(R.string.loading_data));
         Log.i(TAG, "Initializing...");
         long dateStart = new Date().getTime();
 
@@ -52,8 +59,6 @@ public class WeightliftingApp extends Application {
         FaqFragment.faqEntries.add(new FaqItem(getString(R.string.faq_bad_attempt_jerking_heading), getString(R.string.faq_bad_attempt_jerking_question), getString(R.string.faq_bad_attempt_jerking_answer)));
         FaqFragment.faqEntries.add(new FaqItem(getString(R.string.winner_single_competition_heading), getString(R.string.winner_single_competition_question), getString(R.string.winner_single_competition_answer)));
         FaqFragment.faqEntries.add(new FaqItem(getString(R.string.winner_team_competition_heading), getString(R.string.winner_team_competition_question), getString(R.string.winner_team_competition_answer)));
-
-        loadSettings();
 
         long dateDiff = (new Date().getTime() - dateStart);
 
@@ -81,10 +86,6 @@ public class WeightliftingApp extends Application {
         Log.i(TAG, "Initialized (" + String.valueOf(dateDiff) + "ms)");
     }
 
-    public void loadSettings() {
-        // Restore user data
-    }
-
     public void updateData() {
         //Update everything and save it on storage
         Log.d(TAG, "updating everything");
@@ -94,6 +95,15 @@ public class WeightliftingApp extends Application {
         competitions.refreshItems();
         table.refreshItems();
         galleries.refreshItems();
+    }
+
+    public void setFinishUpdateFlags(boolean value) {
+        news.finishedUpdate = value;
+        events.finishedUpdate = value;
+        team.finishedUpdate = value;
+        competitions.finishedUpdate = value;
+        table.finishedUpdate = value;
+        galleries.finishedUpdate = value;
     }
 
     public UpdateableWrapper getWrapperItems(UpdateableWrapper myInstance, Class<?> myClass) {

@@ -54,6 +54,62 @@ public class UiHelper {
         vibrate(VIBRATE_LENGTH, application);
     }
 
+    public static void fadeInView(final View v, final float step) {
+        final Handler handler = new Handler();
+        (new Thread() {
+            @Override
+            public void run() {
+                for (int i = 0; i <= 1000; i++) {
+                    final float new_opacity = v.getAlpha() + step;
+                    if (new_opacity > 1) {
+                        return;
+                    }
+                    handler.post(new Runnable() {
+                        public void run() {
+                            try {
+                                v.setAlpha(new_opacity);
+                            } catch (Exception ex) {
+                            }
+                        }
+                    });
+                    try {
+                        sleep(5);
+                    } catch (Exception ex) {
+                        break;
+                    }
+                }
+            }
+        }).start();
+    }
+
+    public static void fadeOutView(final View v, final float step) {
+        final Handler handler = new Handler();
+        (new Thread() {
+            @Override
+            public void run() {
+                for (int i = 0; i <= 1000; i++) {
+                    final float new_opacity = v.getAlpha() - step;
+                    if (new_opacity < 0) {
+                        return;
+                    }
+                    handler.post(new Runnable() {
+                        public void run() {
+                            try {
+                                v.setAlpha(new_opacity);
+                            } catch (Exception ex) {
+                            }
+                        }
+                    });
+                    try {
+                        sleep(5);
+                    } catch (Exception ex) {
+                        break;
+                    }
+                }
+            }
+        }).start();
+    }
+
     public static void vibrate(Integer length, Application application) {
         Vibrator v = (Vibrator) application.getSystemService(Context.VIBRATOR_SERVICE);
         v.vibrate(length);

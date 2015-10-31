@@ -5,6 +5,9 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -201,5 +204,14 @@ public class DataHelper {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public static void sendMessage(Handler mHandler, String key, String value) {
+        Log.d(WeightliftingApp.TAG, "Sending message to handler: [" + key + "] " + value);
+        Bundle data = new Bundle();
+        data.putString(key, value);
+        Message message = new Message();
+        message.setData(data);
+        mHandler.sendMessage(message);
     }
 }
