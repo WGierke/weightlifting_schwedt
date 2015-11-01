@@ -206,8 +206,8 @@ public class UiHelper {
         big.setSummaryText(description);
 
         String[] parts = message.split("\\|");
-        for (int i = 0; i < parts.length; i++) {
-            big.addLine(parts[i]);
+        for (String part : parts) {
+            big.addLine(part);
         }
 
         NotificationManager manager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);

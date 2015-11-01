@@ -1,7 +1,6 @@
 package de.schwedt.weightlifting.app.service;
 
 import android.os.Bundle;
-import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 

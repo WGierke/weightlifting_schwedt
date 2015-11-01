@@ -19,8 +19,6 @@ public class NewsFragment extends Fragment {
     private static final int FRAGMENT_EVENTS = 1;
     NewsCollectionPagerAdapter mNewsCollectionPagerAdapter;
     ViewPager mViewPager;
-    private WeightliftingApp app;
-    private View fragment;
 
     public NewsFragment() {
         super();
@@ -30,19 +28,13 @@ public class NewsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(WeightliftingApp.TAG, "Showing News fragment");
 
-        fragment = inflater.inflate(R.layout.pager_tab_strip, container, false);
-        app = (WeightliftingApp) getActivity().getApplicationContext();
+        View fragment = inflater.inflate(R.layout.pager_tab_strip, container, false);
 
         mNewsCollectionPagerAdapter = new NewsCollectionPagerAdapter(getActivity().getSupportFragmentManager());
         mViewPager = (ViewPager) fragment.findViewById(R.id.pager);
         mViewPager.setAdapter(mNewsCollectionPagerAdapter);
 
         return fragment;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     public class NewsCollectionPagerAdapter extends FragmentStatePagerAdapter {

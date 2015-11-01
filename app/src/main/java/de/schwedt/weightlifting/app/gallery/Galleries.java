@@ -21,12 +21,12 @@ public class Galleries extends UpdateableWrapper {
 
     public static final String fileName = "galleries.json";
 
-    public static ArrayList<GalleryItem> itemsToMark = new ArrayList<GalleryItem>();
+    public static ArrayList<GalleryItem> itemsToMark = new ArrayList<>();
 
     private final String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/galleries.json";
 
     public static ArrayList<GalleryItem> casteArray(ArrayList<UpdateableItem> array) {
-        ArrayList<GalleryItem> convertedItems = new ArrayList<GalleryItem>();
+        ArrayList<GalleryItem> convertedItems = new ArrayList<>();
         for (int i = 0; i < array.size(); i++) {
             convertedItems.add((GalleryItem) array.get(i));
         }
@@ -70,7 +70,7 @@ public class Galleries extends UpdateableWrapper {
     public void parseFromString(String jsonString) {
         Log.d(WeightliftingApp.TAG, "Parsing gallery JSON...");
         try {
-            ArrayList<UpdateableItem> newItems = new ArrayList<UpdateableItem>();
+            ArrayList<UpdateableItem> newItems = new ArrayList<>();
 
             JsonParser jsonParser = new JsonParser();
             jsonParser.getJsonFromString(jsonString);
@@ -85,7 +85,7 @@ public class Galleries extends UpdateableWrapper {
                     item.setUrl(gallery.getString("url"));
 
                     JSONArray gallery_images = gallery.getJSONArray(("images"));
-                    List<String> image_urls = new ArrayList<String>();
+                    List<String> image_urls = new ArrayList<>();
                     for (int j = 0; j < gallery_images.length(); j++) {
                         image_urls.add(gallery_images.getString(j));
                     }

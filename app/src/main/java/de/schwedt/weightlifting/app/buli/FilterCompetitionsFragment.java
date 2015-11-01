@@ -15,7 +15,6 @@ import de.schwedt.weightlifting.app.WeightliftingApp;
 
 public class FilterCompetitionsFragment extends CompetitionsFragment {
 
-    private String clubName;
     private ArrayList<PastCompetition> filteredCompetitions;
 
     protected void getCompetitions() {
@@ -34,7 +33,7 @@ public class FilterCompetitionsFragment extends CompetitionsFragment {
         } else {
             try {
                 Bundle bundle = this.getArguments();
-                clubName = bundle.getString("club-name");
+                String clubName = bundle.getString("club-name");
                 filteredCompetitions = filter(Competitions.casteArray(competitions.getItems()), clubName);
                 CompetitionsListAdapter adapter = new CompetitionsListAdapter(filteredCompetitions, getActivity());
                 listViewCompetitions.setAdapter(adapter);
@@ -56,7 +55,7 @@ public class FilterCompetitionsFragment extends CompetitionsFragment {
     }
 
     private ArrayList<PastCompetition> filter(ArrayList<PastCompetition> items, String name) {
-        ArrayList<PastCompetition> result = new ArrayList<PastCompetition>();
+        ArrayList<PastCompetition> result = new ArrayList<>();
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).getHome().equals(name) || items.get(i).getGuest().equals(name)) {
                 result.add(items.get(i));

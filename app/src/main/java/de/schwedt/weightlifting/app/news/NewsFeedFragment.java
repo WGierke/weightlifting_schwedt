@@ -19,7 +19,6 @@ public class NewsFeedFragment extends Fragment {
 
     public News news;
     private WeightliftingApp app;
-    private View fragment;
     private ListView listViewNews;
     private NewsFeedListAdapter adapter;
     private boolean is_loading = false;
@@ -33,7 +32,7 @@ public class NewsFeedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(WeightliftingApp.TAG, "Showing News Feed fragment");
 
-        fragment = inflater.inflate(R.layout.news_feed, container, false);
+        View fragment = inflater.inflate(R.layout.news_feed, container, false);
         app = (WeightliftingApp) getActivity().getApplicationContext();
 
         listViewNews = (ListView) fragment.findViewById(R.id.listView_News);
@@ -48,12 +47,6 @@ public class NewsFeedFragment extends Fragment {
         refreshHandler.postDelayed(refreshRunnable, WeightliftingApp.DISPLAY_DELAY);
 
         return fragment;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        //getNews();
     }
 
     private void getNews() {

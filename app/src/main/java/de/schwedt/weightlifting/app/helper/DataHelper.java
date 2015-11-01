@@ -20,7 +20,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
-import java.util.Properties;
 
 import de.schwedt.weightlifting.app.WeightliftingApp;
 
@@ -147,32 +146,28 @@ public class DataHelper {
 
     public static String getPreference(String prev_name, Application application) {
         SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, application.MODE_PRIVATE);
-        String storedPreference = preferences.getString(prev_name, null);
-        return storedPreference;
+        return preferences.getString(prev_name, null);
     }
 
     public static Boolean getPreference(String prev_name, Boolean prev_default, Application application) {
         SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, application.MODE_PRIVATE);
-        Boolean storedPreference = preferences.getBoolean(prev_name, prev_default);
-        return storedPreference;
+        return preferences.getBoolean(prev_name, prev_default);
     }
 
     public static String getSetting(String prev_name, Application application) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(application);
-        String storedPreference = sharedPref.getString(prev_name, null);
-        return storedPreference;
+        return sharedPref.getString(prev_name, null);
     }
 
     public static Boolean getSetting(String prev_name, Boolean prev_default, Application application) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(application);
-        Boolean storedPreference = sharedPref.getBoolean(prev_name, prev_default);
-        return storedPreference;
+        return sharedPref.getBoolean(prev_name, prev_default);
     }
 
     public static int sumOfArray(int[] array) {
         int n = 0;
-        for (int i = 0; i < array.length; i++) {
-            n += array[i];
+        for (int elem : array) {
+            n += elem;
         }
         return n;
     }

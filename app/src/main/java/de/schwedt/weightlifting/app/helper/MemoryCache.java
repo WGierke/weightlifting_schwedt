@@ -26,11 +26,11 @@ public class MemoryCache {
     }
 
     public void put(String id, Bitmap bitmap) {
-        cache.put(id, new SoftReference<Bitmap>(bitmap));
+        cache.put(id, new SoftReference<>(bitmap));
     }
 
     public void put(String id, String value) {
-        cache_string.put(id, new SoftReference<String>(value));
+        cache_string.put(id, new SoftReference<>(value));
     }
 
     public void clear() {

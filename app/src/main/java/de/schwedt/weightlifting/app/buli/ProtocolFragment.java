@@ -14,10 +14,6 @@ import de.schwedt.weightlifting.app.WeightliftingApp;
 
 public class ProtocolFragment extends Fragment {
 
-    private View fragment;
-
-    private WebView webview;
-
     public ProtocolFragment() {
         super();
     }
@@ -26,9 +22,9 @@ public class ProtocolFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(WeightliftingApp.TAG, "Showing Protocol fragment");
 
-        fragment = inflater.inflate(R.layout.buli_competition_protocol, container, false);
+        View fragment = inflater.inflate(R.layout.buli_competition_protocol, container, false);
 
-        webview = (WebView) fragment.findViewById(R.id.buli_competition_protocol);
+        WebView webview = (WebView) fragment.findViewById(R.id.buli_competition_protocol);
         webview.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
 
         // Get protocol url from bundle

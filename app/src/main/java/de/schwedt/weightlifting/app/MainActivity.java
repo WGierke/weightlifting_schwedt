@@ -43,7 +43,7 @@ public class MainActivity extends FragmentActivity {
     public static final int FRAGMENT_CONTACT = 5;
     //home, (news, events), (team, competitions, table), (gallery)
     public static int counter[][] = {{}, {0, 0}, {0, 0, 0}, {0}};
-    public static ArrayList<NavDrawerItem> navDrawerItems = new ArrayList<NavDrawerItem>();
+    public static ArrayList<NavDrawerItem> navDrawerItems = new ArrayList<>();
     private WeightliftingApp app;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -52,8 +52,6 @@ public class MainActivity extends FragmentActivity {
     private CharSequence mDrawerTitle;
     // used to store app title
     private CharSequence mTitle;
-    private NavDrawerListAdapter adapter;
-    private BroadcastReceiver mRegistrationBroadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +74,7 @@ public class MainActivity extends FragmentActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.list_slider);
 
-        navDrawerItems = new ArrayList<NavDrawerItem>();
+        navDrawerItems = new ArrayList<>();
 
         // adding nav drawer items to array
         navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_home), R.drawable.nav_home));
@@ -89,7 +87,7 @@ public class MainActivity extends FragmentActivity {
         mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
 
         // setting the nav drawer list adapter
-        adapter = new NavDrawerListAdapter(getApplicationContext(), navDrawerItems);
+        NavDrawerListAdapter adapter = new NavDrawerListAdapter(getApplicationContext(), navDrawerItems);
         mDrawerList.setAdapter(adapter);
 
         // enabling action bar app icon and behaving it as toggle button
@@ -120,7 +118,7 @@ public class MainActivity extends FragmentActivity {
             showFragment(FRAGMENT_HOME);
         }
 
-        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+        BroadcastReceiver mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 SharedPreferences sharedPreferences =
@@ -203,7 +201,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // if nav drawer is opened, hide the action items
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+        //boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
         //menu.findItem(R.id.action_refresh).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
@@ -259,7 +257,7 @@ public class MainActivity extends FragmentActivity {
             FragmentTransaction transaction = fragmentManager.beginTransaction();
 
             transaction.replace(R.id.frame_container, fragment, title);
-            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             transaction.commit();
             setTitle(title);
             fragmentManager.popBackStack();

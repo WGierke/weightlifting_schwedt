@@ -19,12 +19,12 @@ public class Table extends UpdateableWrapper {
 
     public static final String fileName = "table.json";
 
-    public static ArrayList<TableEntry> itemsToMark = new ArrayList<TableEntry>();
+    public static ArrayList<TableEntry> itemsToMark = new ArrayList<>();
 
     private final String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/table.json";
 
     public static ArrayList<TableEntry> casteArray(ArrayList<UpdateableItem> array) {
-        ArrayList<TableEntry> convertedItems = new ArrayList<TableEntry>();
+        ArrayList<TableEntry> convertedItems = new ArrayList<>();
         for (int i = 0; i < array.size(); i++) {
             convertedItems.add((TableEntry) array.get(i));
         }
@@ -68,7 +68,7 @@ public class Table extends UpdateableWrapper {
     public void parseFromString(String jsonString) {
         Log.d(WeightliftingApp.TAG, "Parsing buli table JSON...");
         try {
-            ArrayList<UpdateableItem> newBuliTableItems = new ArrayList<UpdateableItem>();
+            ArrayList<UpdateableItem> newBuliTableItems = new ArrayList<>();
 
             JsonParser jsonParser = new JsonParser();
             jsonParser.getJsonFromString(jsonString);

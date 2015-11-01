@@ -19,12 +19,12 @@ public class Team extends UpdateableWrapper {
 
     public static final String fileName = "team.json";
 
-    public static ArrayList<TeamMember> itemsToMark = new ArrayList<TeamMember>();
+    public static ArrayList<TeamMember> itemsToMark = new ArrayList<>();
 
     private final String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/team.json";
 
     public static ArrayList<TeamMember> casteArray(ArrayList<UpdateableItem> array) {
-        ArrayList<TeamMember> convertedItems = new ArrayList<TeamMember>();
+        ArrayList<TeamMember> convertedItems = new ArrayList<>();
         for (int i = 0; i < array.size(); i++) {
             convertedItems.add((TeamMember) array.get(i));
         }
@@ -80,7 +80,7 @@ public class Team extends UpdateableWrapper {
     public void parseFromString(String jsonString) {
         Log.d(WeightliftingApp.TAG, "Parsing buliTeam JSON...");
         try {
-            ArrayList<UpdateableItem> newItems = new ArrayList<UpdateableItem>();
+            ArrayList<UpdateableItem> newItems = new ArrayList<>();
 
             JsonParser jsonParser = new JsonParser();
             jsonParser.getJsonFromString(jsonString);

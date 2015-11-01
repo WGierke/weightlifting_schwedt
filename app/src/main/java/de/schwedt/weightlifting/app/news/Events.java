@@ -19,12 +19,12 @@ public class Events extends UpdateableWrapper {
 
     public final static String fileName = "events.json";
 
-    public static ArrayList<EventItem> itemsToMark = new ArrayList<EventItem>();
+    public static ArrayList<EventItem> itemsToMark = new ArrayList<>();
 
     private final String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/events.json";
 
     public static ArrayList<EventItem> casteArray(ArrayList<UpdateableItem> array) {
-        ArrayList<EventItem> convertedItems = new ArrayList<EventItem>();
+        ArrayList<EventItem> convertedItems = new ArrayList<>();
         for (int i = 0; i < array.size(); i++) {
             convertedItems.add((EventItem) array.get(i));
         }
@@ -80,7 +80,7 @@ public class Events extends UpdateableWrapper {
     public void parseFromString(String jsonString) {
         Log.d(WeightliftingApp.TAG, "Parsing events JSON...");
         try {
-            ArrayList<UpdateableItem> newItems = new ArrayList<UpdateableItem>();
+            ArrayList<UpdateableItem> newItems = new ArrayList<>();
 
             JsonParser jsonParser = new JsonParser();
             jsonParser.getJsonFromString(jsonString);

@@ -28,6 +28,7 @@ import com.google.android.gms.iid.InstanceID;
 import com.parse.ParseObject;
 
 import de.schwedt.weightlifting.app.R;
+import de.schwedt.weightlifting.app.WeightliftingApp;
 
 public class RegistrationIntentService extends IntentService {
 
@@ -72,6 +73,7 @@ public class RegistrationIntentService extends IntentService {
             ParseObject GcmToken = new ParseObject("GcmToken");
             GcmToken.put("token", token);
             GcmToken.saveInBackground();
+            Log.d(WeightliftingApp.TAG, "Sent token " + token + " to server");
         }
     }
 }

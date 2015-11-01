@@ -2,9 +2,9 @@ package de.schwedt.weightlifting.app.faq;
 
 public class FaqItem {
 
-    private String header = new String();
-    private String question = new String();
-    private String answer = new String();
+    private String header = "";
+    private String question = "";
+    private String answer = "";
 
     public FaqItem(String header, String question, String answer) {
         this.header = header;

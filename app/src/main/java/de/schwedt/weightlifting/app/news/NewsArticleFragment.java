@@ -19,7 +19,6 @@ import de.schwedt.weightlifting.app.helper.DataHelper;
 public class NewsArticleFragment extends Fragment {
 
     private WeightliftingApp app;
-    private View fragment;
     private NewsItem article;
 
     private TextView heading;
@@ -27,7 +26,6 @@ public class NewsArticleFragment extends Fragment {
     private TextView date;
     private TextView url;
     private ImageView cover;
-    private ScrollView scrollView;
 
     public NewsArticleFragment() {
         super();
@@ -37,7 +35,7 @@ public class NewsArticleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(WeightliftingApp.TAG, "Showing Article fragment");
 
-        fragment = inflater.inflate(R.layout.news_article, container, false);
+        View fragment = inflater.inflate(R.layout.news_article, container, false);
         app = (WeightliftingApp) getActivity().getApplicationContext();
 
         heading = (TextView) fragment.findViewById(R.id.article_title);
@@ -46,7 +44,7 @@ public class NewsArticleFragment extends Fragment {
         url = (TextView) fragment.findViewById(R.id.article_url);
         cover = (ImageView) fragment.findViewById(R.id.article_cover);
 
-        scrollView = (ScrollView) fragment.findViewById(R.id.article_scrollView);
+        ScrollView scrollView = (ScrollView) fragment.findViewById(R.id.article_scrollView);
 
         // Get article information from bundle
         try {

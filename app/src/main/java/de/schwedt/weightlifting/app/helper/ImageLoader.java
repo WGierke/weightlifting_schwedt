@@ -86,7 +86,7 @@ public class ImageLoader {
 
         //from web
         try {
-            Bitmap bitmap = null;
+            Bitmap bitmap;
             String path = url.substring(0, url.lastIndexOf("/") + 1);
             String file = url.substring(url.lastIndexOf("/") + 1);
             URL imageUrl = new URL(path + URLEncoder.encode(file, "utf-8"));

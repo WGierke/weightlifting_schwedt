@@ -19,12 +19,12 @@ public class News extends UpdateableWrapper {
 
     public static final String fileName = "news.json";
 
-    public static ArrayList<NewsItem> itemsToMark = new ArrayList<NewsItem>();
+    public static ArrayList<NewsItem> itemsToMark = new ArrayList<>();
 
     private final String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/news.json";
 
     public static ArrayList<NewsItem> casteArray(ArrayList<UpdateableItem> array) {
-        ArrayList<NewsItem> convertedItems = new ArrayList<NewsItem>();
+        ArrayList<NewsItem> convertedItems = new ArrayList<>();
         for (int i = 0; i < array.size(); i++) {
             convertedItems.add((NewsItem) array.get(i));
         }
@@ -68,7 +68,7 @@ public class News extends UpdateableWrapper {
     public void parseFromString(String jsonString) {
         Log.d(WeightliftingApp.TAG, "Parsing news JSON...");
         try {
-            ArrayList<UpdateableItem> newItems = new ArrayList<UpdateableItem>();
+            ArrayList<UpdateableItem> newItems = new ArrayList<>();
 
             JsonParser jsonParser = new JsonParser();
             jsonParser.getJsonFromString(jsonString);

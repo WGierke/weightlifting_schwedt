@@ -22,7 +22,7 @@ public abstract class UpdateableWrapper {
 
     // If not yet ready, try again in 30 seconds
     public static final long TIMER_RETRY = 1000 * 30;
-    public static ArrayList<UpdateableItem> itemsToMark = new ArrayList<UpdateableItem>();
+    public static ArrayList<UpdateableItem> itemsToMark = new ArrayList<>();
 
     protected boolean isUpdating = false;
     protected boolean updateFailed = false;
@@ -35,7 +35,7 @@ public abstract class UpdateableWrapper {
     protected ArrayList<UpdateableItem> items;
 
     public UpdateableWrapper() {
-        items = new ArrayList<UpdateableItem>();
+        items = new ArrayList<>();
     }
 
     public long getLastUpdate() {
