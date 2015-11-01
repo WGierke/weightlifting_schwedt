@@ -25,10 +25,6 @@ public class CompetitionsFragment extends Fragment {
 
     protected Competitions competitions;
 
-    public CompetitionsFragment() {
-        super();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(WeightliftingApp.TAG, "Showing Buli Competitions fragment");

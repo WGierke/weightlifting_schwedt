@@ -20,10 +20,6 @@ public class NewsFragment extends Fragment {
     NewsCollectionPagerAdapter mNewsCollectionPagerAdapter;
     ViewPager mViewPager;
 
-    public NewsFragment() {
-        super();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(WeightliftingApp.TAG, "Showing News fragment");

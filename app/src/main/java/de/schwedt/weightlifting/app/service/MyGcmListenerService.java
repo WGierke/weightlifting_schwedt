@@ -13,9 +13,6 @@ import de.schwedt.weightlifting.app.helper.UiHelper;
 
 public class MyGcmListenerService extends com.google.android.gms.gcm.GcmListenerService {
 
-    public MyGcmListenerService() {
-    }
-
     @Override
     public void onMessageReceived(String from, Bundle data) {
         sendNotification(data.getString("update"));

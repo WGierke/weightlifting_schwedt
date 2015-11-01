@@ -23,10 +23,6 @@ public class NewsEventsFragment extends Fragment {
     private Events events;
     private ListView listViewEvents;
 
-    public NewsEventsFragment() {
-        super();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(WeightliftingApp.TAG, "Showing News Event fragment");

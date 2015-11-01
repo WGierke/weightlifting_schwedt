@@ -9,10 +9,6 @@ import android.view.ViewGroup;
 
 public class ContactFragment extends Fragment {
 
-    public ContactFragment() {
-
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(WeightliftingApp.TAG, "Showing Home fragment");

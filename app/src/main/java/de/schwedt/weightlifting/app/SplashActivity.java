@@ -167,7 +167,4 @@ public class SplashActivity extends Activity {
         iconLogo.clearAnimation();
     }
 
-    public Handler getHandler() {
-        return callbackHandler;
-    }
 }

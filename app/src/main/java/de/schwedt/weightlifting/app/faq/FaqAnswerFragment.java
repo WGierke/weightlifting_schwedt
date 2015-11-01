@@ -20,10 +20,6 @@ public class FaqAnswerFragment extends Fragment {
     private TextView question;
     private TextView answer;
 
-    public FaqAnswerFragment() {
-        super();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(WeightliftingApp.TAG, "Showing Article fragment");

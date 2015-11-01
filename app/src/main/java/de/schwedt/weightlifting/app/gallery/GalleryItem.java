@@ -43,7 +43,4 @@ public class GalleryItem extends UpdateableItem {
         this.imageUrls = imageUrls;
     }
 
-    public String getImageUrl(int index) {
-        return ((index < imageUrls.length) ? imageUrls[index] : null);
-    }
 }

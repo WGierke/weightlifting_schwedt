@@ -20,10 +20,6 @@ public class TableFragment extends Fragment {
     private WeightliftingApp app;
     private View fragment;
 
-    public TableFragment() {
-        super();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(WeightliftingApp.TAG, "Showing Buli Table fragment");

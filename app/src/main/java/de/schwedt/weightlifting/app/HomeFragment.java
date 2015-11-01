@@ -9,10 +9,6 @@ import android.view.ViewGroup;
 
 public class HomeFragment extends Fragment {
 
-    public HomeFragment() {
-        super();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(WeightliftingApp.TAG, "Showing Home fragment");

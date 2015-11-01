@@ -19,10 +19,6 @@ public class TeamFragment extends Fragment {
 
     private ListView listViewTeam;
 
-    public TeamFragment() {
-        super();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(WeightliftingApp.TAG, "Showing Buli Team fragment");

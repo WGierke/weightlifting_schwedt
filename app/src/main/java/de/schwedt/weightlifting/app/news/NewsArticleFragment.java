@@ -27,10 +27,6 @@ public class NewsArticleFragment extends Fragment {
     private TextView url;
     private ImageView cover;
 
-    public NewsArticleFragment() {
-        super();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(WeightliftingApp.TAG, "Showing Article fragment");
@@ -79,13 +75,6 @@ public class NewsArticleFragment extends Fragment {
         }, 1);
 
         return fragment;
-    }
-
-    private void setCoverHeightDip(int height) {
-        int pixels = DataHelper.dipToPx(height, getActivity());
-        ViewGroup.LayoutParams layoutParams = cover.getLayoutParams();
-        layoutParams.height = pixels;
-        cover.setLayoutParams(layoutParams);
     }
 
     private void setCoverHeight(int height) {
@@ -144,14 +133,10 @@ public class NewsArticleFragment extends Fragment {
         url.setText(Html.fromHtml("<a href=\"" + article.getURL() + "\">" + getString(R.string.news_article_url) + "</a>"));
         url.setMovementMethod(android.text.method.LinkMovementMethod.getInstance());
 
-        if (article.getImage() != null) {
-            cover.setImageDrawable(article.getImage());
+        if (article.getImageURL() != null) {
+            app.imageLoader.displayImage(article.getImageURL(), cover);
         } else {
-            if (article.getImageURL() != null) {
-                app.imageLoader.displayImage(article.getImageURL(), cover);
-            } else {
-                cover.setImageDrawable(getResources().getDrawable(R.drawable.cover_home));
-            }
+            cover.setImageDrawable(getResources().getDrawable(R.drawable.cover_home));
         }
     }
 

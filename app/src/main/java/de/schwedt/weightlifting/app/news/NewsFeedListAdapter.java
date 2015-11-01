@@ -28,20 +28,8 @@ public class NewsFeedListAdapter extends BaseAdapter {
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public ArrayList<NewsItem> getItems() {
-        return items;
-    }
-
     public void setItems(ArrayList<NewsItem> items) {
         this.items = items;
-    }
-
-    public Activity getActivity() {
-        return activity;
-    }
-
-    public void setActivity(Activity activity) {
-        this.activity = activity;
     }
 
     @Override
@@ -82,16 +70,12 @@ public class NewsFeedListAdapter extends BaseAdapter {
         }
 
         ImageView icon = (ImageView) view.findViewById(R.id.news_icon);
-        if (items.get(position).getImage() != null) {
-            icon.setImageDrawable(items.get(position).getImage());
-        } else {
-            if (items.get(position).getImageURL() != null) {
-                ((WeightliftingApp) activity.getApplicationContext()).imageLoader.displayImage(items.get(position).getImageURL(), icon);
-            } else {
-                // Show default cover image
-            }
-        }
 
+        if (items.get(position).getImageURL() != null) {
+            ((WeightliftingApp) activity.getApplicationContext()).imageLoader.displayImage(items.get(position).getImageURL(), icon);
+        } else {
+            // Show default cover image
+        }
         return view;
     }
 }

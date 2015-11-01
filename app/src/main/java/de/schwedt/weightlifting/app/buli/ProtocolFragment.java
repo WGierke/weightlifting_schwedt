@@ -14,10 +14,6 @@ import de.schwedt.weightlifting.app.WeightliftingApp;
 
 public class ProtocolFragment extends Fragment {
 
-    public ProtocolFragment() {
-        super();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(WeightliftingApp.TAG, "Showing Protocol fragment");

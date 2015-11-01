@@ -38,10 +38,6 @@ public abstract class UpdateableWrapper {
         items = new ArrayList<>();
     }
 
-    public long getLastUpdate() {
-        return lastUpdate;
-    }
-
     public void setLastUpdate(long lastUpdate) {
         this.lastUpdate = lastUpdate;
     }

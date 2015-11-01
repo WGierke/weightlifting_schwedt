@@ -20,10 +20,6 @@ public class BuliFragment extends Fragment {
     private static final int FRAGMENT_COMPETITIONS = 1;
     private static final int FRAGMENT_TABLE = 2;
 
-    public BuliFragment() {
-        super();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(WeightliftingApp.TAG, "Showing Buli fragment");

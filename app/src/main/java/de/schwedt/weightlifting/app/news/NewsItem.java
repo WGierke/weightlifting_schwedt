@@ -10,7 +10,6 @@ public class NewsItem extends UpdateableItem {
     private String heading;
     private String content;
     private String preview;
-    private Drawable image;
 
     private String url;
     private String imageURL;
@@ -18,15 +17,6 @@ public class NewsItem extends UpdateableItem {
 
     public NewsItem() {
 
-    }
-
-    public NewsItem(String content, String heading, Drawable image, String url, String date) {
-        this.content = content;
-        this.heading = heading;
-        this.image = image;
-        this.url = url;
-        this.date = date;
-        setPreview(DataHelper.trimString(content, 150));
     }
 
     public String getHeading() {
@@ -44,14 +34,6 @@ public class NewsItem extends UpdateableItem {
     public void setContent(String content) {
         this.content = content;
         setPreview(DataHelper.trimString(content, 150));
-    }
-
-    public Drawable getImage() {
-        return image;
-    }
-
-    public void setImage(Drawable image) {
-        this.image = image;
     }
 
     public String getURL() {
@@ -89,8 +71,7 @@ public class NewsItem extends UpdateableItem {
     public boolean equals(NewsItem item2) {
         return heading.equals(item2.getHeading()) && content.equals(item2.getContent())
                 && url.equals(item2.getURL()) && imageURL.equals(item2.getImageURL())
-                && date.equals(item2.getDate())
-                && ((image == null && item2.getImage() == null) || image.equals(item2.getImage()));
+                && date.equals(item2.getDate());
     }
 }
 

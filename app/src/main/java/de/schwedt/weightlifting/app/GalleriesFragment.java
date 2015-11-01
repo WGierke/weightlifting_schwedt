@@ -21,10 +21,6 @@ public class GalleriesFragment extends Fragment {
     private WeightliftingApp app;
     private View fragment;
 
-    public GalleriesFragment() {
-        super();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(WeightliftingApp.TAG, "Showing Gallery fragment");

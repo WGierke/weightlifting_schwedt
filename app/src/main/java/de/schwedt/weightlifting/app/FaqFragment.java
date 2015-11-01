@@ -19,10 +19,6 @@ public class FaqFragment extends Fragment {
 
     public static ArrayList<FaqItem> faqEntries = new ArrayList<>();
 
-    public FaqFragment() {
-        super();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(WeightliftingApp.TAG, "Showing Faq fragment");

@@ -29,8 +29,6 @@ public class WeightliftingApp extends Application {
     public static final int DISPLAY_DELAY = 500;
     public static Context mContext;
     public static boolean isUpdatingAll = false;
-    public static boolean[] isUpdating = new boolean[6];
-    public boolean isInForeground = true;
     public boolean isInitialized = false;
     public MemoryCache memoryCache;
     public ImageLoader imageLoader;

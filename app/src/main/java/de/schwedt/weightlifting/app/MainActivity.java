@@ -21,14 +21,13 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
-
 import java.util.ArrayList;
 
 import de.schwedt.weightlifting.app.buli.Competitions;
 import de.schwedt.weightlifting.app.buli.Table;
 import de.schwedt.weightlifting.app.buli.Team;
 import de.schwedt.weightlifting.app.gallery.Galleries;
+import de.schwedt.weightlifting.app.helper.UiHelper;
 import de.schwedt.weightlifting.app.news.Events;
 import de.schwedt.weightlifting.app.news.News;
 import de.schwedt.weightlifting.app.service.RegistrationIntentService;
@@ -160,10 +159,10 @@ public class MainActivity extends FragmentActivity {
     private void showCountedNewElements(boolean updatedSuccessfully) {
         int newElements = News.itemsToMark.size() + Events.itemsToMark.size() + Team.itemsToMark.size() + Competitions.itemsToMark.size() + Table.itemsToMark.size() + Galleries.itemsToMark.size();
         if (updatedSuccessfully)
-            Toast.makeText(getApplicationContext(), getResources().getString(R.string.updated_all_successfully), Toast.LENGTH_SHORT).show();
+            UiHelper.showToast(getResources().getString(R.string.updated_all_successfully), getApplicationContext());
         else
-            Toast.makeText(getApplicationContext(), getResources().getString(R.string.updated_all_unsuccessfully), Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(), getResources().getQuantityString(R.plurals.new_elements, newElements, newElements), Toast.LENGTH_SHORT).show();
+            UiHelper.showToast(getResources().getString(R.string.updated_all_unsuccessfully), getApplicationContext());
+        UiHelper.showToast(getResources().getQuantityString(R.plurals.new_elements, newElements, newElements), getApplicationContext());
     }
 
     @Override
@@ -176,7 +175,7 @@ public class MainActivity extends FragmentActivity {
         switch (item.getItemId()) {
             case R.id.action_refresh:
                 if (app.isUpdatingAll) {
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.updating_in_progress), Toast.LENGTH_LONG).show();
+                    UiHelper.showToast(getResources().getString(R.string.updating_in_progress), getApplicationContext());
                 } else {
                     app.isUpdatingAll = true;
                     app.setFinishUpdateFlags(false);
@@ -186,7 +185,7 @@ public class MainActivity extends FragmentActivity {
                     } catch (Exception e) {
                         Log.d(app.TAG, "Error while updating all");
                         e.printStackTrace();
-                        Toast.makeText(getApplicationContext(), R.string.updated_all_unsuccessfully, Toast.LENGTH_LONG).show();
+                        UiHelper.showToast(getResources().getString(R.string.updated_all_unsuccessfully), getApplicationContext());
                     }
                 }
                 return true;
@@ -309,18 +308,6 @@ public class MainActivity extends FragmentActivity {
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        app.isInForeground = false;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        app.isInForeground = true;
     }
 
     /**

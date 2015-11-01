@@ -24,10 +24,6 @@ public class NewsFeedFragment extends Fragment {
     private boolean is_loading = false;
     private int visibleItems = 5;
 
-    public NewsFeedFragment() {
-        super();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(WeightliftingApp.TAG, "Showing News Feed fragment");

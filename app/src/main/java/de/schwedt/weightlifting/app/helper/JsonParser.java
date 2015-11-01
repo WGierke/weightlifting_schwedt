@@ -22,18 +22,6 @@ public class JsonParser {
         }
     }
 
-    public String getValue(int index, String key) {
-        String res;
-        try {
-            JSONObject jsonObject = jsonValues.getJSONObject(index);
-            res = jsonObject.getString(key);
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return "";
-        }
-        return res;
-    }
-
     public JSONArray getJsonArray(String key) {
         try {
             String res;
