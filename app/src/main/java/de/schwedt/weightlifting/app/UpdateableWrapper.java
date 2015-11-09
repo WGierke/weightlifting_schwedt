@@ -23,15 +23,12 @@ public abstract class UpdateableWrapper {
     // If not yet ready, try again in 30 seconds
     public static final long TIMER_RETRY = 1000 * 30;
     public static ArrayList<UpdateableItem> itemsToMark = new ArrayList<>();
-
+    public static final int navigationPosition = -1;
+    public static final int subPosition = -1;
     protected boolean isUpdating = false;
     protected boolean updateFailed = false;
     protected boolean isUpToDate = false;
-
     protected long lastUpdate = 0;
-
-    protected String UPDATE_URL;
-
     protected ArrayList<UpdateableItem> items;
 
     public UpdateableWrapper() {
@@ -81,6 +78,7 @@ public abstract class UpdateableWrapper {
     protected void update(String url, String fileName, String tag) {
         final String FILENAME = fileName;
         final String TAG = tag;
+
         Log.i(WeightliftingApp.TAG, "Updating " + TAG + " ...");
         isUpdating = true;
         updateFailed = false;

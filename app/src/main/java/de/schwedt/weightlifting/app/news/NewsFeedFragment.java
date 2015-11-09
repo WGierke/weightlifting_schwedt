@@ -46,7 +46,7 @@ public class NewsFeedFragment extends Fragment {
     }
 
     private void getNews() {
-        news = app.getNews();
+        news = app.getNews(WeightliftingApp.UPDATE_IF_NECESSARY);
         if (news.getItems().size() == 0) {
             // No news items yet
             Log.d(WeightliftingApp.TAG, "Waiting for news...");

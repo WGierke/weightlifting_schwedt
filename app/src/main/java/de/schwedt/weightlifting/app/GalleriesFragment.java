@@ -47,7 +47,7 @@ public class GalleriesFragment extends Fragment {
     }
 
     private void getGalleries() {
-        Galleries galleries = app.getGalleries();
+        Galleries galleries = app.getGalleries(WeightliftingApp.UPDATE_IF_NECESSARY);
         if (galleries.getItems().size() == 0) {
             // No news items yet
             Log.d(WeightliftingApp.TAG, "Waiting for galleries...");

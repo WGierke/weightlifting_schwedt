@@ -72,6 +72,7 @@ public class NewsFeedListAdapter extends BaseAdapter {
         ImageView icon = (ImageView) view.findViewById(R.id.news_icon);
 
         if (items.get(position).getImageURL() != null) {
+            //crashes the app
             ((WeightliftingApp) activity.getApplicationContext()).imageLoader.displayImage(items.get(position).getImageURL(), icon);
         } else {
             // Show default cover image

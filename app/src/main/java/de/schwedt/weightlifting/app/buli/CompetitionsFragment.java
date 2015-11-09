@@ -43,7 +43,7 @@ public class CompetitionsFragment extends Fragment {
     }
 
     protected void getCompetitions() {
-        competitions = app.getCompetitions();
+        competitions = app.getCompetitions(WeightliftingApp.UPDATE_IF_NECESSARY);
         if (competitions.getItems().size() == 0) {
             // No news items yet
             Log.d(WeightliftingApp.TAG, "Waiting for competitions...");

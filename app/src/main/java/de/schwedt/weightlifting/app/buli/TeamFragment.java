@@ -34,7 +34,7 @@ public class TeamFragment extends Fragment {
         /*Runnable refreshRunnable = new Runnable() {
             @Override
             public void run() {
-                getTeam();
+                getTeam(false);
             }
         };
         Handler refreshHandler = new Handler();
@@ -47,7 +47,7 @@ public class TeamFragment extends Fragment {
 
 
     private void getTeam() {
-        Team buliTeam = app.getTeam();
+        Team buliTeam = app.getTeam(WeightliftingApp.UPDATE_IF_NECESSARY);
         if (buliTeam.getItems().size() == 0) {
             // No news items yet
             Log.d(WeightliftingApp.TAG, "Waiting for buli team...");

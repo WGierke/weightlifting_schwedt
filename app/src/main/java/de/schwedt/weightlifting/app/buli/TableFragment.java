@@ -19,6 +19,7 @@ public class TableFragment extends Fragment {
 
     private WeightliftingApp app;
     private View fragment;
+    private Table buliTable;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -30,15 +31,13 @@ public class TableFragment extends Fragment {
         ImageView cover = (ImageView) fragment.findViewById(R.id.cover_buli);
         cover.setImageDrawable(getResources().getDrawable(R.drawable.cover_competition));
 
-        ListView listViewTable = (ListView) fragment.findViewById(R.id.listView_Buli);
-
         getTable();
 
         return fragment;
     }
 
     private void getTable() {
-        Table buliTable = app.getTable();
+        buliTable = app.getTable(WeightliftingApp.UPDATE_IF_NECESSARY);
         if (buliTable.getItems().size() == 0) {
             // No table items yet
             Log.d(WeightliftingApp.TAG, "Waiting for buliTable...");
@@ -64,7 +63,7 @@ public class TableFragment extends Fragment {
                         // Show the competitions the club already had
                         Fragment protocol = new FilterCompetitionsFragment();
                         Bundle bundle = new Bundle();
-                        TableEntry entry = (TableEntry) app.getTable().getItem(position);
+                        TableEntry entry = (TableEntry) buliTable.getItem(position);
                         bundle.putString("club-name", entry.getClub());
                         protocol.setArguments(bundle);
                         ((MainActivity) getActivity()).addFragment(protocol, entry.getClub(), true);

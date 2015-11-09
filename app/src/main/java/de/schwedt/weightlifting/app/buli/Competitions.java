@@ -13,15 +13,16 @@ import de.schwedt.weightlifting.app.UpdateableItem;
 import de.schwedt.weightlifting.app.UpdateableWrapper;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.JsonParser;
-import de.schwedt.weightlifting.app.helper.UiHelper;
 
 public class Competitions extends UpdateableWrapper {
 
-    public static final String fileName = "competitions.json";
-
+    public static final String FILE_NAME = "competitions.json";
     public static ArrayList<PastCompetition> itemsToMark = new ArrayList<>();
-
-    private final String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/past_competitions.json";
+    public final static int navigationPosition = MainActivity.FRAGMENT_BULI;
+    public final static int subPosition = 1;
+    //private final String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/past_competitions.json";
+    private final String UPDATE_URL = "http://pastebin.com/raw.php?i=BP3TX0PS";
+    private final String TAG = "Competitions";
 
     public static ArrayList<PastCompetition> casteArray(ArrayList<UpdateableItem> array) {
         ArrayList<PastCompetition> convertedItems = new ArrayList<>();
@@ -31,11 +32,9 @@ public class Competitions extends UpdateableWrapper {
         return convertedItems;
     }
 
-    public static void markNewItems(ArrayList<UpdateableItem> oldItems, ArrayList<UpdateableItem> newItems) {
+    public static void addItemsToMark(ArrayList<UpdateableItem> oldItems, ArrayList<UpdateableItem> newItems) {
         ArrayList<PastCompetition> oldCompetitionItems = casteArray(oldItems);
         ArrayList<PastCompetition> newCompetitionItems = casteArray(newItems);
-        int navigationPosition = MainActivity.FRAGMENT_BULI;
-        int subPosition = 1;
         for (int i = 0; i < newCompetitionItems.size(); i++) {
             boolean isNew = true;
             for (int j = 0; j < oldCompetitionItems.size(); j++) {
@@ -45,14 +44,14 @@ public class Competitions extends UpdateableWrapper {
                 }
             }
             if (isNew) {
+                Log.d("WeightliftingLog", "new competition: " + newCompetitionItems.get(i).getDate());
                 itemsToMark.add(newCompetitionItems.get(i));
             }
         }
-        UiHelper.refreshCounterNav(navigationPosition, subPosition, itemsToMark.size());
     }
 
     public void refreshItems() {
-        super.update(UPDATE_URL, fileName, "Competitions");
+        super.update(UPDATE_URL, FILE_NAME, TAG);
     }
 
     protected void updateWrapper(String result) {
@@ -60,7 +59,7 @@ public class Competitions extends UpdateableWrapper {
         newItems.parseFromString(result);
         if (items.size() > 0) {
             keepOldReferences(items, newItems.getItems());
-            markNewItems(items, newItems.getItems());
+            addItemsToMark(items, newItems.getItems());
         }
         items = newItems.getItems();
     }

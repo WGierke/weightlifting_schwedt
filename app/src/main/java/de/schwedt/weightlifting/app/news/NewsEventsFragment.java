@@ -41,7 +41,7 @@ public class NewsEventsFragment extends Fragment {
     }
 
     private void getEvents() {
-        events = app.getEvents();
+        events = app.getEvents(WeightliftingApp.UPDATE_IF_NECESSARY);
         if (events.getItems().size() == 0) {
             // No events items yet
             Log.d(WeightliftingApp.TAG, "Waiting for events...");

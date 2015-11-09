@@ -1,13 +1,9 @@
 package de.schwedt.weightlifting.app;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -63,10 +59,29 @@ public class MainActivity extends FragmentActivity {
         setProgressBarIndeterminateVisibility(false);
 
         app = (WeightliftingApp) getApplicationContext();
+        app.setActivity(this);
 
         mTitle = mDrawerTitle = getTitle();
 
         initNavigation(savedInstanceState);
+
+        markElementsInNavAndRefresh();
+    }
+
+    public void markNewElementsInNav() {
+        Log.d(WeightliftingApp.TAG, "markNewElements");
+        UiHelper.refreshCounterNav(News.navigationPosition, News.subPosition, News.itemsToMark.size());
+        UiHelper.refreshCounterNav(Events.navigationPosition, Events.subPosition, Events.itemsToMark.size());
+        UiHelper.refreshCounterNav(Team.navigationPosition, Team.subPosition, Team.itemsToMark.size());
+        UiHelper.refreshCounterNav(Competitions.navigationPosition, Competitions.subPosition, Competitions.itemsToMark.size());
+        Log.d(WeightliftingApp.TAG, Competitions.itemsToMark.size() + "");
+        UiHelper.refreshCounterNav(Table.navigationPosition, Table.subPosition, Table.itemsToMark.size());
+        UiHelper.refreshCounterNav(Galleries.navigationPosition, Galleries.subPosition, Galleries.itemsToMark.size());
+    }
+
+    public void markElementsInNavAndRefresh() {
+        markNewElementsInNav();
+        ((NavDrawerListAdapter) mDrawerList.getAdapter()).notifyDataSetChanged();
     }
 
     private void initNavigation(Bundle savedInstanceState) {
@@ -117,15 +132,17 @@ public class MainActivity extends FragmentActivity {
             showFragment(FRAGMENT_HOME);
         }
 
-        BroadcastReceiver mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+        /*BroadcastReceiver mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 SharedPreferences sharedPreferences =
                         PreferenceManager.getDefaultSharedPreferences(context);
             }
-        };
+        };*/
         Intent intent = new Intent(this, RegistrationIntentService.class);
         startService(intent);
+
+
     }
 
     @Override
@@ -149,6 +166,7 @@ public class MainActivity extends FragmentActivity {
                 return;
             case WeightliftingApp.UPDATE_STATUS_SUCCESSFUL:
                 showCountedNewElements(true);
+                markElementsInNavAndRefresh();
                 break;
             case WeightliftingApp.UPDATE_STATUS_FAILED:
                 showCountedNewElements(false);
@@ -180,7 +198,7 @@ public class MainActivity extends FragmentActivity {
                     app.isUpdatingAll = true;
                     app.setFinishUpdateFlags(false);
                     try {
-                        app.updateData();
+                        app.updateDataForcefully();
                         showAsyncUpdateResults();
                     } catch (Exception e) {
                         Log.d(app.TAG, "Error while updating all");

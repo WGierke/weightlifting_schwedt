@@ -16,11 +16,13 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.R;
+import de.schwedt.weightlifting.app.WeightliftingApp;
 
 public class UiHelper {
 
@@ -96,6 +98,7 @@ public class UiHelper {
     }
 
     public static void refreshCounterNav(int mainNavPosition, int subNavPosition, int newValue) {
+        Log.d(WeightliftingApp.TAG, "refreshounterNav" + mainNavPosition + " " + subNavPosition + " with " + newValue);
         MainActivity.counter[mainNavPosition][subNavPosition] = newValue;
         MainActivity.navDrawerItems.get(mainNavPosition).setCount(DataHelper.sumOfArray(MainActivity.counter[mainNavPosition]));
     }

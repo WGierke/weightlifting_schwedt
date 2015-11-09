@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
+import com.parse.ParseCrashReporting;
 
 import de.schwedt.weightlifting.app.helper.Keys;
 import de.schwedt.weightlifting.app.helper.UiHelper;
@@ -92,9 +93,10 @@ public class SplashActivity extends Activity {
         };
 
         Parse.enableLocalDatastore(this);
+        ParseCrashReporting.enable(this);
         Parse.initialize(this, Keys.CONFIG_APP_ID, Keys.CONFIG_CLIENT_KEY);
-
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
+
         Log.d(app.TAG, "Splash created");
     }
 

@@ -15,15 +15,15 @@ import de.schwedt.weightlifting.app.UpdateableItem;
 import de.schwedt.weightlifting.app.UpdateableWrapper;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.JsonParser;
-import de.schwedt.weightlifting.app.helper.UiHelper;
 
 public class Galleries extends UpdateableWrapper {
 
-    public static final String fileName = "galleries.json";
-
+    public static final String FILE_NAME = "galleries.json";
     public static ArrayList<GalleryItem> itemsToMark = new ArrayList<>();
-
+    public final static int navigationPosition = MainActivity.FRAGMENT_GALLERY;
+    public final static int subPosition = 0;
     private final String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/galleries.json";
+    private final String TAG = "Galleries";
 
     public static ArrayList<GalleryItem> casteArray(ArrayList<UpdateableItem> array) {
         ArrayList<GalleryItem> convertedItems = new ArrayList<>();
@@ -36,8 +36,6 @@ public class Galleries extends UpdateableWrapper {
     public static void markNewItems(ArrayList<UpdateableItem> oldItems, ArrayList<UpdateableItem> newItems) {
         ArrayList<GalleryItem> oldGalleryItems = casteArray(oldItems);
         ArrayList<GalleryItem> newGalleryItems = casteArray(newItems);
-        int navigationPosition = MainActivity.FRAGMENT_GALLERY;
-        int subPosition = 0;
         for (int i = 0; i < newGalleryItems.size(); i++) {
             boolean isNew = true;
             for (int j = 0; j < oldGalleryItems.size(); j++) {
@@ -50,11 +48,10 @@ public class Galleries extends UpdateableWrapper {
                 itemsToMark.add(newGalleryItems.get(i));
             }
         }
-        UiHelper.refreshCounterNav(navigationPosition, subPosition, itemsToMark.size());
     }
 
     public void refreshItems() {
-        super.update(UPDATE_URL, fileName, "Galleries");
+        super.update(UPDATE_URL, FILE_NAME, TAG);
     }
 
     protected void updateWrapper(String result) {

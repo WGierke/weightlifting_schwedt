@@ -18,7 +18,7 @@ public class FilterCompetitionsFragment extends CompetitionsFragment {
     private ArrayList<PastCompetition> filteredCompetitions;
 
     protected void getCompetitions() {
-        competitions = app.getCompetitions();
+        competitions = app.getCompetitions(WeightliftingApp.UPDATE_IF_NECESSARY);
         if (competitions.getItems().size() == 0) {
             Log.d(WeightliftingApp.TAG, "Waiting for Competitions...");
 

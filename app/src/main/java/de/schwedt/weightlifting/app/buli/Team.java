@@ -13,15 +13,15 @@ import de.schwedt.weightlifting.app.UpdateableItem;
 import de.schwedt.weightlifting.app.UpdateableWrapper;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.JsonParser;
-import de.schwedt.weightlifting.app.helper.UiHelper;
 
 public class Team extends UpdateableWrapper {
 
-    public static final String fileName = "team.json";
-
+    public static final String FILE_NAME = "team.json";
     public static ArrayList<TeamMember> itemsToMark = new ArrayList<>();
-
+    public final static int navigationPosition = MainActivity.FRAGMENT_BULI;
+    public final static int subPosition = 0;
     private final String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/team.json";
+    private final String TAG = "Team";
 
     public static ArrayList<TeamMember> casteArray(ArrayList<UpdateableItem> array) {
         ArrayList<TeamMember> convertedItems = new ArrayList<>();
@@ -34,8 +34,6 @@ public class Team extends UpdateableWrapper {
     public static void markNewItems(ArrayList<UpdateableItem> oldItems, ArrayList<UpdateableItem> newItems) {
         ArrayList<TeamMember> oldTeamItems = casteArray(oldItems);
         ArrayList<TeamMember> newTeamItems = casteArray(newItems);
-        int navigationPosition = MainActivity.FRAGMENT_BULI;
-        int subPosition = 0;
         for (int i = 0; i < newTeamItems.size(); i++) {
             boolean isNew = true;
             for (int j = 0; j < oldTeamItems.size(); j++) {
@@ -48,12 +46,9 @@ public class Team extends UpdateableWrapper {
                 itemsToMark.add(newTeamItems.get(i));
             }
         }
-        UiHelper.refreshCounterNav(navigationPosition, subPosition, itemsToMark.size());
     }
 
-    public void refreshItems() {
-        super.update(UPDATE_URL, fileName, "Team");
-    }
+    public void refreshItems() { super.update(UPDATE_URL, FILE_NAME, TAG); }
 
     protected void updateWrapper(String result) {
         Team newItems = new Team();

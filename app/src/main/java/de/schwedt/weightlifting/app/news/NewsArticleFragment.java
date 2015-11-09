@@ -46,7 +46,7 @@ public class NewsArticleFragment extends Fragment {
         try {
             Bundle bundle = this.getArguments();
             int position = bundle.getInt("item");
-            article = (NewsItem) app.getNews().getItem(position);
+            article = (NewsItem) app.getNews(WeightliftingApp.UPDATE_IF_NECESSARY).getItem(position);
             showArticle();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -69,7 +69,6 @@ public class NewsArticleFragment extends Fragment {
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
-                //scrollView.scrollTo(0, DataHelper.dipToPx(100, getActivity()));
                 animateCoverHeight(150);
             }
         }, 1);

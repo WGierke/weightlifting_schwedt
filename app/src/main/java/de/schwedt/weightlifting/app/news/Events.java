@@ -17,11 +17,12 @@ import de.schwedt.weightlifting.app.helper.UiHelper;
 
 public class Events extends UpdateableWrapper {
 
-    public final static String fileName = "events.json";
-
+    public final static String FILE_NAME = "events.json";
     public static ArrayList<EventItem> itemsToMark = new ArrayList<>();
-
+    public static final int navigationPosition = MainActivity.FRAGMENT_NEWS;
+    public final static int subPosition = 1;
     private final String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/events.json";
+    private final String TAG = "Events";
 
     public static ArrayList<EventItem> casteArray(ArrayList<UpdateableItem> array) {
         ArrayList<EventItem> convertedItems = new ArrayList<>();
@@ -34,8 +35,6 @@ public class Events extends UpdateableWrapper {
     public static void markNewItems(ArrayList<UpdateableItem> oldItems, ArrayList<UpdateableItem> newItems) {
         ArrayList<EventItem> oldEventItems = casteArray(oldItems);
         ArrayList<EventItem> newEventItems = casteArray(newItems);
-        int navigationPosition = MainActivity.FRAGMENT_NEWS;
-        int subPosition = 1;
         for (int i = 0; i < newEventItems.size(); i++) {
             boolean isNew = true;
             for (int j = 0; j < oldEventItems.size(); j++) {
@@ -48,12 +47,9 @@ public class Events extends UpdateableWrapper {
                 itemsToMark.add(newEventItems.get(i));
             }
         }
-        UiHelper.refreshCounterNav(navigationPosition, subPosition, itemsToMark.size());
     }
 
-    public void refreshItems() {
-        super.update(UPDATE_URL, fileName, "Events");
-    }
+    public void refreshItems() { super.update(UPDATE_URL, FILE_NAME, TAG); }
 
     protected void updateWrapper(String result) {
         Events newItems = new Events();

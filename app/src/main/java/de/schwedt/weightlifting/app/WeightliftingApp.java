@@ -19,6 +19,7 @@ import de.schwedt.weightlifting.app.gallery.Galleries;
 import de.schwedt.weightlifting.app.helper.DataHelper;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
 import de.schwedt.weightlifting.app.helper.MemoryCache;
+import de.schwedt.weightlifting.app.helper.UiHelper;
 import de.schwedt.weightlifting.app.news.Events;
 import de.schwedt.weightlifting.app.news.News;
 
@@ -27,12 +28,18 @@ public class WeightliftingApp extends Application {
     public static final String TAG = "WeightliftingLog";
     public static final String TEAM_NAME = "Oder-Sund-Team";
     public static final int DISPLAY_DELAY = 500;
+    public final static int UPDATE_STATUS_SUCCESSFUL = 200;
+    public final static int UPDATE_STATUS_FAILED = 201;
+    public final static int UPDATE_STATUS_PENDING = 202;
+    public final static int UPDATE_FORCEFULLY = 1;
+    public final static int UPDATE_IF_NECESSARY = 2;
+    public final static int LOAD_FROM_FILE = 3;
     public static Context mContext;
     public static boolean isUpdatingAll = false;
+    private static MainActivity mActivity;
     public boolean isInitialized = false;
     public MemoryCache memoryCache;
     public ImageLoader imageLoader;
-
     public News news;
     public Events events;
     public Team team;
@@ -40,10 +47,6 @@ public class WeightliftingApp extends Application {
     public Table table;
     public Galleries galleries;
     public Handler splashCallbackHandler;
-
-    public final static int UPDATE_STATUS_SUCCESSFUL = 200;
-    public final static int UPDATE_STATUS_FAILED = 201;
-    public final static int UPDATE_STATUS_PENDING = 202;
 
     public void initialize(Handler callbackHandler) {
         splashCallbackHandler = callbackHandler;
@@ -73,13 +76,9 @@ public class WeightliftingApp extends Application {
 
         mContext = getApplicationContext();
 
-        //new updatetAsk().execute(this);
-        getNews();
-        getEvents();
-        getTeam();
-        getCompetitions();
-        getTable();
-        getGalleries();
+        loadDataFromStorage();
+
+        updateDataForcefully();
 
         updateSplashScreen();
 
@@ -89,7 +88,7 @@ public class WeightliftingApp extends Application {
     }
 
     private void updateSplashScreen() {
-        switch(getUpdateStatus()) {
+        switch (getUpdateStatus()) {
             case UPDATE_STATUS_PENDING:
                 Runnable refreshRunnable = new Runnable() {
                     @Override
@@ -112,15 +111,24 @@ public class WeightliftingApp extends Application {
         }
     }
 
-    public void updateData() {
+    public void loadDataFromStorage() {
+        getNews(LOAD_FROM_FILE);
+        getEvents(LOAD_FROM_FILE);
+        getTeam(LOAD_FROM_FILE);
+        getCompetitions(LOAD_FROM_FILE);
+        getTable(LOAD_FROM_FILE);
+        getGalleries(LOAD_FROM_FILE);
+    }
+
+    public void updateDataForcefully() {
         //Update everything and save it on storage
         Log.d(TAG, "updating everything");
-        news.refreshItems();
-        events.refreshItems();
-        team.refreshItems();
-        competitions.refreshItems();
-        table.refreshItems();
-        galleries.refreshItems();
+        getNews(UPDATE_FORCEFULLY);
+        getEvents(UPDATE_FORCEFULLY);
+        getTeam(UPDATE_FORCEFULLY);
+        getCompetitions(UPDATE_FORCEFULLY);
+        getTable(UPDATE_FORCEFULLY);
+        getGalleries(UPDATE_FORCEFULLY);
     }
 
     public int getUpdateStatus() {
@@ -132,8 +140,7 @@ public class WeightliftingApp extends Application {
         if (news.isUpToDate && events.isUpToDate && team.isUpToDate && competitions.isUpToDate && table.isUpToDate && galleries.isUpToDate) {
             isUpdatingAll = false;
             return UPDATE_STATUS_SUCCESSFUL;
-        }
-        else
+        } else
             return UPDATE_STATUS_PENDING;
     }
 
@@ -146,25 +153,35 @@ public class WeightliftingApp extends Application {
         galleries.isUpToDate = value;
     }
 
-    public UpdateableWrapper getWrapperItems(UpdateableWrapper myInstance, Class<?> myClass) {
+    public UpdateableWrapper getWrapperItems(UpdateableWrapper myInstance, Class<?> myClass, int mode) {
         try {
-            if (myInstance == null) {
+            if (myInstance == null)
                 myInstance = (UpdateableWrapper) myClass.newInstance();
-                String fileName = myClass.getDeclaredField("fileName").get(myInstance).toString();
+
+            Log.d(TAG, "getWrapperitems with forcedupdate: " + mode);
+
+            if (mode == UPDATE_FORCEFULLY) {
+                Log.d(TAG, "started forced update for " + myClass.getName());
+                myInstance.refreshItems();
+                return myInstance;
+            }
+
+            if (mode == LOAD_FROM_FILE) {
+                String fileName = myClass.getDeclaredField("FILE_NAME").get(myInstance).toString();
                 File file = getApplicationContext().getFileStreamPath(fileName);
                 if (file.exists()) {
                     String fileContent = DataHelper.readIntern(fileName, getApplicationContext());
                     if (!fileContent.equals("")) {
                         myInstance.parseFromString(fileContent);
                         myInstance.setLastUpdate(new File(getFilesDir() + "/" + fileName).lastModified());
-                        Log.d(TAG, myClass.getName() + ": read from memory:" + fileContent.substring(0 ,20) + "...");
+                        Log.d(TAG, myClass.getName() + ": read from memory:" + fileContent.substring(0, 20) + "...");
                     }
                 }
+            }
 
+            if (mode == UPDATE_IF_NECESSARY) {
                 if (myInstance.needsUpdate() && !myInstance.isUpdating && !isUpdatingAll) {
                     myInstance.refreshItems();
-                } else {
-                    myInstance.isUpToDate = true;
                 }
             }
         } catch (Exception e) {
@@ -174,52 +191,48 @@ public class WeightliftingApp extends Application {
         return myInstance;
     }
 
-    public News getNews() {
-        news = (News) getWrapperItems(news, News.class);
+    public News getNews(int updateMode) {
+        news = (News) getWrapperItems(news, News.class, updateMode);
+        markElementsInNavIfPossible();
         return news;
     }
 
-    public Events getEvents() {
-        events = (Events) getWrapperItems(events, Events.class);
+    public Events getEvents(int updateMode) {
+        events = (Events) getWrapperItems(events, Events.class, updateMode);
+        markElementsInNavIfPossible();
         return events;
     }
 
-    public Team getTeam() {
-        team = (Team) getWrapperItems(team, Team.class);
+    public Team getTeam(int updateMode) {
+        team = (Team) getWrapperItems(team, Team.class, updateMode);
+        markElementsInNavIfPossible();
         return team;
     }
 
-    public Competitions getCompetitions() {
-        competitions = (Competitions) getWrapperItems(competitions, Competitions.class);
+    public Competitions getCompetitions(int updateMode) {
+        competitions = (Competitions) getWrapperItems(competitions, Competitions.class, updateMode);
+        markElementsInNavIfPossible();
         return competitions;
     }
 
-    public Table getTable() {
-        table = (Table) getWrapperItems(table, Table.class);
+    public Table getTable(int updateMode) {
+        table = (Table) getWrapperItems(table, Table.class, updateMode);
+        markElementsInNavIfPossible();
         return table;
     }
 
-    public Galleries getGalleries() {
-        galleries = (Galleries) getWrapperItems(galleries, Galleries.class);
+    public Galleries getGalleries(int updateMode) {
+        galleries = (Galleries) getWrapperItems(galleries, Galleries.class, updateMode);
+        markElementsInNavIfPossible();
         return galleries;
     }
 
-/*    private class updatetAsk extends AsyncTask<WeightliftingApp, Integer, Long> {
-
-        protected Long doInBackground(WeightliftingApp... apps) {
-            //load data either from storage or from the internet
-            WeightliftingApp app = apps[0];
-            Looper.prepare();
-            app.getNews();
-            app.getEvents();
-            app.getTeam();
-            app.getCompetitions();
-            app.getTable();
-            app.getGalleries();
-            Toast.makeText(getApplicationContext().getApplicationContext(), "ready", Toast.LENGTH_SHORT);
-            Log.d(TAG, "ready");
-            return null;
-        }
+    private void markElementsInNavIfPossible() {
+        if(mActivity != null)
+            mActivity.markElementsInNavAndRefresh();
     }
-    */
+
+    public void setActivity(MainActivity activity) {
+        this.mActivity = activity;
+    }
 }
