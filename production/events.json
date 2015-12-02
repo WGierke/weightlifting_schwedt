@@ -52,6 +52,11 @@
         },
         {
             "date": "05. Dezember",
+            "location": "Schwedt",
+            "title": "1. Bundesliga"
+        },
+        {
+            "date": "05. Dezember",
             "location": "",
             "title": "Landesliga"
         },
@@ -59,11 +64,6 @@
             "date": "12. Dezember",
             "location": "Schwedt",
             "title": "Finale Athletikliga"
-        },
-        {
-            "date": "19. Dezember",
-            "location": "",
-            "title": "1./2. Bundesliga"
         }
     ]
 }]
