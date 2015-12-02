@@ -20,19 +20,14 @@ import de.schwedt.weightlifting.app.WeightliftingApp;
 public class NewsEventsFragment extends Fragment {
 
     private WeightliftingApp app;
-    private View fragment;
     private Events events;
     private ListView listViewEvents;
-
-    public NewsEventsFragment() {
-        super();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(WeightliftingApp.TAG, "Showing News Event fragment");
 
-        fragment = inflater.inflate(R.layout.news_events, container, false);
+        View fragment = inflater.inflate(R.layout.news_events, container, false);
         app = (WeightliftingApp) getActivity().getApplicationContext();
 
         listViewEvents = (ListView) fragment.findViewById(R.id.listView_News);
@@ -45,16 +40,10 @@ public class NewsEventsFragment extends Fragment {
         return fragment;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
     private void getEvents() {
-        events = app.getEvents();
+        events = app.getEvents(WeightliftingApp.UPDATE_IF_NECESSARY);
         if (events.getItems().size() == 0) {
             // No events items yet
-            app.setLoading(true);
             Log.d(WeightliftingApp.TAG, "Waiting for events...");
 
             // Check again in a few seconds
@@ -68,7 +57,6 @@ public class NewsEventsFragment extends Fragment {
             refreshHandler.postDelayed(refreshRunnable, News.TIMER_RETRY);
         } else {
             // We have events items to display
-            app.setLoading(false);
             try {
                 NewsEventsListAdapter adapter = new NewsEventsListAdapter(events.getItems(), getActivity());
                 listViewEvents.setAdapter(adapter);
@@ -91,14 +79,14 @@ public class NewsEventsFragment extends Fragment {
         for (int i = 0; i < items.size(); i++) {
             event = items.get(i);
             if (!monthAlreadyFound) {
-                if (event.getDate().indexOf(current_month) != -1) {
+                if (event.getDate().contains(current_month)) {
                     monthAlreadyFound = true;
                     if (Integer.valueOf(event.getDate().split("\\.")[0]) >= current_day) {
                         return i;
                     }
                 }
             } else {
-                if (event.getDate().indexOf(current_month) != -1) {
+                if (event.getDate().contains(current_month)) {
                     if (Integer.valueOf(event.getDate().split("\\.")[0]) >= current_day) {
                         return i;
                     }

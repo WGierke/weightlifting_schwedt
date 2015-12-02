@@ -27,22 +27,6 @@ public class NewsEventsListAdapter extends BaseAdapter {
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public ArrayList<EventItem> getItems() {
-        return items;
-    }
-
-    public void setItems(ArrayList<EventItem> items) {
-        this.items = items;
-    }
-
-    public Activity getActivity() {
-        return activity;
-    }
-
-    public void setActivity(Activity activity) {
-        this.activity = activity;
-    }
-
     @Override
     public int getCount() {
         return items.size();

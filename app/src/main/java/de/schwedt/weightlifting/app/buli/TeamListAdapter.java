@@ -29,22 +29,6 @@ public class TeamListAdapter extends BaseAdapter {
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public ArrayList<TeamMember> getItems() {
-        return items;
-    }
-
-    public void setItems(ArrayList<TeamMember> items) {
-        this.items = items;
-    }
-
-    public Activity getActivity() {
-        return activity;
-    }
-
-    public void setActivity(Activity activity) {
-        this.activity = activity;
-    }
-
     @Override
     public int getCount() {
         return items.size();

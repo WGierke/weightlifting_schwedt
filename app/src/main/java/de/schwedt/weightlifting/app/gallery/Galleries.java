@@ -15,37 +15,27 @@ import de.schwedt.weightlifting.app.UpdateableItem;
 import de.schwedt.weightlifting.app.UpdateableWrapper;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.JsonParser;
-import de.schwedt.weightlifting.app.helper.UiHelper;
 
 public class Galleries extends UpdateableWrapper {
 
-    public static final String fileName = "galleries.json";
-
-    public static ArrayList<GalleryItem> itemsToMark = new ArrayList<GalleryItem>();
-
+    public static final String FILE_NAME = "galleries.json";
+    public static ArrayList<GalleryItem> itemsToMark = new ArrayList<>();
+    public final static int navigationPosition = MainActivity.FRAGMENT_GALLERY;
+    public final static int subPosition = 0;
     private final String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/galleries.json";
+    private final String TAG = "Galleries";
 
     public static ArrayList<GalleryItem> casteArray(ArrayList<UpdateableItem> array) {
-        ArrayList<GalleryItem> convertedItems = new ArrayList<GalleryItem>();
+        ArrayList<GalleryItem> convertedItems = new ArrayList<>();
         for (int i = 0; i < array.size(); i++) {
             convertedItems.add((GalleryItem) array.get(i));
         }
         return convertedItems;
     }
 
-    public static String getNotificationMessage() {
-        String content = "";
-        for (GalleryItem item : itemsToMark) {
-            content += item.getTitle() + "|";
-        }
-        return content;
-    }
-
     public static void markNewItems(ArrayList<UpdateableItem> oldItems, ArrayList<UpdateableItem> newItems) {
         ArrayList<GalleryItem> oldGalleryItems = casteArray(oldItems);
         ArrayList<GalleryItem> newGalleryItems = casteArray(newItems);
-        int navigationPosition = MainActivity.FRAGMENT_GALLERY;
-        int subPosition = 0;
         for (int i = 0; i < newGalleryItems.size(); i++) {
             boolean isNew = true;
             for (int j = 0; j < oldGalleryItems.size(); j++) {
@@ -58,11 +48,10 @@ public class Galleries extends UpdateableWrapper {
                 itemsToMark.add(newGalleryItems.get(i));
             }
         }
-        UiHelper.refreshCounterNav(navigationPosition, subPosition, itemsToMark.size());
     }
 
-    public void update() {
-        super.update(UPDATE_URL, fileName, "Galleries");
+    public void refreshItems() {
+        super.update(UPDATE_URL, FILE_NAME, TAG);
     }
 
     protected void updateWrapper(String result) {
@@ -78,7 +67,7 @@ public class Galleries extends UpdateableWrapper {
     public void parseFromString(String jsonString) {
         Log.d(WeightliftingApp.TAG, "Parsing gallery JSON...");
         try {
-            ArrayList<UpdateableItem> newItems = new ArrayList<UpdateableItem>();
+            ArrayList<UpdateableItem> newItems = new ArrayList<>();
 
             JsonParser jsonParser = new JsonParser();
             jsonParser.getJsonFromString(jsonString);
@@ -93,7 +82,7 @@ public class Galleries extends UpdateableWrapper {
                     item.setUrl(gallery.getString("url"));
 
                     JSONArray gallery_images = gallery.getJSONArray(("images"));
-                    List<String> image_urls = new ArrayList<String>();
+                    List<String> image_urls = new ArrayList<>();
                     for (int j = 0; j < gallery_images.length(); j++) {
                         image_urls.add(gallery_images.getString(j));
                     }

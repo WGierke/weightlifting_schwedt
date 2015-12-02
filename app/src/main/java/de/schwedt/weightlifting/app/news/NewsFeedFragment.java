@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -18,18 +19,16 @@ public class NewsFeedFragment extends Fragment {
 
     public News news;
     private WeightliftingApp app;
-    private View fragment;
     private ListView listViewNews;
-
-    public NewsFeedFragment() {
-        super();
-    }
+    private NewsFeedListAdapter adapter;
+    private boolean is_loading = false;
+    private int visibleItems = 5;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(WeightliftingApp.TAG, "Showing News Feed fragment");
 
-        fragment = inflater.inflate(R.layout.news_feed, container, false);
+        View fragment = inflater.inflate(R.layout.news_feed, container, false);
         app = (WeightliftingApp) getActivity().getApplicationContext();
 
         listViewNews = (ListView) fragment.findViewById(R.id.listView_News);
@@ -46,17 +45,10 @@ public class NewsFeedFragment extends Fragment {
         return fragment;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        //getNews();
-    }
-
     private void getNews() {
-        news = app.getNews();
+        news = app.getNews(WeightliftingApp.UPDATE_IF_NECESSARY);
         if (news.getItems().size() == 0) {
             // No news items yet
-            app.setLoading(true);
             Log.d(WeightliftingApp.TAG, "Waiting for news...");
 
             // Check again in a few seconds
@@ -70,9 +62,8 @@ public class NewsFeedFragment extends Fragment {
             refreshHandler.postDelayed(refreshRunnable, News.TIMER_RETRY);
         } else {
             // We have news items to display
-            app.setLoading(false);
             try {
-                NewsFeedListAdapter adapter = new NewsFeedListAdapter(News.casteArray(news.getItems()), getActivity());
+                adapter = new NewsFeedListAdapter(news.getFirstElements(visibleItems), getActivity());
                 listViewNews.setAdapter(adapter);
                 listViewNews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
@@ -85,11 +76,33 @@ public class NewsFeedFragment extends Fragment {
                         ((MainActivity) getActivity()).addFragment(article, getString(R.string.nav_news), true);
                     }
                 });
-            } catch (Exception ex) {
+                listViewNews.setOnScrollListener(new AbsListView.OnScrollListener() {
+                    @Override
+                    public void onScrollStateChanged(AbsListView view, int scrollState) { }
+
+                    @Override
+                    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+                        if(firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount != 0) {
+                                if(!is_loading)
+                                {
+                                    is_loading = true;
+                                    addItems();
+                                }
+                            }
+                        }
+                    });
+        } catch (Exception ex) {
                 Log.e(WeightliftingApp.TAG, "Showing news feed failed");
                 ex.toString();
             }
         }
     }
 
+    private void addItems() {
+        visibleItems += 5;
+        adapter.setItems(news.getFirstElements(visibleItems));
+        adapter.notifyDataSetChanged();
+        is_loading = false;
+    }
 }

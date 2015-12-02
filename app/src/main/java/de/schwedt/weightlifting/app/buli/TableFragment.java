@@ -19,15 +19,7 @@ public class TableFragment extends Fragment {
 
     private WeightliftingApp app;
     private View fragment;
-
-    private ImageView cover;
-    private ListView listViewTable;
-
     private Table buliTable;
-
-    public TableFragment() {
-        super();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,10 +28,8 @@ public class TableFragment extends Fragment {
         fragment = inflater.inflate(R.layout.buli_page, container, false);
         app = (WeightliftingApp) getActivity().getApplicationContext();
 
-        cover = (ImageView) fragment.findViewById(R.id.cover_buli);
+        ImageView cover = (ImageView) fragment.findViewById(R.id.cover_buli);
         cover.setImageDrawable(getResources().getDrawable(R.drawable.cover_competition));
-
-        listViewTable = (ListView) fragment.findViewById(R.id.listView_Buli);
 
         getTable();
 
@@ -47,10 +37,9 @@ public class TableFragment extends Fragment {
     }
 
     private void getTable() {
-        buliTable = app.getTable();
+        buliTable = app.getTable(WeightliftingApp.UPDATE_IF_NECESSARY);
         if (buliTable.getItems().size() == 0) {
             // No table items yet
-            app.setLoading(true);
             Log.d(WeightliftingApp.TAG, "Waiting for buliTable...");
 
             // Check again in a few seconds
@@ -64,7 +53,6 @@ public class TableFragment extends Fragment {
             refreshHandler.postDelayed(refreshRunnable, Table.TIMER_RETRY);
         } else {
             // We have Table items to display
-            app.setLoading(false);
             try {
                 ListView listViewTable = (ListView) fragment.findViewById(R.id.listView_Buli);
                 TableListAdapter adapter = new TableListAdapter(Table.casteArray(buliTable.getItems()), getActivity());
@@ -75,7 +63,7 @@ public class TableFragment extends Fragment {
                         // Show the competitions the club already had
                         Fragment protocol = new FilterCompetitionsFragment();
                         Bundle bundle = new Bundle();
-                        TableEntry entry = (TableEntry) app.getTable().getItem(position);
+                        TableEntry entry = (TableEntry) buliTable.getItem(position);
                         bundle.putString("club-name", entry.getClub());
                         protocol.setArguments(bundle);
                         ((MainActivity) getActivity()).addFragment(protocol, entry.getClub(), true);

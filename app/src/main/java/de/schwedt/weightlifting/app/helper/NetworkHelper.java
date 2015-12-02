@@ -22,8 +22,7 @@ public class NetworkHelper {
                 try {
                     Log.d(WeightliftingApp.TAG, "Requesting " + url);
                     String result = getRequest(url);
-                    Log.d(WeightliftingApp.TAG, result);
-                    if (result.indexOf("!DOCTYPE") != -1)
+                    if (result.contains("!DOCTYPE"))
                         result = null;
                     data.putString("result", result);
                 } catch (Exception ex) {
@@ -38,8 +37,8 @@ public class NetworkHelper {
     }
 
     public static String getRequest(String myurl) throws Exception {
-        InputStream is = null;
-        String result = null;
+        InputStream is;
+        String result;
 
         URL url = new URL(myurl);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();

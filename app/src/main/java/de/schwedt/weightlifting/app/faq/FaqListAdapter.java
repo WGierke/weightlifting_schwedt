@@ -15,29 +15,11 @@ import de.schwedt.weightlifting.app.R;
 public class FaqListAdapter extends BaseAdapter {
 
     private ArrayList<FaqItem> items;
-    private Activity activity;
     private LayoutInflater inflater;
 
     public FaqListAdapter(ArrayList<FaqItem> items, Activity activity) {
         this.items = items;
-        this.activity = activity;
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }
-
-    public ArrayList<FaqItem> getItems() {
-        return items;
-    }
-
-    public void setItems(ArrayList<FaqItem> items) {
-        this.items = items;
-    }
-
-    public Activity getActivity() {
-        return activity;
-    }
-
-    public void setActivity(Activity activity) {
-        this.activity = activity;
     }
 
     @Override

@@ -19,7 +19,6 @@ import de.schwedt.weightlifting.app.helper.DataHelper;
 public class NewsArticleFragment extends Fragment {
 
     private WeightliftingApp app;
-    private View fragment;
     private NewsItem article;
 
     private TextView heading;
@@ -27,17 +26,12 @@ public class NewsArticleFragment extends Fragment {
     private TextView date;
     private TextView url;
     private ImageView cover;
-    private ScrollView scrollView;
-
-    public NewsArticleFragment() {
-        super();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(WeightliftingApp.TAG, "Showing Article fragment");
 
-        fragment = inflater.inflate(R.layout.news_article, container, false);
+        View fragment = inflater.inflate(R.layout.news_article, container, false);
         app = (WeightliftingApp) getActivity().getApplicationContext();
 
         heading = (TextView) fragment.findViewById(R.id.article_title);
@@ -46,13 +40,13 @@ public class NewsArticleFragment extends Fragment {
         url = (TextView) fragment.findViewById(R.id.article_url);
         cover = (ImageView) fragment.findViewById(R.id.article_cover);
 
-        scrollView = (ScrollView) fragment.findViewById(R.id.article_scrollView);
+        ScrollView scrollView = (ScrollView) fragment.findViewById(R.id.article_scrollView);
 
         // Get article information from bundle
         try {
             Bundle bundle = this.getArguments();
             int position = bundle.getInt("item");
-            article = (NewsItem) app.getNews().getItem(position);
+            article = (NewsItem) app.getNews(WeightliftingApp.UPDATE_IF_NECESSARY).getItem(position);
             showArticle();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -75,19 +69,11 @@ public class NewsArticleFragment extends Fragment {
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
-                //scrollView.scrollTo(0, DataHelper.dipToPx(100, getActivity()));
                 animateCoverHeight(150);
             }
         }, 1);
 
         return fragment;
-    }
-
-    private void setCoverHeightDip(int height) {
-        int pixels = DataHelper.dipToPx(height, getActivity());
-        ViewGroup.LayoutParams layoutParams = cover.getLayoutParams();
-        layoutParams.height = pixels;
-        cover.setLayoutParams(layoutParams);
     }
 
     private void setCoverHeight(int height) {
@@ -146,14 +132,10 @@ public class NewsArticleFragment extends Fragment {
         url.setText(Html.fromHtml("<a href=\"" + article.getURL() + "\">" + getString(R.string.news_article_url) + "</a>"));
         url.setMovementMethod(android.text.method.LinkMovementMethod.getInstance());
 
-        if (article.getImage() != null) {
-            cover.setImageDrawable(article.getImage());
+        if (article.getImageURL() != null) {
+            app.imageLoader.displayImage(article.getImageURL(), cover);
         } else {
-            if (article.getImageURL() != null) {
-                app.imageLoader.displayImage(article.getImageURL(), cover);
-            } else {
-                cover.setImageDrawable(getResources().getDrawable(R.drawable.cover_home));
-            }
+            cover.setImageDrawable(getResources().getDrawable(R.drawable.cover_home));
         }
     }
 

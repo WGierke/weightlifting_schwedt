@@ -57,7 +57,7 @@ public class ImageControllerFragment extends Fragment {
                 if (fr == null) {
                     fr = new ImageGridFragment();
                     fr.setArguments(bundle);
-                    GalleryItem currentGallery = (GalleryItem) app.getGalleries().getItem(bundle.getInt("GALLERY_POSITION"));
+                    GalleryItem currentGallery = (GalleryItem) app.getGalleries(WeightliftingApp.UPDATE_IF_NECESSARY).getItem(bundle.getInt("GALLERY_POSITION"));
                     tag = currentGallery.getTitle();
                 }
                 break;
@@ -68,7 +68,7 @@ public class ImageControllerFragment extends Fragment {
                 if (fr == null) {
                     fr = new ImagePagerFragment();
                     fr.setArguments(bundle);
-                    GalleryItem currentGallery = (GalleryItem) app.getGalleries().getItem(bundle.getInt("GALLERY_POSITION"));
+                    GalleryItem currentGallery = (GalleryItem) app.getGalleries(WeightliftingApp.UPDATE_IF_NECESSARY).getItem(bundle.getInt("GALLERY_POSITION"));
                     tag = currentGallery.getTitle();
                 }
                 break;

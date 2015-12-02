@@ -25,10 +25,6 @@ public class CompetitionsFragment extends Fragment {
 
     protected Competitions competitions;
 
-    public CompetitionsFragment() {
-        super();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(WeightliftingApp.TAG, "Showing Buli Competitions fragment");
@@ -47,10 +43,9 @@ public class CompetitionsFragment extends Fragment {
     }
 
     protected void getCompetitions() {
-        competitions = app.getCompetitions();
+        competitions = app.getCompetitions(WeightliftingApp.UPDATE_IF_NECESSARY);
         if (competitions.getItems().size() == 0) {
             // No news items yet
-            app.setLoading(true);
             Log.d(WeightliftingApp.TAG, "Waiting for competitions...");
 
             // Check again in a few seconds
@@ -64,7 +59,6 @@ public class CompetitionsFragment extends Fragment {
             refreshHandler.postDelayed(refreshRunnable, Competitions.TIMER_RETRY);
         } else {
             // We have competitions to display
-            app.setLoading(false);
             try {
                 CompetitionsListAdapter adapter = new CompetitionsListAdapter(Competitions.casteArray(competitions.getItems()), getActivity());
                 listViewCompetitions.setAdapter(adapter);

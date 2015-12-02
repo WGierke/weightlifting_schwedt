@@ -17,33 +17,24 @@ import de.schwedt.weightlifting.app.helper.UiHelper;
 
 public class News extends UpdateableWrapper {
 
-    public static final String fileName = "news.json";
-
-    public static ArrayList<NewsItem> itemsToMark = new ArrayList<NewsItem>();
-
+    public static final String FILE_NAME = "news.json";
+    public static ArrayList<NewsItem> itemsToMark = new ArrayList<>();
+    public static final int navigationPosition = MainActivity.FRAGMENT_NEWS;
+    public static final int subPosition = 0;
     private final String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/news.json";
+    private final String TAG = "News";
 
     public static ArrayList<NewsItem> casteArray(ArrayList<UpdateableItem> array) {
-        ArrayList<NewsItem> convertedItems = new ArrayList<NewsItem>();
+        ArrayList<NewsItem> convertedItems = new ArrayList<>();
         for (int i = 0; i < array.size(); i++) {
             convertedItems.add((NewsItem) array.get(i));
         }
         return convertedItems;
     }
 
-    public static String getNotificationMessage() {
-        String content = "";
-        for (NewsItem item : itemsToMark) {
-            content += item.getHeading() + "|";
-        }
-        return content;
-    }
-
     public static void markNewItems(ArrayList<UpdateableItem> oldItems, ArrayList<UpdateableItem> newItems) {
         ArrayList<NewsItem> oldNewsItems = casteArray(oldItems);
         ArrayList<NewsItem> newNewsItems = casteArray(newItems);
-        int navigationPosition = MainActivity.FRAGMENT_NEWS;
-        int subPosition = 0;
         for (int i = 0; i < newNewsItems.size(); i++) {
             boolean isNew = true;
             for (int j = 0; j < oldNewsItems.size(); j++) {
@@ -56,12 +47,9 @@ public class News extends UpdateableWrapper {
                 itemsToMark.add(newNewsItems.get(i));
             }
         }
-        UiHelper.refreshCounterNav(navigationPosition, subPosition, itemsToMark.size());
     }
 
-    public void update() {
-        super.update(UPDATE_URL, fileName, "News");
-    }
+    public void refreshItems() { super.update(UPDATE_URL, FILE_NAME, TAG); }
 
     protected void updateWrapper(String result) {
         News newItems = new News();
@@ -75,9 +63,8 @@ public class News extends UpdateableWrapper {
 
     public void parseFromString(String jsonString) {
         Log.d(WeightliftingApp.TAG, "Parsing news JSON...");
-        Log.d(WeightliftingApp.TAG, "json: " + jsonString);
         try {
-            ArrayList<UpdateableItem> newItems = new ArrayList<UpdateableItem>();
+            ArrayList<UpdateableItem> newItems = new ArrayList<>();
 
             JsonParser jsonParser = new JsonParser();
             jsonParser.getJsonFromString(jsonString);
@@ -120,5 +107,12 @@ public class News extends UpdateableWrapper {
                 }
             }
         }
+    }
+
+    public ArrayList<NewsItem> getFirstElements(int n) {
+        if(n <= items.size())
+            return new ArrayList(items.subList(0, n));
+        else
+            return casteArray(items);
     }
 }

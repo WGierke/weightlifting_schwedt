@@ -28,6 +28,7 @@ import com.google.android.gms.iid.InstanceID;
 import com.parse.ParseObject;
 
 import de.schwedt.weightlifting.app.R;
+import de.schwedt.weightlifting.app.WeightliftingApp;
 
 public class RegistrationIntentService extends IntentService {
 

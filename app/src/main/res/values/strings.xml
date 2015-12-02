@@ -3,30 +3,20 @@
 
     <string name="app_name">Gewichtheben Schwedt</string>
 
-    <string name="action_settings">Settings</string>
-
     <!-- Stuff -->
 
     <string name="updated_all_successfully">Inhalte wurden erfolgreich synchronisiert</string>
     <string name="updated_all_unsuccessfully">Nicht alle Inhalte konnten synchronisiert werden. Besteht eine Internetverbindung?</string>
-    <string name="update_failed">%1$s-Update schlug fehl. Besteht eine Internetverbindung?</string>
-    <string name="updates_failed">Updates schlugen fehl. Bitte versuchen Sie es später erneut.</string>
     <plurals name="new_elements">
         <item quantity="zero">Kein neues oder geändertes Element gefunden</item>
         <item quantity="one">%d neues/geändertes Element gefunden</item>
         <item quantity="other">%d neue/geänderte Elemente gefunden</item>
     </plurals>
-    <string name="connected">Internetverbindung gefunden</string>
-    <string name="placeholder_long">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</string>
-    <string name="placeholder_short">At veroeos si</string>
-
 
     <!-- Navigation -->
     <string name="nav_home">Startseite</string>
     <string name="nav_news">News &amp; Events</string>
     <string name="nav_buli">Bundesliga</string>
-    <string name="nav_lali">Landesliga</string>
-    <string name="nav_map">Maps</string>
     <string name="nav_faq">FAQ</string>
     <string name="nav_gallery">Galerie</string>
     <string name="nav_contact">Kontakt</string>
@@ -38,21 +28,11 @@
 
 
     <!-- News -->
-    <string name="news_loading">Updating news...</string>
     <string name="news_error_heading">Something went wrong</string>
     <string name="news_error_content">This shouldn\'t happen, please go back and try again. Restart the app if that doesn\'t solve the issue.</string>
     <string name="news_feed">Neuigkeiten</string>
     <string name="news_events">Veranstaltungen</string>
     <string name="news_article_url">Link zum Artikel</string>
-    <plurals name="new_news">
-        <item quantity="one">%d neuer Artikel</item>
-        <item quantity="other">%d neue Artikel</item>
-    </plurals>
-    <plurals name="new_events">
-        <item quantity="one">%d neues/geändertes Event</item>
-        <item quantity="other">%d neue/geänderte Events</item>
-    </plurals>
-
 
     <!-- Bundesliga -->
     <string name="buli_team">Team</string>
@@ -65,25 +45,6 @@
     <string name="buli_place">Platz</string>
     <string name="buli_max_score">Höchstpunktzahl</string>
     <string name="buli_points">Punkte</string>
-    <string name="buli_relay">1. Bundesliga Staffel B</string>
-    <plurals name="new_member">
-        <item quantity="one">%d aktualisierter Heber</item>
-        <item quantity="other">%d aktualisierte Heber</item>
-    </plurals>
-    <plurals name="new_competitions">
-        <item quantity="one">%d neuer/geänderter Wettkampf</item>
-        <item quantity="other">%d neue/geänderte Wettkämpfe</item>
-    </plurals>
-    <plurals name="new_table">
-        <item quantity="one">%d aktualisierter Tabellen-Eintrag</item>
-        <item quantity="other">%d aktualisierte Tabellen-Einträge</item>
-    </plurals>
-
-    <!-- Gallery -->
-    <plurals name="new_gallery">
-        <item quantity="one">%d neue/geänderte Gallerie</item>
-        <item quantity="other">%d neue/geänderte Gallerien</item>
-    </plurals>
 
     <!-- FAQs -->
     <string name="faq_off_signal_heading">Ab-Zeichen</string>
@@ -105,9 +66,8 @@
     <!-- Contact -->
     <string name="contact_club">TSV Blau-Weiß 65 Schwedt e.V.</string>
     <string name="contact_department_chief">Abteilungsleiter Gewichtheben</string>
-    <string name="contact_department_name">Thorsten Teicher</string>
-    <string name="contact_email">Email</string>
-    <string name="contact_department_email">t.teichert@swschwedt.de</string>
+    <string name="contact_department_name">Roland Taubert</string>
+    <string name="contact_department_email">taubert@ospff.de</string>
     <string name="contact_competition_site_headline">Trainings- und Wettkampfstätte</string>
     <string name="contact_competition_site_address">Sport- und Freizeitzentrum Külzviertel\nDr.-W.-Külzviertel 2b\n16303 Schwedt/Oder\nTel./Fax (03332) 419967</string>
     <string name="contact_competition_email">info@gewichtheben-schwedt.de</string>
@@ -118,6 +78,7 @@
     <string name="homepage_club">Homepage des TSV Blau-Weiß 65 Schwedt \n blauweiss65-schwedt.de</string>
     <string name="homepage_bvdg">Bundesverband Deutscher Gewichtheber \n bvdg-online.de</string>
     <string name="updating_in_progress">Update-Prozess wurde bereits gestartet.</string>
-    <string name="updating_already_in_progress">Update-Prozess läuft. Bitte gedulden Sie sich.</string>
+    <string name="error_network">Netzwerkfehler. Sind Sie online?</string>
+    <string name="loading_data">Lade aktuellste Daten ...</string>
 
 </resources>

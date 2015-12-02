@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,6 +38,9 @@ import de.schwedt.weightlifting.app.helper.Keys;
 import de.schwedt.weightlifting.app.news.Events;
 import de.schwedt.weightlifting.app.news.News;
 import de.schwedt.weightlifting.app.service.GCMPreferences;
+import de.schwedt.weightlifting.app.helper.UiHelper;
+import de.schwedt.weightlifting.app.news.Events;
+import de.schwedt.weightlifting.app.news.News;
 import de.schwedt.weightlifting.app.service.RegistrationIntentService;
 
 public class MainActivity extends FragmentActivity {
@@ -49,7 +53,7 @@ public class MainActivity extends FragmentActivity {
     public static final int FRAGMENT_CONTACT = 5;
     //home, (news, events), (team, competitions, table), (gallery)
     public static int counter[][] = {{}, {0, 0}, {0, 0, 0}, {0}};
-    public static ArrayList<NavDrawerItem> navDrawerItems = new ArrayList<NavDrawerItem>();
+    public static ArrayList<NavDrawerItem> navDrawerItems = new ArrayList<>();
     private WeightliftingApp app;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -59,7 +63,6 @@ public class MainActivity extends FragmentActivity {
     // used to store app title
     private CharSequence mTitle;
     private NavDrawerListAdapter adapter;
-    private BroadcastReceiver mRegistrationBroadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +75,7 @@ public class MainActivity extends FragmentActivity {
         setProgressBarIndeterminateVisibility(false);
 
         app = (WeightliftingApp) getApplicationContext();
-        if (!app.isInitialized) {
-            app.initialize(this);
-        }
+        app.setActivity(this);
 
         mTitle = mDrawerTitle = getTitle();
 
@@ -84,13 +85,39 @@ public class MainActivity extends FragmentActivity {
         Parse.initialize(this, Keys.CONFIG_APP_ID, Keys.CONFIG_CLIENT_KEY);
 
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
+        markElementsInNavAndRefresh();
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            int fragmentId = extras.getInt("fragmentId");
+            if (fragmentId != 0) {
+                Log.d(WeightliftingApp.TAG, "Fragment to open: " + fragmentId);
+                showFragment(fragmentId);
+            }
+        }
+    }
+
+    public void markNewElementsInNav() {
+        Log.d(WeightliftingApp.TAG, "markNewElements");
+        UiHelper.refreshCounterNav(News.navigationPosition, News.subPosition, News.itemsToMark.size());
+        UiHelper.refreshCounterNav(Events.navigationPosition, Events.subPosition, Events.itemsToMark.size());
+        UiHelper.refreshCounterNav(Team.navigationPosition, Team.subPosition, Team.itemsToMark.size());
+        UiHelper.refreshCounterNav(Competitions.navigationPosition, Competitions.subPosition, Competitions.itemsToMark.size());
+        Log.d(WeightliftingApp.TAG, Competitions.itemsToMark.size() + "");
+        UiHelper.refreshCounterNav(Table.navigationPosition, Table.subPosition, Table.itemsToMark.size());
+        UiHelper.refreshCounterNav(Galleries.navigationPosition, Galleries.subPosition, Galleries.itemsToMark.size());
+    }
+
+    public void markElementsInNavAndRefresh() {
+        markNewElementsInNav();
+        ((NavDrawerListAdapter) mDrawerList.getAdapter()).notifyDataSetChanged();
     }
 
     private void initNavigation(Bundle savedInstanceState) {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.list_slider);
 
-        navDrawerItems = new ArrayList<NavDrawerItem>();
+        navDrawerItems = new ArrayList<>();
 
         // adding nav drawer items to array
         navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_home), R.drawable.nav_home));
@@ -103,7 +130,7 @@ public class MainActivity extends FragmentActivity {
         mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
 
         // setting the nav drawer list adapter
-        adapter = new NavDrawerListAdapter(getApplicationContext(), navDrawerItems);
+        NavDrawerListAdapter adapter = new NavDrawerListAdapter(getApplicationContext(), navDrawerItems);
         mDrawerList.setAdapter(adapter);
 
         // enabling action bar app icon and behaving it as toggle button
@@ -134,15 +161,6 @@ public class MainActivity extends FragmentActivity {
             showFragment(FRAGMENT_HOME);
         }
 
-        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                SharedPreferences sharedPreferences =
-                        PreferenceManager.getDefaultSharedPreferences(context);
-                boolean sentToken = sharedPreferences
-                        .getBoolean(GCMPreferences.SENT_TOKEN_TO_SERVER, false);
-            }
-        };
         Intent intent = new Intent(this, RegistrationIntentService.class);
         startService(intent);
     }
@@ -155,37 +173,34 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void showAsyncUpdateResults() {
-        //Log
-        Log.d(WeightliftingApp.TAG, app.news.finishedUpdate + " " + app.events.finishedUpdate + " " + app.team.finishedUpdate + " " + app.competitions.finishedUpdate + " " + app.table.finishedUpdate + " " + app.galleries.finishedUpdate);
-        // if one update failed show the number of new elements until now and return
-        if (app.news.updateFailed || app.events.updateFailed || app.team.updateFailed || app.competitions.updateFailed || app.table.updateFailed || app.galleries.updateFailed) {
-            showCountedNewElements(false);
-            app.isUpdatingAll = false;
-            return;
+        switch (app.getUpdateStatus()) {
+            case WeightliftingApp.UPDATE_STATUS_PENDING:
+                Runnable refreshRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        showAsyncUpdateResults();
+                    }
+                };
+                Handler refreshHandler = new Handler();
+                refreshHandler.postDelayed(refreshRunnable, 200);
+                return;
+            case WeightliftingApp.UPDATE_STATUS_SUCCESSFUL:
+                showCountedNewElements(true);
+                markElementsInNavAndRefresh();
+                break;
+            case WeightliftingApp.UPDATE_STATUS_FAILED:
+                showCountedNewElements(false);
+                break;
         }
-        // if one update isn't ready yet check again in 200 ms
-        if (!app.news.finishedUpdate || !app.events.finishedUpdate || !app.team.finishedUpdate || !app.competitions.finishedUpdate || !app.table.finishedUpdate || !app.galleries.finishedUpdate) {
-            Runnable refreshRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    showAsyncUpdateResults();
-                }
-            };
-            Handler refreshHandler = new Handler();
-            refreshHandler.postDelayed(refreshRunnable, 200);
-            return;
-        }
-        showCountedNewElements(true);
-        app.isUpdatingAll = false;
     }
 
     private void showCountedNewElements(boolean updatedSuccessfully) {
         int newElements = News.itemsToMark.size() + Events.itemsToMark.size() + Team.itemsToMark.size() + Competitions.itemsToMark.size() + Table.itemsToMark.size() + Galleries.itemsToMark.size();
         if (updatedSuccessfully)
-            Toast.makeText(getApplicationContext(), getResources().getString(R.string.updated_all_successfully), Toast.LENGTH_SHORT).show();
+            UiHelper.showToast(getResources().getString(R.string.updated_all_successfully), getApplicationContext());
         else
-            Toast.makeText(getApplicationContext(), getResources().getString(R.string.updated_all_unsuccessfully), Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(), getResources().getQuantityString(R.plurals.new_elements, newElements, newElements), Toast.LENGTH_SHORT).show();
+            UiHelper.showToast(getResources().getString(R.string.updated_all_unsuccessfully), getApplicationContext());
+        UiHelper.showToast(getResources().getQuantityString(R.plurals.new_elements, newElements, newElements), getApplicationContext());
     }
 
     @Override
@@ -198,22 +213,17 @@ public class MainActivity extends FragmentActivity {
         switch (item.getItemId()) {
             case R.id.action_refresh:
                 if (app.isUpdatingAll) {
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.updating_in_progress), Toast.LENGTH_LONG).show();
+                    UiHelper.showToast(getResources().getString(R.string.updating_in_progress), getApplicationContext());
                 } else {
                     app.isUpdatingAll = true;
-                    app.news.finishedUpdate = false;
-                    app.events.finishedUpdate = false;
-                    app.team.finishedUpdate = false;
-                    app.competitions.finishedUpdate = false;
-                    app.table.finishedUpdate = false;
-                    app.galleries.finishedUpdate = false;
+                    app.setFinishUpdateFlags(false);
                     try {
-                        app.updateData();
+                        app.updateDataForcefully();
                         showAsyncUpdateResults();
                     } catch (Exception e) {
                         Log.d(app.TAG, "Error while updating all");
                         e.printStackTrace();
-                        Toast.makeText(getApplicationContext(), R.string.updated_all_unsuccessfully, Toast.LENGTH_LONG).show();
+                        UiHelper.showToast(getResources().getString(R.string.updated_all_unsuccessfully), getApplicationContext());
                     }
                 }
                 return true;
@@ -228,7 +238,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // if nav drawer is opened, hide the action items
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+        //boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
         //menu.findItem(R.id.action_refresh).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
@@ -284,7 +294,7 @@ public class MainActivity extends FragmentActivity {
             FragmentTransaction transaction = fragmentManager.beginTransaction();
 
             transaction.replace(R.id.frame_container, fragment, title);
-            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             transaction.commit();
             setTitle(title);
             fragmentManager.popBackStack();
@@ -336,18 +346,6 @@ public class MainActivity extends FragmentActivity {
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        app.isInForeground = false;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        app.isInForeground = true;
     }
 
     /**

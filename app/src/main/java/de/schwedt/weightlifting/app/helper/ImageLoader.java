@@ -49,23 +49,6 @@ public class ImageLoader {
         }
     }
 
-    public boolean isImageReady(String url) {
-        Bitmap bitmap = memoryCache.get(url);
-        if (bitmap != null) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public void preloadImage(String url) {
-        // download image if not yet cached
-        Bitmap bitmap = memoryCache.get(url);
-        if (bitmap == null) {
-            queuePhoto(url, null);
-        }
-    }
-
     private void queuePhoto(String url, ImageView imageView) {
         //Log.d(WeightliftingApp.TAG, "Image added to queue: " + url);
         PhotoToLoad p = new PhotoToLoad(url, imageView);
@@ -86,7 +69,7 @@ public class ImageLoader {
 
         //from web
         try {
-            Bitmap bitmap = null;
+            Bitmap bitmap;
             String path = url.substring(0, url.lastIndexOf("/") + 1);
             String file = url.substring(url.lastIndexOf("/") + 1);
             URL imageUrl = new URL(path + URLEncoder.encode(file, "utf-8"));
@@ -141,11 +124,6 @@ public class ImageLoader {
             return true;
         }
         return false;
-    }
-
-    public void clearCache() {
-        memoryCache.clear();
-        fileCache.clear();
     }
 
     //Task for the queue

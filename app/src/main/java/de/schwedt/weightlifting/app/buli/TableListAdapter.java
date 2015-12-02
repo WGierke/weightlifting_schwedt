@@ -29,22 +29,6 @@ public class TableListAdapter extends BaseAdapter {
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public ArrayList<TableEntry> getItems() {
-        return items;
-    }
-
-    public void setItems(ArrayList<TableEntry> items) {
-        this.items = items;
-    }
-
-    public Activity getActivity() {
-        return activity;
-    }
-
-    public void setActivity(Activity activity) {
-        this.activity = activity;
-    }
-
     @Override
     public int getCount() {
         return items.size();
@@ -74,7 +58,7 @@ public class TableListAdapter extends BaseAdapter {
 
         TextView club = (TextView) view.findViewById(R.id.buli_table_club);
         club.setText(items.get(position).getClub());
-        if (club.getText().equals(WeightliftingApp.TEAM_NAME))
+        if (club.getText().toString().contains(WeightliftingApp.TEAM_NAME))
             club.setText(Html.fromHtml("<u>" + club.getText() + "</u>"));
 
         TextView score = (TextView) view.findViewById(R.id.buli_table_score);
