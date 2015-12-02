@@ -2,30 +2,19 @@ package de.schwedt.weightlifting.app.helper;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
-import android.app.AlertDialog;
-import android.app.Application;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.SplashActivity;
-import de.schwedt.weightlifting.app.WeightliftingApp;
 
 public class UiHelper {
 
@@ -101,7 +90,6 @@ public class UiHelper {
     }
 
     public static void refreshCounterNav(int mainNavPosition, int subNavPosition, int newValue) {
-        Log.d(WeightliftingApp.TAG, "refreshounterNav" + mainNavPosition + " " + subNavPosition + " with " + newValue);
         MainActivity.counter[mainNavPosition][subNavPosition] = newValue;
         MainActivity.navDrawerItems.get(mainNavPosition).setCount(DataHelper.sumOfArray(MainActivity.counter[mainNavPosition]));
     }
@@ -109,9 +97,9 @@ public class UiHelper {
     /**
      * Show a notification
      *
-     * @param title   Ttile of the notification
-     * @param message Message, lines are seperated by a pipe
-     * @param description Description of the notification
+     * @param title          Ttile of the notification
+     * @param message        Message, lines are seperated by a pipe
+     * @param description    Description of the notification
      * @param notificationId Identifier of the notification
      */
     public static void showNotification(String title, String message, String description, int notificationId, Context context) {
@@ -137,7 +125,7 @@ public class UiHelper {
             big.addLine(part);
         }
 
-        NotificationManager manager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(notificationId, big.build());
     }
 }

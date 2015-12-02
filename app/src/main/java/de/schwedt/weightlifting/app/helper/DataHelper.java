@@ -20,9 +20,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
-import java.util.Properties;
-
-import de.schwedt.weightlifting.app.WeightliftingApp;
 
 import de.schwedt.weightlifting.app.WeightliftingApp;
 
@@ -122,38 +119,38 @@ public class DataHelper {
     }
 
     public static void setPreference(String prev_name, String prev_value, Application application) {
-        SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, application.MODE_PRIVATE);
+        SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(prev_name, prev_value);
         editor.commit();
     }
 
     public static void setPreference(String prev_name, Boolean prev_value, Application application) {
-        SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, application.MODE_PRIVATE);
+        SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(prev_name, prev_value);
         editor.commit();
     }
 
     public static void deletePreference(String prev_name, Application application) {
-        SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, application.MODE_PRIVATE);
+        SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.remove(prev_name);
         editor.commit();
     }
 
     public static Boolean checkPreference(String prev_name, Application application) {
-        SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, application.MODE_PRIVATE);
+        SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         return preferences.contains(prev_name);
     }
 
     public static String getPreference(String prev_name, Application application) {
-        SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, application.MODE_PRIVATE);
+        SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         return preferences.getString(prev_name, null);
     }
 
     public static Boolean getPreference(String prev_name, Boolean prev_default, Application application) {
-        SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, application.MODE_PRIVATE);
+        SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         return preferences.getBoolean(prev_name, prev_default);
     }
 

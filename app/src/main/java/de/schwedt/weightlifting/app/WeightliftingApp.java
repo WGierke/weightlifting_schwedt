@@ -7,9 +7,6 @@ import android.util.Log;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.parse.Parse;
-import com.parse.ParseObject;
-import com.parse.ParseCrashReporting;
 
 import java.io.File;
 import java.util.Date;
@@ -21,9 +18,7 @@ import de.schwedt.weightlifting.app.faq.FaqItem;
 import de.schwedt.weightlifting.app.gallery.Galleries;
 import de.schwedt.weightlifting.app.helper.DataHelper;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
-import de.schwedt.weightlifting.app.helper.Keys;
 import de.schwedt.weightlifting.app.helper.MemoryCache;
-import de.schwedt.weightlifting.app.helper.UiHelper;
 import de.schwedt.weightlifting.app.news.Events;
 import de.schwedt.weightlifting.app.news.News;
 
@@ -162,8 +157,6 @@ public class WeightliftingApp extends Application {
             if (myInstance == null)
                 myInstance = (UpdateableWrapper) myClass.newInstance();
 
-            Log.d(TAG, "getWrapperitems with forcedupdate: " + mode);
-
             if (mode == UPDATE_FORCEFULLY) {
                 Log.d(TAG, "started forced update for " + myClass.getName());
                 myInstance.refreshItems();
@@ -232,11 +225,11 @@ public class WeightliftingApp extends Application {
     }
 
     private void markElementsInNavIfPossible() {
-        if(mActivity != null)
+        if (mActivity != null)
             mActivity.markElementsInNavAndRefresh();
     }
 
     public void setActivity(MainActivity activity) {
-        this.mActivity = activity;
+        mActivity = activity;
     }
 }

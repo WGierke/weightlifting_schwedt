@@ -17,11 +17,10 @@ import de.schwedt.weightlifting.app.helper.JsonParser;
 public class Competitions extends UpdateableWrapper {
 
     public static final String FILE_NAME = "competitions.json";
-    public static ArrayList<PastCompetition> itemsToMark = new ArrayList<>();
     public final static int navigationPosition = MainActivity.FRAGMENT_BULI;
     public final static int subPosition = 1;
-    //private final String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/past_competitions.json";
-    private final String UPDATE_URL = "http://pastebin.com/raw.php?i=BP3TX0PS";
+    public static ArrayList<PastCompetition> itemsToMark = new ArrayList<>();
+    private final String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/past_competitions.json";
     private final String TAG = "Competitions";
 
     public static ArrayList<PastCompetition> casteArray(ArrayList<UpdateableItem> array) {

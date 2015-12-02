@@ -87,7 +87,7 @@ public class ImageGridFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.gallery_pictures, container, false);
         listView = (GridView) rootView.findViewById(R.id.grid);
-        ((GridView) listView).setAdapter(new ImageAdapter());
+        listView.setAdapter(new ImageAdapter());
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

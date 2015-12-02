@@ -13,14 +13,13 @@ import de.schwedt.weightlifting.app.UpdateableItem;
 import de.schwedt.weightlifting.app.UpdateableWrapper;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.JsonParser;
-import de.schwedt.weightlifting.app.helper.UiHelper;
 
 public class Events extends UpdateableWrapper {
 
     public final static String FILE_NAME = "events.json";
-    public static ArrayList<EventItem> itemsToMark = new ArrayList<>();
     public static final int navigationPosition = MainActivity.FRAGMENT_NEWS;
     public final static int subPosition = 1;
+    public static ArrayList<EventItem> itemsToMark = new ArrayList<>();
     private final String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/events.json";
     private final String TAG = "Events";
 
@@ -49,7 +48,9 @@ public class Events extends UpdateableWrapper {
         }
     }
 
-    public void refreshItems() { super.update(UPDATE_URL, FILE_NAME, TAG); }
+    public void refreshItems() {
+        super.update(UPDATE_URL, FILE_NAME, TAG);
+    }
 
     protected void updateWrapper(String result) {
         Events newItems = new Events();

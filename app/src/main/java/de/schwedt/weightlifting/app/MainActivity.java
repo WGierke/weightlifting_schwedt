@@ -1,14 +1,9 @@
 package de.schwedt.weightlifting.app;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -22,11 +17,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
-
-import com.parse.Parse;
-import com.parse.ParseAnalytics;
-import com.parse.ParseCrashReporting;
 
 import java.util.ArrayList;
 
@@ -34,10 +24,6 @@ import de.schwedt.weightlifting.app.buli.Competitions;
 import de.schwedt.weightlifting.app.buli.Table;
 import de.schwedt.weightlifting.app.buli.Team;
 import de.schwedt.weightlifting.app.gallery.Galleries;
-import de.schwedt.weightlifting.app.helper.Keys;
-import de.schwedt.weightlifting.app.news.Events;
-import de.schwedt.weightlifting.app.news.News;
-import de.schwedt.weightlifting.app.service.GCMPreferences;
 import de.schwedt.weightlifting.app.helper.UiHelper;
 import de.schwedt.weightlifting.app.news.Events;
 import de.schwedt.weightlifting.app.news.News;
@@ -62,7 +48,6 @@ public class MainActivity extends FragmentActivity {
     private CharSequence mDrawerTitle;
     // used to store app title
     private CharSequence mTitle;
-    private NavDrawerListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,15 +65,10 @@ public class MainActivity extends FragmentActivity {
         mTitle = mDrawerTitle = getTitle();
 
         initNavigation(savedInstanceState);
-
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this, Keys.CONFIG_APP_ID, Keys.CONFIG_CLIENT_KEY);
-
-        ParseAnalytics.trackAppOpenedInBackground(getIntent());
         markElementsInNavAndRefresh();
 
         Bundle extras = getIntent().getExtras();
-        if(extras != null) {
+        if (extras != null) {
             int fragmentId = extras.getInt("fragmentId");
             if (fragmentId != 0) {
                 Log.d(WeightliftingApp.TAG, "Fragment to open: " + fragmentId);
@@ -98,12 +78,10 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void markNewElementsInNav() {
-        Log.d(WeightliftingApp.TAG, "markNewElements");
         UiHelper.refreshCounterNav(News.navigationPosition, News.subPosition, News.itemsToMark.size());
         UiHelper.refreshCounterNav(Events.navigationPosition, Events.subPosition, Events.itemsToMark.size());
         UiHelper.refreshCounterNav(Team.navigationPosition, Team.subPosition, Team.itemsToMark.size());
         UiHelper.refreshCounterNav(Competitions.navigationPosition, Competitions.subPosition, Competitions.itemsToMark.size());
-        Log.d(WeightliftingApp.TAG, Competitions.itemsToMark.size() + "");
         UiHelper.refreshCounterNav(Table.navigationPosition, Table.subPosition, Table.itemsToMark.size());
         UiHelper.refreshCounterNav(Galleries.navigationPosition, Galleries.subPosition, Galleries.itemsToMark.size());
     }
@@ -212,16 +190,16 @@ public class MainActivity extends FragmentActivity {
         // Handle action bar actions click
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                if (app.isUpdatingAll) {
+                if (WeightliftingApp.isUpdatingAll) {
                     UiHelper.showToast(getResources().getString(R.string.updating_in_progress), getApplicationContext());
                 } else {
-                    app.isUpdatingAll = true;
+                    WeightliftingApp.isUpdatingAll = true;
                     app.setFinishUpdateFlags(false);
                     try {
                         app.updateDataForcefully();
                         showAsyncUpdateResults();
                     } catch (Exception e) {
-                        Log.d(app.TAG, "Error while updating all");
+                        Log.d(WeightliftingApp.TAG, "Error while updating all");
                         e.printStackTrace();
                         UiHelper.showToast(getResources().getString(R.string.updated_all_unsuccessfully), getApplicationContext());
                     }

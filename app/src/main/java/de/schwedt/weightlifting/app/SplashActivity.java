@@ -96,8 +96,6 @@ public class SplashActivity extends Activity {
         ParseCrashReporting.enable(this);
         Parse.initialize(this, Keys.CONFIG_APP_ID, Keys.CONFIG_CLIENT_KEY);
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
-
-        Log.d(app.TAG, "Splash created");
     }
 
     @Override
