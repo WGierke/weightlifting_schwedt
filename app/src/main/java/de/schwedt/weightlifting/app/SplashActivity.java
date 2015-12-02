@@ -124,6 +124,8 @@ public class SplashActivity extends Activity {
 
     private void switchToMainActivity() {
         Intent i = new Intent(this, MainActivity.class);
+        if(getIntent().getExtras() != null)
+            i.putExtras(getIntent().getExtras());
         startActivity(i);
 
         // Close this splash screen

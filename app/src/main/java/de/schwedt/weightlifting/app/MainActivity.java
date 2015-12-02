@@ -66,6 +66,15 @@ public class MainActivity extends FragmentActivity {
         initNavigation(savedInstanceState);
 
         markElementsInNavAndRefresh();
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            int fragmentId = extras.getInt("fragmentId");
+            if (fragmentId != 0) {
+                Log.d(WeightliftingApp.TAG, "Fragment to open: " + fragmentId);
+                showFragment(fragmentId);
+            }
+        }
     }
 
     public void markNewElementsInNav() {
@@ -132,17 +141,8 @@ public class MainActivity extends FragmentActivity {
             showFragment(FRAGMENT_HOME);
         }
 
-        /*BroadcastReceiver mRegistrationBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                SharedPreferences sharedPreferences =
-                        PreferenceManager.getDefaultSharedPreferences(context);
-            }
-        };*/
         Intent intent = new Intent(this, RegistrationIntentService.class);
         startService(intent);
-
-
     }
 
     @Override

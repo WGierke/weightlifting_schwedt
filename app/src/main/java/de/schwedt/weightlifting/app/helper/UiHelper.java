@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.R;
+import de.schwedt.weightlifting.app.SplashActivity;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 
 public class UiHelper {
@@ -113,9 +114,10 @@ public class UiHelper {
      */
     public static void showNotification(String title, String message, String description, int notificationId, Context context) {
 
-        Intent resultIntent = new Intent(context, MainActivity.class);
+        Intent resultIntent = new Intent(context, SplashActivity.class);
         resultIntent.setAction(Intent.ACTION_MAIN);
         resultIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        resultIntent.putExtra("fragmentId", notificationId);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
