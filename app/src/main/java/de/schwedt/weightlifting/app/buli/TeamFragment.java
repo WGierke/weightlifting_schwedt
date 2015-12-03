@@ -31,15 +31,6 @@ public class TeamFragment extends Fragment {
 
         listViewTeam = (ListView) fragment.findViewById(R.id.listView_Buli);
 
-        /*Runnable refreshRunnable = new Runnable() {
-            @Override
-            public void run() {
-                getTeam(false);
-            }
-        };
-        Handler refreshHandler = new Handler();
-        refreshHandler.postDelayed(refreshRunnable, WeightliftingApp.DISPLAY_DELAY);
-        */
         getTeam();
 
         return fragment;

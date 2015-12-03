@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.DataHelper;
@@ -40,8 +41,6 @@ public class NewsArticleFragment extends Fragment {
         url = (TextView) fragment.findViewById(R.id.article_url);
         cover = (ImageView) fragment.findViewById(R.id.article_cover);
 
-        ScrollView scrollView = (ScrollView) fragment.findViewById(R.id.article_scrollView);
-
         // Get article information from bundle
         try {
             Bundle bundle = this.getArguments();
@@ -56,74 +55,16 @@ public class NewsArticleFragment extends Fragment {
         cover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (DataHelper.pxToDip(cover.getLayoutParams().height, getActivity()) > 250) {
-                    animateCoverHeight(150);
-                } else {
-                    animateCoverHeight(300);
-                }
+                Fragment fr = new ArticleImageFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("imageURL", article.getImageURL());
+                fr.setArguments(bundle);
+                ((MainActivity) getActivity()).addFragment(fr, getString(R.string.nav_news), true);
             }
         });
 
-        setCoverHeight(0);
-
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                animateCoverHeight(150);
-            }
-        }, 1);
-
         return fragment;
     }
-
-    private void setCoverHeight(int height) {
-        ViewGroup.LayoutParams layoutParams = cover.getLayoutParams();
-        layoutParams.height = height;
-        cover.setLayoutParams(layoutParams);
-    }
-
-    private void animateCoverHeight(int height) {
-        int newHeight = DataHelper.dipToPx(height, getActivity());
-        int currentHeight = cover.getLayoutParams().height;
-
-        int steps;
-        int increment;
-
-        // increase or decrease height?
-        if (currentHeight > newHeight) {
-            steps = currentHeight - newHeight;
-            increment = -1;
-        } else {
-            steps = newHeight - currentHeight;
-            increment = 1;
-        }
-
-        final int count = steps;
-        final int change = increment;
-        final int current = currentHeight;
-
-        // set height in thread
-        final Handler handler = new Handler();
-        (new Thread() {
-            @Override
-            public void run() {
-                for (int i = 0; i < count; i++) {
-                    final int new_height = current + (i * change);
-                    handler.post(new Runnable() {
-                        public void run() {
-                            setCoverHeight(new_height);
-                        }
-                    });
-                    try {
-                        sleep(1);
-                    } catch (Exception ex) {
-                        break;
-                    }
-                }
-            }
-        }).start();
-    }
-
 
     private void showArticle() {
         heading.setText(article.getHeading());
