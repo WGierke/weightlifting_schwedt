@@ -1,6 +1,14 @@
 [{
     "past_competitions": [
         {
+            "date": "05.12.2015",
+            "guest": "AC Mei\u00dfen",
+            "home": "Athletenteam Vogtland",
+            "location": "Plauen/Rodewisch",
+            "score": "667.5 : 568.1",
+            "url": "https://www.iat.uni-leipzig.de/datenbanken/blgew1516/start.php?pid='123'&protokoll=1&wkid=9D5556289B604E2CB54D6A4C1F272FB0"
+        },
+        {
             "date": "07.11.2015",
             "guest": "Berliner TSC",
             "home": "AC Mei\u00dfen",
@@ -42,14 +50,6 @@
         },
         {
             "date": "26.09.2015",
-            "guest": "Athletenteam Vogtland",
-            "home": "Berliner TSC",
-            "location": "Berlin",
-            "score": "759.8 : 598.0",
-            "url": "https://www.iat.uni-leipzig.de/datenbanken/blgew1516/start.php?pid='123'&protokoll=1&wkid=71FE462665CA484BA1CDE3EC2752C790"
-        },
-        {
-            "date": "26.09.2015",
             "guest": "AC Mei\u00dfen",
             "home": "Oder-Sund-Team ",
             "location": "Schwedt/Stralsund",
@@ -63,6 +63,14 @@
             "location": "Eibau",
             "score": "590.2 : 656.6",
             "url": "https://www.iat.uni-leipzig.de/datenbanken/blgew1516/start.php?pid='123'&protokoll=1&wkid=DA7732D95D6342DBAF45C069D50FA3C4"
+        },
+        {
+            "date": "26.09.2015",
+            "guest": "Athletenteam Vogtland",
+            "home": "Berliner TSC",
+            "location": "Berlin",
+            "score": "759.8 : 598.0",
+            "url": "https://www.iat.uni-leipzig.de/datenbanken/blgew1516/start.php?pid='123'&protokoll=1&wkid=71FE462665CA484BA1CDE3EC2752C790"
         }
     ]
 }]
