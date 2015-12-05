@@ -22,6 +22,7 @@ public class TeamListAdapter extends BaseAdapter {
     private ArrayList<TeamMember> items;
     private Activity activity;
     private LayoutInflater inflater;
+    private TeamMember item;
 
     public TeamListAdapter(ArrayList<TeamMember> items, Activity activity) {
         this.items = items;
@@ -47,6 +48,7 @@ public class TeamListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
+        item = items.get(position);
         if (convertView == null) {
             view = inflater.inflate(R.layout.buli_team_item, null);
         }
@@ -54,30 +56,30 @@ public class TeamListAdapter extends BaseAdapter {
         Resources res = activity.getResources();
 
         TextView name = (TextView) view.findViewById(R.id.buli_member_name);
-        name.setText(items.get(position).getName());
+        name.setText(item.getName());
 
         TextView year = (TextView) view.findViewById(R.id.buli_member_year);
-        year.setText(res.getString(R.string.buli_year) + ": " + items.get(position).getYear());
+        year.setText(res.getString(R.string.buli_year) + ": " + item.getYear());
 
         TextView snatching = (TextView) view.findViewById(R.id.buli_member_snatching);
-        snatching.setText(res.getString(R.string.buli_snatching) + ": " + items.get(position).getSnatching() + " kg");
+        snatching.setText(res.getString(R.string.buli_snatching) + ": " + item.getSnatching() + " kg");
 
         TextView jerking = (TextView) view.findViewById(R.id.buli_member_jerking);
-        jerking.setText(res.getString(R.string.buli_jerking) + ": " + items.get(position).getJerking() + " kg");
+        jerking.setText(res.getString(R.string.buli_jerking) + ": " + item.getJerking() + " kg");
 
         TextView maxPoints = (TextView) view.findViewById(R.id.buli_member_max_score);
-        maxPoints.setText(res.getString(R.string.buli_relative_points) + ": " + items.get(position).getMaxScore());
+        maxPoints.setText(res.getString(R.string.buli_relative_points) + ": " + item.getMaxScore());
 
-        if (Team.itemsToMark.contains(items.get(position))) {
+        if (Team.itemsToMark.contains(item)) {
             UiHelper.colorFade(view, res);
-            Team.itemsToMark.remove(items.get(position));
+            Team.itemsToMark.remove(item);
             UiHelper.refreshCounterNav(MainActivity.FRAGMENT_BULI, 0, Team.itemsToMark.size());
         }
 
         ImageView icon = (ImageView) view.findViewById(R.id.buli_member_image);
 
-        if (items.get(position).getImageURL() != null) {
-            ((WeightliftingApp) activity.getApplicationContext()).imageLoader.displayImage(items.get(position).getImageURL(), icon);
+        if (item.getImageURL() != null) {
+            ((WeightliftingApp) activity.getApplicationContext()).imageLoader.displayImage(item.getImageURL(), icon);
         } else {
             // Show default cover image
         }

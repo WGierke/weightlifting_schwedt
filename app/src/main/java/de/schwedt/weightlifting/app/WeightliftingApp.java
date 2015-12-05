@@ -144,19 +144,19 @@ public class WeightliftingApp extends Application {
     }
 
     public void setFinishUpdateFlags(boolean value) {
-        if(news != null)
+        if (news != null)
             news.isUpToDate = value;
         else
-        Log.d(TAG, "news is null");
-        if(events != null)
+            Log.d(TAG, "news is null");
+        if (events != null)
             events.isUpToDate = value;
-        if(team != null)
+        if (team != null)
             team.isUpToDate = value;
-        if(competitions != null)
+        if (competitions != null)
             competitions.isUpToDate = value;
-        if(table != null)
+        if (table != null)
             table.isUpToDate = value;
-        if(galleries != null)
+        if (galleries != null)
             galleries.isUpToDate = value;
     }
 

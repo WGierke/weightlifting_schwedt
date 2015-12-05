@@ -1,7 +1,6 @@
 package de.schwedt.weightlifting.app.news;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.util.Log;
@@ -9,13 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
+import de.schwedt.weightlifting.app.ImageFragment;
 import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
-import de.schwedt.weightlifting.app.helper.DataHelper;
 
 public class NewsArticleFragment extends Fragment {
 
@@ -55,7 +53,7 @@ public class NewsArticleFragment extends Fragment {
         cover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment fr = new ArticleImageFragment();
+                Fragment fr = new ImageFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString("imageURL", article.getImageURL());
                 fr.setArguments(bundle);

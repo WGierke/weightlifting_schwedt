@@ -7,9 +7,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import de.schwedt.weightlifting.app.ImageFragment;
+import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 
@@ -38,7 +41,7 @@ public class TeamFragment extends Fragment {
 
 
     private void getTeam() {
-        Team buliTeam = app.getTeam(WeightliftingApp.UPDATE_IF_NECESSARY);
+        final Team buliTeam = app.getTeam(WeightliftingApp.UPDATE_IF_NECESSARY);
         if (buliTeam.getItems().size() == 0) {
             // No news items yet
             Log.d(WeightliftingApp.TAG, "Waiting for buli team...");
@@ -55,9 +58,18 @@ public class TeamFragment extends Fragment {
         } else {
             // We have buliTeam items to display
             try {
-                //ListView listViewNews = (ListView) fragment.findViewById(R.id.listView_Buli);
                 TeamListAdapter adapter = new TeamListAdapter(Team.casteArray(buliTeam.getItems()), getActivity());
                 listViewTeam.setAdapter(adapter);
+                listViewTeam.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Fragment fr = new ImageFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("imageURL", Team.casteArray(buliTeam.getItems()).get(position).getImageURL());
+                        fr.setArguments(bundle);
+                        ((MainActivity) getActivity()).addFragment(fr, getString(R.string.nav_buli), true);
+                    }
+                });
 
             } catch (Exception ex) {
                 Log.e(WeightliftingApp.TAG, "Showing buliTeam failed");
