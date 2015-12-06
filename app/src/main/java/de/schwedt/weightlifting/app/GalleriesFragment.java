@@ -40,12 +40,6 @@ public class GalleriesFragment extends Fragment {
         return fragment;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        getActivity().getActionBar().setTitle(R.string.nav_gallery);
-    }
-
     private void getGalleries() {
         Galleries galleries = app.getGalleries(WeightliftingApp.UPDATE_IF_NECESSARY);
         if (galleries.getItems().size() == 0) {

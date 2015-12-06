@@ -37,6 +37,7 @@ public class WeightliftingApp extends Application {
     public static boolean isUpdatingAll = false;
     private static MainActivity mActivity;
     public boolean isInitialized = false;
+    public boolean initializedParse = false;
     public MemoryCache memoryCache;
     public ImageLoader imageLoader;
     public News news;

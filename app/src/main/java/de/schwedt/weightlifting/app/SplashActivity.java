@@ -91,9 +91,11 @@ public class SplashActivity extends Activity {
                 }
             }
         };
-
-        Parse.enableLocalDatastore(this);
-        ParseCrashReporting.enable(this);
+        if(!app.initializedParse) {
+            Parse.enableLocalDatastore(this);
+            ParseCrashReporting.enable(this);
+            app.initializedParse = true;
+        }
         Parse.initialize(this, Keys.CONFIG_APP_ID, Keys.CONFIG_CLIENT_KEY);
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
     }

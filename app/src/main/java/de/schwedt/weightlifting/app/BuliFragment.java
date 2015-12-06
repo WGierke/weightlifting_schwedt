@@ -33,12 +33,6 @@ public class BuliFragment extends Fragment {
         return fragment;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        getActivity().getActionBar().setTitle(getString(R.string.nav_buli));
-    }
-
     public class BuliCollectionPagerAdapter extends FragmentStatePagerAdapter {
         public BuliCollectionPagerAdapter(FragmentManager fm) {
             super(fm);
