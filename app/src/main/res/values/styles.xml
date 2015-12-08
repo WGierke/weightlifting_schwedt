@@ -2,6 +2,7 @@
 
     <style name="MyMaterialTheme" parent="MyMaterialTheme.Base">
         <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
     </style>
 
     <style name="MyMaterialTheme.Base" parent="Theme.AppCompat.Light">

@@ -18,7 +18,7 @@ public class ImageFragment extends Fragment {
         String imageURL = bundle.getString("imageURL");
 
         ImageView imageView = (ImageView) fragment.findViewById(R.id.image);
-        app.imageLoader.displayImage(imageURL, imageView);
+        app.getImageLoader().displayImage(imageURL, imageView);
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override

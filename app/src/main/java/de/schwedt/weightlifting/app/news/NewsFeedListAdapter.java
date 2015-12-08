@@ -74,11 +74,7 @@ public class NewsFeedListAdapter extends BaseAdapter {
 
         if (items.get(position).getImageURL() != null) {
             //crashes the app
-            if(activity.getApplicationContext() == null)
-                Log.d(WeightliftingApp.TAG, "context is null");
-            if(((WeightliftingApp) activity.getApplicationContext()).imageLoader == null)
-                Log.d(WeightliftingApp.TAG, "imageloader is null");
-            ((WeightliftingApp) activity.getApplicationContext()).imageLoader.displayImage(items.get(position).getImageURL(), icon);
+            ((WeightliftingApp) activity.getApplicationContext()).getImageLoader().displayImage(items.get(position).getImageURL(), icon);
         } else {
             // Show default cover image
         }

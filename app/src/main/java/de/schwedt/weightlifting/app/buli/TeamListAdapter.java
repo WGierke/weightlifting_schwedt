@@ -80,7 +80,7 @@ public class TeamListAdapter extends BaseAdapter {
 
         if (item.getImageURL() != null) {
             //NullPointerException
-            ((WeightliftingApp) activity.getApplicationContext()).imageLoader.displayImage(item.getImageURL(), icon);
+            ((WeightliftingApp) activity.getApplicationContext()).getImageLoader().displayImage(item.getImageURL(), icon);
         } else {
             // Show default cover image
         }

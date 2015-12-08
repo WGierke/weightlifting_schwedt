@@ -241,4 +241,10 @@ public class WeightliftingApp extends Application {
     public void setActivity(MainActivity activity) {
         mActivity = activity;
     }
+
+    public ImageLoader getImageLoader() {
+        if(imageLoader == null)
+            imageLoader = new ImageLoader(getApplicationContext());
+        return imageLoader;
+    }
 }

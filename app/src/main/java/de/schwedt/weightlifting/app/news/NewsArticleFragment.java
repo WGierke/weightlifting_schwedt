@@ -72,7 +72,7 @@ public class NewsArticleFragment extends Fragment {
         url.setMovementMethod(android.text.method.LinkMovementMethod.getInstance());
 
         if (article.getImageURL() != null) {
-            app.imageLoader.displayImage(article.getImageURL(), cover);
+            app.getImageLoader().displayImage(article.getImageURL(), cover);
         } else {
             cover.setImageDrawable(getResources().getDrawable(R.drawable.cover_home));
         }
