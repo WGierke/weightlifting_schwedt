@@ -23,6 +23,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+
 import java.util.ArrayList;
 
 import de.schwedt.weightlifting.app.buli.Competitions;
@@ -44,13 +51,8 @@ public class MainActivity extends AppCompatActivity {
     public static final int FRAGMENT_CONTACT = 5;
     //home, (news, events), (team, competitions, table), (gallery)
     public static int counter[][] = {{}, {0, 0}, {0, 0, 0}, {0}};
-    public static ArrayList<NavDrawerItem> navDrawerItems = new ArrayList<>();
     private WeightliftingApp app;
-    private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
     private Toolbar mToolbar;
-    private ActionBarDrawerToggle mDrawerToggle;
-    private CharSequence mDrawerTitle;
     private CharSequence mTitle;
 
     @Override
@@ -64,12 +66,9 @@ public class MainActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(mToolbar);
-        Log.d(WeightliftingApp.TAG, mToolbar.isShown() + "");
 
         app = (WeightliftingApp) getApplicationContext();
         app.setActivity(this);
-
-        mTitle = mDrawerTitle = getTitle();
 
         initNavigation(savedInstanceState);
         markElementsInNavAndRefresh();
@@ -95,51 +94,42 @@ public class MainActivity extends AppCompatActivity {
 
     public void markElementsInNavAndRefresh() {
         markNewElementsInNav();
-        ((NavDrawerListAdapter) mDrawerList.getAdapter()).notifyDataSetChanged();
+//        ((NavDrawerListAdapter) mDrawerList.getAdapter()).notifyDataSetChanged();
     }
 
     private void initNavigation(Bundle savedInstanceState) {
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.list_slider);
 
-        navDrawerItems = new ArrayList<>();
+        PrimaryDrawerItem nav_home = new PrimaryDrawerItem().withName(R.string.nav_home);
+        PrimaryDrawerItem nav_news = new PrimaryDrawerItem().withName(R.string.nav_news);
+        PrimaryDrawerItem nav_buli = new PrimaryDrawerItem().withName(R.string.nav_buli);
+        PrimaryDrawerItem nav_gallery = new PrimaryDrawerItem().withName(R.string.nav_gallery);
+        PrimaryDrawerItem nav_faq = new PrimaryDrawerItem().withName(R.string.nav_faq);
+        PrimaryDrawerItem nav_contact = new PrimaryDrawerItem().withName(R.string.nav_contact);
 
-        // adding nav drawer items to array
-        navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_home), R.drawable.nav_home));
-        navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_news), R.drawable.nav_news));
-        navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_buli), R.drawable.nav_buli));
-        navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_gallery), R.drawable.nav_gallery));
-        navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_faq), R.drawable.nav_help));
-        navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_contact), R.drawable.nav_contact));
-
-        mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
-
-        // setting the nav drawer list adapter
-        NavDrawerListAdapter adapter = new NavDrawerListAdapter(getApplicationContext(), navDrawerItems);
-        mDrawerList.setAdapter(adapter);
-
-        // enabling action bar app icon and behaving it as toggle button
-//        getActionBar().setDisplayHomeAsUpEnabled(true);
- //       getActionBar().setHomeButtonEnabled(true);
-
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.drawable.ic_drawer, //nav toggle icon
-                R.string.app_name, // nav drawer open - description for accessibility
-                R.string.app_name // nav drawer close - description for accessibility
-        ) {
-            public void onDrawerClosed(View view) {
-                //getActionBar().setTitle(mTitle);
-                // calling onPrepareOptionsMenu() to show action bar icons
-                invalidateOptionsMenu();
-            }
-
-            public void onDrawerOpened(View drawerView) {
-                //getActionBar().setTitle(mDrawerTitle);
-                // calling onPrepareOptionsMenu() to hide action bar icons
-                invalidateOptionsMenu();
-            }
-        };
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        Drawer result = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(mToolbar)
+                .addDrawerItems(
+                        nav_home,
+                        new DividerDrawerItem(),
+                        nav_news,
+                        new DividerDrawerItem(),
+                        nav_buli,
+                        new DividerDrawerItem(),
+                        nav_gallery,
+                        new DividerDrawerItem(),
+                        nav_faq,
+                        new DividerDrawerItem(),
+                        nav_contact,
+                        new DividerDrawerItem()
+                ).withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        showFragment(position/2);
+                        return false;
+                    }
+                })
+                .build();
 
         if (savedInstanceState == null) {
             // on first time display view for first nav item
@@ -191,9 +181,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // toggle nav drawer on selecting action bar app icon/title
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
+        /*if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
-        }
+        }*/
         // Handle action bar actions click
         switch (item.getItemId()) {
             case R.id.action_refresh:
@@ -267,9 +257,9 @@ public class MainActivity extends AppCompatActivity {
         replaceFragment(fragment, mTitle.toString());
 
         // update selected item and title, then close the drawer
-        mDrawerList.setItemChecked(position, true);
+        /*mDrawerList.setItemChecked(position, true);
         mDrawerList.setSelection(position);
-        mDrawerLayout.closeDrawer(mDrawerList);
+        mDrawerLayout.closeDrawer(mDrawerList);*/
         invalidateOptionsMenu();
     }
 
@@ -302,7 +292,6 @@ public class MainActivity extends AppCompatActivity {
             transaction.commit();
 
             setTitle(title);
-            mDrawerLayout.closeDrawer(mDrawerList);
         } else {
             Log.e(WeightliftingApp.TAG, "Fragment is null");
         }
@@ -323,14 +312,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
+//        mDrawerToggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggls
-        mDrawerToggle.onConfigurationChanged(newConfig);
+     //   mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     /**

@@ -91,7 +91,7 @@ public class UiHelper {
 
     public static void refreshCounterNav(int mainNavPosition, int subNavPosition, int newValue) {
         MainActivity.counter[mainNavPosition][subNavPosition] = newValue;
-        MainActivity.navDrawerItems.get(mainNavPosition).setCount(DataHelper.sumOfArray(MainActivity.counter[mainNavPosition]));
+//        MainActivity.navDrawerItems.get(mainNavPosition).setCount(DataHelper.sumOfArray(MainActivity.counter[mainNavPosition]));
     }
 
     /**

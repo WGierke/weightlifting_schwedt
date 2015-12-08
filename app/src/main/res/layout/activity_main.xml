@@ -25,7 +25,7 @@
 
     </LinearLayout>
 
-    <!-- Listview to display slider -->
+    <!-- Listview to display slider
     <ListView
         android:id="@+id/list_slider"
         android:layout_width="240dp"
@@ -35,5 +35,5 @@
         android:choiceMode="singleChoice"
         android:divider="@color/list_divider"
         android:dividerHeight="1dp"
-        android:listSelector="@drawable/list_selector" />
+        android:listSelector="@drawable/list_selector" />-->
 </android.support.v4.widget.DrawerLayout>

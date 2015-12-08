@@ -79,6 +79,7 @@ public class TeamListAdapter extends BaseAdapter {
         ImageView icon = (ImageView) view.findViewById(R.id.buli_member_image);
 
         if (item.getImageURL() != null) {
+            //NullPointerException
             ((WeightliftingApp) activity.getApplicationContext()).imageLoader.displayImage(item.getImageURL(), icon);
         } else {
             // Show default cover image
