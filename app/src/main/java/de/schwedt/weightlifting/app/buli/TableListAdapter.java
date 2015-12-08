@@ -73,7 +73,6 @@ public class TableListAdapter extends BaseAdapter {
         if (Table.itemsToMark.contains(items.get(position))) {
             UiHelper.colorFade(view, activity.getResources());
             Table.itemsToMark.remove(items.get(position));
-            UiHelper.refreshCounterNav(MainActivity.FRAGMENT_BULI, 2, Table.itemsToMark.size());
         }
 
         return view;

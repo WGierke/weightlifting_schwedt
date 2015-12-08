@@ -199,43 +199,32 @@ public class WeightliftingApp extends Application {
 
     public News getNews(int updateMode) {
         news = (News) getWrapperItems(news, News.class, updateMode);
-        markElementsInNavIfPossible();
         return news;
     }
 
     public Events getEvents(int updateMode) {
         events = (Events) getWrapperItems(events, Events.class, updateMode);
-        markElementsInNavIfPossible();
         return events;
     }
 
     public Team getTeam(int updateMode) {
         team = (Team) getWrapperItems(team, Team.class, updateMode);
-        markElementsInNavIfPossible();
         return team;
     }
 
     public Competitions getCompetitions(int updateMode) {
         competitions = (Competitions) getWrapperItems(competitions, Competitions.class, updateMode);
-        markElementsInNavIfPossible();
         return competitions;
     }
 
     public Table getTable(int updateMode) {
         table = (Table) getWrapperItems(table, Table.class, updateMode);
-        markElementsInNavIfPossible();
         return table;
     }
 
     public Galleries getGalleries(int updateMode) {
         galleries = (Galleries) getWrapperItems(galleries, Galleries.class, updateMode);
-        markElementsInNavIfPossible();
         return galleries;
-    }
-
-    private void markElementsInNavIfPossible() {
-        if (mActivity != null)
-            mActivity.markElementsInNavAndRefresh();
     }
 
     public void setActivity(MainActivity activity) {
@@ -243,7 +232,7 @@ public class WeightliftingApp extends Application {
     }
 
     public ImageLoader getImageLoader() {
-        if(imageLoader == null)
+        if (imageLoader == null)
             imageLoader = new ImageLoader(getApplicationContext());
         return imageLoader;
     }

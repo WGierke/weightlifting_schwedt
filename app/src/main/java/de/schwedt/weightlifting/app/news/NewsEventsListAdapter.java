@@ -61,7 +61,6 @@ public class NewsEventsListAdapter extends BaseAdapter {
         if (Events.itemsToMark.contains(items.get(position))) {
             UiHelper.colorFade(view, activity.getResources());
             Events.itemsToMark.remove(items.get(position));
-            UiHelper.refreshCounterNav(MainActivity.FRAGMENT_NEWS, 1, Events.itemsToMark.size());
         }
 
         return view;

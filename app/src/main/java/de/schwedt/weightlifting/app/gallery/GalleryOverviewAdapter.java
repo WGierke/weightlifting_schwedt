@@ -54,7 +54,6 @@ public class GalleryOverviewAdapter extends BaseAdapter {
         if (Galleries.itemsToMark.contains(items.get(position))) {
             UiHelper.colorFade(view, activity.getResources());
             Galleries.itemsToMark.remove(items.get(position));
-            UiHelper.refreshCounterNav(MainActivity.FRAGMENT_GALLERY, 0, Galleries.itemsToMark.size());
         }
 
         return view;

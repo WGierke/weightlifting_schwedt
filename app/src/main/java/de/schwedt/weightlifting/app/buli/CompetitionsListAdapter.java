@@ -79,9 +79,6 @@ public class CompetitionsListAdapter extends BaseAdapter {
             Log.d(WeightliftingApp.TAG, "item to mark is being displayed");
             UiHelper.colorFade(view, activity.getResources());
             Competitions.itemsToMark.remove(items.get(position));
-
-            MainActivity a = (MainActivity) activity;
-            a.markElementsInNavAndRefresh();
         }
         return view;
     }

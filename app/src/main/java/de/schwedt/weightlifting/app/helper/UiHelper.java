@@ -12,7 +12,6 @@ import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.widget.Toast;
 
-import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.SplashActivity;
 
@@ -87,11 +86,6 @@ public class UiHelper {
         ObjectAnimator colorFade = ObjectAnimator.ofObject(view, "backgroundColor", new ArgbEvaluator(), res.getColor(R.color.counter_text_bg), 0xffccc);
         colorFade.setDuration(3000);
         colorFade.start();
-    }
-
-    public static void refreshCounterNav(int mainNavPosition, int subNavPosition, int newValue) {
-        MainActivity.counter[mainNavPosition][subNavPosition] = newValue;
-//        MainActivity.navDrawerItems.get(mainNavPosition).setCount(DataHelper.sumOfArray(MainActivity.counter[mainNavPosition]));
     }
 
     /**

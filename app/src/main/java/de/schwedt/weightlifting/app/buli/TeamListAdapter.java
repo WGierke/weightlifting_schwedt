@@ -73,7 +73,6 @@ public class TeamListAdapter extends BaseAdapter {
         if (Team.itemsToMark.contains(item)) {
             UiHelper.colorFade(view, res);
             Team.itemsToMark.remove(item);
-            UiHelper.refreshCounterNav(MainActivity.FRAGMENT_BULI, 0, Team.itemsToMark.size());
         }
 
         ImageView icon = (ImageView) view.findViewById(R.id.buli_member_image);

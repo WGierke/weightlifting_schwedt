@@ -66,7 +66,6 @@ public class NewsFeedListAdapter extends BaseAdapter {
         if (News.itemsToMark.contains(items.get(position))) {
             UiHelper.colorFade(view, activity.getResources());
             News.itemsToMark.remove(items.get(position));
-            UiHelper.refreshCounterNav(MainActivity.FRAGMENT_NEWS, 0, News.itemsToMark.size());
         }
 
         ImageView icon = (ImageView) view.findViewById(R.id.news_icon);

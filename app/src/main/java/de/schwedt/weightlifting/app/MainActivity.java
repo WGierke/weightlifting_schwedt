@@ -1,7 +1,6 @@
 package de.schwedt.weightlifting.app;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -85,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
         app.setActivity(this);
 
         initNavigation(savedInstanceState);
-        markElementsInNavAndRefresh();
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -95,20 +93,6 @@ public class MainActivity extends AppCompatActivity {
                 showFragment(fragmentId);
             }
         }
-    }
-
-    public void markNewElementsInNav() {
-        UiHelper.refreshCounterNav(News.navigationPosition, News.subPosition, News.itemsToMark.size());
-        UiHelper.refreshCounterNav(Events.navigationPosition, Events.subPosition, Events.itemsToMark.size());
-        UiHelper.refreshCounterNav(Team.navigationPosition, Team.subPosition, Team.itemsToMark.size());
-        UiHelper.refreshCounterNav(Competitions.navigationPosition, Competitions.subPosition, Competitions.itemsToMark.size());
-        UiHelper.refreshCounterNav(Table.navigationPosition, Table.subPosition, Table.itemsToMark.size());
-        UiHelper.refreshCounterNav(Galleries.navigationPosition, Galleries.subPosition, Galleries.itemsToMark.size());
-    }
-
-    public void markElementsInNavAndRefresh() {
-        markNewElementsInNav();
-//        ((NavDrawerListAdapter) mDrawerList.getAdapter()).notifyDataSetChanged();
     }
 
     private void initNavigation(Bundle savedInstanceState) {
@@ -175,7 +159,6 @@ public class MainActivity extends AppCompatActivity {
                 return;
             case WeightliftingApp.UPDATE_STATUS_SUCCESSFUL:
                 showCountedNewElements(true);
-                markElementsInNavAndRefresh();
                 break;
             case WeightliftingApp.UPDATE_STATUS_FAILED:
                 showCountedNewElements(false);
