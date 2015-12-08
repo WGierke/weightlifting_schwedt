@@ -1,7 +1,5 @@
 package de.schwedt.weightlifting.app.news;
 
-import android.graphics.drawable.Drawable;
-
 import de.schwedt.weightlifting.app.UpdateableItem;
 import de.schwedt.weightlifting.app.helper.DataHelper;
 

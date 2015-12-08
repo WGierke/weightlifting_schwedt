@@ -1,7 +1,5 @@
 package de.schwedt.weightlifting.app.buli;
 
-import android.graphics.drawable.Drawable;
-
 import de.schwedt.weightlifting.app.UpdateableItem;
 
 public class TeamMember extends UpdateableItem {

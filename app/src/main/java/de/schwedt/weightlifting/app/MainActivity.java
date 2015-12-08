@@ -4,33 +4,22 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
 
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-
-import java.util.ArrayList;
 
 import de.schwedt.weightlifting.app.buli.Competitions;
 import de.schwedt.weightlifting.app.buli.Table;
@@ -54,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private WeightliftingApp app;
     private Toolbar mToolbar;
     private CharSequence mTitle;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +54,30 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (WeightliftingApp.isUpdatingAll) {
+                    UiHelper.showToast(getResources().getString(R.string.updating_in_progress), getApplicationContext());
+                    mSwipeRefreshLayout.setRefreshing(false);
+                } else {
+                    WeightliftingApp.isUpdatingAll = true;
+                    app.setFinishUpdateFlags(false);
+                    try {
+                        app.updateDataForcefully();
+                        mSwipeRefreshLayout.setRefreshing(false);
+                        showAsyncUpdateResults();
+                    } catch (Exception e) {
+                        Log.d(WeightliftingApp.TAG, "Error while updating all");
+                        e.printStackTrace();
+                        UiHelper.showToast(getResources().getString(R.string.updated_all_unsuccessfully), getApplicationContext());
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                }
+            }
+
+        });
 
         setSupportActionBar(mToolbar);
 
@@ -125,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
                 ).withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        showFragment(position/2);
+                        showFragment(position / 2);
                         return false;
                     }
                 })
@@ -134,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             // on first time display view for first nav item
             showFragment(FRAGMENT_HOME);
+            setTitle(R.string.app_name);
         }
 
         Intent intent = new Intent(this, RegistrationIntentService.class);
@@ -143,7 +158,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
-        menu.findItem(R.id.action_refresh).setVisible(true);
         return true;
     }
 
@@ -176,35 +190,6 @@ public class MainActivity extends AppCompatActivity {
         else
             UiHelper.showToast(getResources().getString(R.string.updated_all_unsuccessfully), getApplicationContext());
         UiHelper.showToast(getResources().getQuantityString(R.plurals.new_elements, newElements, newElements), getApplicationContext());
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // toggle nav drawer on selecting action bar app icon/title
-        /*if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }*/
-        // Handle action bar actions click
-        switch (item.getItemId()) {
-            case R.id.action_refresh:
-                if (WeightliftingApp.isUpdatingAll) {
-                    UiHelper.showToast(getResources().getString(R.string.updating_in_progress), getApplicationContext());
-                } else {
-                    WeightliftingApp.isUpdatingAll = true;
-                    app.setFinishUpdateFlags(false);
-                    try {
-                        app.updateDataForcefully();
-                        showAsyncUpdateResults();
-                    } catch (Exception e) {
-                        Log.d(WeightliftingApp.TAG, "Error while updating all");
-                        e.printStackTrace();
-                        UiHelper.showToast(getResources().getString(R.string.updated_all_unsuccessfully), getApplicationContext());
-                    }
-                }
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     /**
@@ -256,10 +241,6 @@ public class MainActivity extends AppCompatActivity {
 
         replaceFragment(fragment, mTitle.toString());
 
-        // update selected item and title, then close the drawer
-        /*mDrawerList.setItemChecked(position, true);
-        mDrawerList.setSelection(position);
-        mDrawerLayout.closeDrawer(mDrawerList);*/
         invalidateOptionsMenu();
     }
 
@@ -300,38 +281,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;
-//        getActionBar().setTitle(mTitle);
+        getSupportActionBar().setTitle(mTitle);
     }
-
-    /**
-     * When using the ActionBarDrawerToggle, you must call it during
-     * onPostCreate() and onConfigurationChanged()...
-     */
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-//        mDrawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggls
-     //   mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    /**
-     * Slide menu item click listener
-     */
-    private class SlideMenuClickListener implements
-            ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            showFragment(position);
-        }
-    }
-
-
 }

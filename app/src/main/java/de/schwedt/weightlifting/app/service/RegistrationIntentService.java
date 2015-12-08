@@ -28,7 +28,6 @@ import com.google.android.gms.iid.InstanceID;
 import com.parse.ParseObject;
 
 import de.schwedt.weightlifting.app.R;
-import de.schwedt.weightlifting.app.WeightliftingApp;
 
 public class RegistrationIntentService extends IntentService {
 
@@ -64,11 +63,12 @@ public class RegistrationIntentService extends IntentService {
 
     /**
      * Persist registration to third-party servers.
-     * @param token The new token.
+     *
+     * @param token      The new token.
      * @param sent_token Flag that indicates if token was already sent
      */
     private void sendRegistrationToServer(String token, boolean sent_token) {
-        if(!sent_token) {
+        if (!sent_token) {
             Log.i(TAG, "Sent token");
             ParseObject GcmToken = new ParseObject("GcmToken");
             GcmToken.put("token", token);

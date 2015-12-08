@@ -13,14 +13,13 @@ import de.schwedt.weightlifting.app.UpdateableItem;
 import de.schwedt.weightlifting.app.UpdateableWrapper;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.JsonParser;
-import de.schwedt.weightlifting.app.helper.UiHelper;
 
 public class News extends UpdateableWrapper {
 
     public static final String FILE_NAME = "news.json";
-    public static ArrayList<NewsItem> itemsToMark = new ArrayList<>();
     public static final int navigationPosition = MainActivity.FRAGMENT_NEWS;
     public static final int subPosition = 0;
+    public static ArrayList<NewsItem> itemsToMark = new ArrayList<>();
     private final String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/news.json";
     private final String TAG = "News";
 
@@ -49,7 +48,9 @@ public class News extends UpdateableWrapper {
         }
     }
 
-    public void refreshItems() { super.update(UPDATE_URL, FILE_NAME, TAG); }
+    public void refreshItems() {
+        super.update(UPDATE_URL, FILE_NAME, TAG);
+    }
 
     protected void updateWrapper(String result) {
         News newItems = new News();
@@ -110,7 +111,7 @@ public class News extends UpdateableWrapper {
     }
 
     public ArrayList<NewsItem> getFirstElements(int n) {
-        if(n <= items.size())
+        if (n <= items.size())
             return new ArrayList(items.subList(0, n));
         else
             return casteArray(items);
