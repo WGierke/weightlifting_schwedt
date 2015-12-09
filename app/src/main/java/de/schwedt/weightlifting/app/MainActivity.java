@@ -85,6 +85,10 @@ public class MainActivity extends AppCompatActivity {
 
         initNavigation(savedInstanceState);
 
+        showFragmentFromBundle();
+    }
+
+    private void showFragmentFromBundle() {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             int fragmentId = extras.getInt("fragmentId");
@@ -97,12 +101,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void initNavigation(Bundle savedInstanceState) {
 
-        PrimaryDrawerItem nav_home = new PrimaryDrawerItem().withName(R.string.nav_home);
-        PrimaryDrawerItem nav_news = new PrimaryDrawerItem().withName(R.string.nav_news);
-        PrimaryDrawerItem nav_buli = new PrimaryDrawerItem().withName(R.string.nav_buli);
-        PrimaryDrawerItem nav_gallery = new PrimaryDrawerItem().withName(R.string.nav_gallery);
-        PrimaryDrawerItem nav_faq = new PrimaryDrawerItem().withName(R.string.nav_faq);
-        PrimaryDrawerItem nav_contact = new PrimaryDrawerItem().withName(R.string.nav_contact);
+        PrimaryDrawerItem nav_home = new PrimaryDrawerItem().withName(R.string.nav_home).withIcon(R.drawable.nav_home);
+        PrimaryDrawerItem nav_news = new PrimaryDrawerItem().withName(R.string.nav_news).withIcon(R.drawable.nav_news);
+        PrimaryDrawerItem nav_buli = new PrimaryDrawerItem().withName(R.string.nav_buli).withIcon(R.drawable.nav_buli);
+        PrimaryDrawerItem nav_gallery = new PrimaryDrawerItem().withName(R.string.nav_gallery).withIcon(R.drawable.nav_gallery);
+        PrimaryDrawerItem nav_faq = new PrimaryDrawerItem().withName(R.string.nav_faq).withIcon(R.drawable.nav_help);
+        PrimaryDrawerItem nav_contact = new PrimaryDrawerItem().withName(R.string.nav_contact).withIcon(R.drawable.nav_contact);
 
         Drawer result = new DrawerBuilder()
                 .withActivity(this)
@@ -265,5 +269,12 @@ public class MainActivity extends AppCompatActivity {
     public void setTitle(CharSequence title) {
         mTitle = title;
         getSupportActionBar().setTitle(mTitle);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        showFragmentFromBundle();
+        Log.d(WeightliftingApp.TAG, "resumed");
     }
 }

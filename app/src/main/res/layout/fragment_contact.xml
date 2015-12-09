@@ -23,6 +23,7 @@
                 android:layout_marginTop="15dp"
                 android:text="@string/contact_club"
                 android:textSize="20dp"
+                android:textColor="@color/md_black_1000"
                 android:textStyle="bold" />
 
             <TextView
@@ -32,6 +33,7 @@
                 android:layout_marginTop="15dp"
                 android:text="@string/contact_department_chief"
                 android:textSize="20dp"
+                android:textColor="@color/md_black_1000"
                 android:textStyle="bold" />
 
             <TextView
@@ -49,6 +51,7 @@
                 android:layout_marginTop="5dp"
                 android:autoLink="email"
                 android:text="@string/contact_department_email"
+                android:textColor="@color/md_black_1000"
                 android:textSize="20dp" />
 
             <View
@@ -61,6 +64,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
                 android:text="@string/contact_competition_site_headline"
+                android:textColor="@color/md_black_1000"
                 android:textSize="20dp"
                 android:textStyle="bold" />
 
@@ -91,6 +95,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
                 android:text="@string/contact_app_developer"
+                android:textColor="@color/md_black_1000"
                 android:textSize="20dp"
                 android:textStyle="bold" />
 
