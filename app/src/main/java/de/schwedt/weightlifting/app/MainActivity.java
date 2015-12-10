@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private WeightliftingApp app;
     private Toolbar mToolbar;
     private CharSequence mTitle;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    public static SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

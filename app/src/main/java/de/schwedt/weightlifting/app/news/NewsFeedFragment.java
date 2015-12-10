@@ -14,6 +14,7 @@ import android.widget.ListView;
 import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
+import de.schwedt.weightlifting.app.helper.UiHelper;
 
 public class NewsFeedFragment extends Fragment {
 
@@ -32,6 +33,7 @@ public class NewsFeedFragment extends Fragment {
         app = (WeightliftingApp) getActivity().getApplicationContext();
 
         listViewNews = (ListView) fragment.findViewById(R.id.listView_News);
+        //listViewNews = UiHelper.enableUpScrolling(listViewNews);
 
         Runnable refreshRunnable = new Runnable() {
             @Override
