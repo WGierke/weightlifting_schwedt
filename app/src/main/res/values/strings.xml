@@ -4,7 +4,7 @@
     <string name="app_name">Gewichtheben Schwedt</string>
 
     <!-- Stuff -->
-
+    <string name="refresh">Aktualisieren</string>
     <string name="updated_all_successfully">Inhalte wurden erfolgreich synchronisiert</string>
     <string name="updated_all_unsuccessfully">Nicht alle Inhalte konnten synchronisiert werden. Besteht eine Internetverbindung?</string>
     <plurals name="new_elements">

@@ -25,7 +25,7 @@ class BuliParser:
         return new_entries
 
     def save_push_message(self, headline, message_array, notification_id):
-        msg = headline + "#" + "|".join(message_array) + u"#Dr\u00fccke in der App auf den \u21BB Knopf, um Updates herunterzuladen.#" + str(notification_id) + "\n"
+        msg = headline + "#" + "|".join(message_array) + u"#Dr\u00fccke im Menu auf 'Aktualisieren', um Updates herunterzuladen.#" + str(notification_id) + "\n"
         push_file = codecs.open('server/push_messages.txt', 'a', 'utf-8')
         push_file.write(msg)
         push_file.close()
