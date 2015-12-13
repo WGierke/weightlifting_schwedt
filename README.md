@@ -8,9 +8,11 @@ Get it in the [PlayStore](https://play.google.com/store/apps/details?id=de.schwe
 ## Credits
 HPI Mobile Developer Club
 
-Universal Image Loader https://github.com/nostra13/Android-Universal-Image-Loader
+[Universal Image Loader](https://github.com/nostra13/Android-Universal-Image-Loader)
 
 [Steppschuh](https://github.com/Steppschuh)
+
+[Material Drawer](https://github.com/mikepenz/MaterialDrawer)
 
 ## License
     Copyright 2015 Willi Gierke
