@@ -91,23 +91,6 @@ public class UiHelper {
         colorFade.start();
     }
 
-    public static ListView enableUpScrolling(ListView listView) {
-        final ListView listViewHelp = listView;
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-                                         @Override
-                                         public void onScrollStateChanged(AbsListView view, int scrollState) {
-                                         }
-
-                                         @Override
-                                         public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                                             int topRowVerticalPosition = (listViewHelp == null || listViewHelp.getChildCount() == 0) ? 0 : listViewHelp.getChildAt(0).getTop();
-                                             MainActivity.mSwipeRefreshLayout.setEnabled(firstVisibleItem == 0 && topRowVerticalPosition >= 0);
-                                         }
-                                     }
-        );
-        return listViewHelp;
-    }
-
     /**
      * Show a notification
      *

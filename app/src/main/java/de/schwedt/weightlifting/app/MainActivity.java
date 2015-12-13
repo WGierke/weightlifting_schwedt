@@ -6,11 +6,11 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
     private WeightliftingApp app;
     private Toolbar mToolbar;
     private CharSequence mTitle;
-    public static SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,30 +52,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if (WeightliftingApp.isUpdatingAll) {
-                    UiHelper.showToast(getResources().getString(R.string.updating_in_progress), getApplicationContext());
-                    mSwipeRefreshLayout.setRefreshing(false);
-                } else {
-                    WeightliftingApp.isUpdatingAll = true;
-                    app.setFinishUpdateFlags(false);
-                    try {
-                        app.updateDataForcefully();
-                        mSwipeRefreshLayout.setRefreshing(false);
-                        showAsyncUpdateResults();
-                    } catch (Exception e) {
-                        Log.d(WeightliftingApp.TAG, "Error while updating all");
-                        e.printStackTrace();
-                        UiHelper.showToast(getResources().getString(R.string.updated_all_unsuccessfully), getApplicationContext());
-                        mSwipeRefreshLayout.setRefreshing(false);
-                    }
-                }
-            }
-
-        });
 
         setSupportActionBar(mToolbar);
 
@@ -179,15 +154,28 @@ public class MainActivity extends AppCompatActivity {
         UiHelper.showToast(getResources().getQuantityString(R.plurals.new_elements, newElements, newElements), getApplicationContext());
     }
 
-    /**
-     * Called when invalidateOptionsMenu() is triggered
-     */
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // if nav drawer is opened, hide the action items
-        //boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        //menu.findItem(R.id.action_refresh).setVisible(!drawerOpen);
-        return super.onPrepareOptionsMenu(menu);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                if (WeightliftingApp.isUpdatingAll) {
+                    UiHelper.showToast(getResources().getString(R.string.updating_in_progress), getApplicationContext());
+                } else {
+                    WeightliftingApp.isUpdatingAll = true;
+                    app.setFinishUpdateFlags(false);
+                    try {
+                        app.updateDataForcefully();
+                        showAsyncUpdateResults();
+                    } catch (Exception e) {
+                        Log.d(WeightliftingApp.TAG, "Error while updating all");
+                        e.printStackTrace();
+                        UiHelper.showToast(getResources().getString(R.string.updated_all_unsuccessfully), getApplicationContext());
+                    }
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /**
