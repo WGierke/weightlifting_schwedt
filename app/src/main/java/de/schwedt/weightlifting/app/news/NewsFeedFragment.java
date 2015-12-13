@@ -27,7 +27,7 @@ public class NewsFeedFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(WeightliftingApp.TAG, "Showing News Feed fragment");
+        //Log.d(WeightliftingApp.TAG, "Showing News Feed fragment");
 
         View fragment = inflater.inflate(R.layout.news_feed, container, false);
         app = (WeightliftingApp) getActivity().getApplicationContext();
@@ -51,7 +51,7 @@ public class NewsFeedFragment extends Fragment {
         news = app.getNews(WeightliftingApp.UPDATE_IF_NECESSARY);
         if (news.getItems().size() == 0) {
             // No news items yet
-            Log.d(WeightliftingApp.TAG, "Waiting for news...");
+            //Log.d(WeightliftingApp.TAG, "Waiting for news...");
 
             // Check again in a few seconds
             Runnable refreshRunnable = new Runnable() {

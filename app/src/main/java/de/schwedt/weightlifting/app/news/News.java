@@ -63,7 +63,7 @@ public class News extends UpdateableWrapper {
     }
 
     public void parseFromString(String jsonString) {
-        Log.d(WeightliftingApp.TAG, "Parsing news JSON...");
+        //Log.d(WeightliftingApp.TAG, "Parsing news JSON...");
         try {
             ArrayList<UpdateableItem> newItems = new ArrayList<>();
 

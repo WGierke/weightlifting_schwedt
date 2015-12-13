@@ -65,7 +65,7 @@ public class Galleries extends UpdateableWrapper {
     }
 
     public void parseFromString(String jsonString) {
-        Log.d(WeightliftingApp.TAG, "Parsing gallery JSON...");
+        //Log.d(WeightliftingApp.TAG, "Parsing gallery JSON...");
         try {
             ArrayList<UpdateableItem> newItems = new ArrayList<>();
 

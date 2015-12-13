@@ -28,7 +28,7 @@ public class NewsArticleFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(WeightliftingApp.TAG, "Showing Article fragment");
+        //Log.d(WeightliftingApp.TAG, "Showing Article fragment");
 
         View fragment = inflater.inflate(R.layout.news_article, container, false);
         app = (WeightliftingApp) getActivity().getApplicationContext();

@@ -73,7 +73,7 @@ public class Team extends UpdateableWrapper {
     }
 
     public void parseFromString(String jsonString) {
-        Log.d(WeightliftingApp.TAG, "Parsing buliTeam JSON...");
+        //Log.d(WeightliftingApp.TAG, "Parsing buliTeam JSON...");
         try {
             ArrayList<UpdateableItem> newItems = new ArrayList<>();
 
@@ -82,7 +82,7 @@ public class Team extends UpdateableWrapper {
 
             // parse team
             JSONArray team = jsonParser.getJsonArray("team");
-            Log.d(WeightliftingApp.TAG, team.length() + " team members found");
+            //Log.d(WeightliftingApp.TAG, team.length() + " team members found");
             for (int i = 0; i < team.length(); i++) {
                 try {
                     JSONObject jsonMember = team.getJSONObject(i);

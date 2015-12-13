@@ -22,7 +22,7 @@ public class NewsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(WeightliftingApp.TAG, "Showing News fragment");
+        //Log.d(WeightliftingApp.TAG, "Showing News fragment");
 
         View fragment = inflater.inflate(R.layout.pager_tab_strip, container, false);
 

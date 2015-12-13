@@ -21,7 +21,7 @@ public class FaqFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(WeightliftingApp.TAG, "Showing Faq fragment");
+        //Log.d(WeightliftingApp.TAG, "Showing Faq fragment");
 
         View fragment = inflater.inflate(R.layout.fragment_faq, container, false);
 

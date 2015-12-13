@@ -23,7 +23,7 @@ public class TableFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(WeightliftingApp.TAG, "Showing Buli Table fragment");
+        //Log.d(WeightliftingApp.TAG, "Showing Buli Table fragment");
 
         fragment = inflater.inflate(R.layout.buli_page, container, false);
         app = (WeightliftingApp) getActivity().getApplicationContext();
@@ -40,7 +40,7 @@ public class TableFragment extends Fragment {
         buliTable = app.getTable(WeightliftingApp.UPDATE_IF_NECESSARY);
         if (buliTable.getItems().size() == 0) {
             // No table items yet
-            Log.d(WeightliftingApp.TAG, "Waiting for buliTable...");
+            //Log.d(WeightliftingApp.TAG, "Waiting for buliTable...");
 
             // Check again in a few seconds
             Runnable refreshRunnable = new Runnable() {

@@ -61,7 +61,7 @@ public class Table extends UpdateableWrapper {
     }
 
     public void parseFromString(String jsonString) {
-        Log.d(WeightliftingApp.TAG, "Parsing buli table JSON...");
+        //Log.d(WeightliftingApp.TAG, "Parsing buli table JSON...");
         try {
             ArrayList<UpdateableItem> newBuliTableItems = new ArrayList<>();
 
@@ -69,7 +69,7 @@ public class Table extends UpdateableWrapper {
             jsonParser.getJsonFromString(jsonString);
 
             JSONArray table = jsonParser.getJsonArray("table");
-            Log.d(WeightliftingApp.TAG, table.length() + " table entries found");
+            //Log.d(WeightliftingApp.TAG, table.length() + " table entries found");
             for (int i = 0; i < table.length(); i++) {
                 try {
                     JSONObject jsonTableEntry = table.getJSONObject(i);

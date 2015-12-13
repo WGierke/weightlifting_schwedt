@@ -23,7 +23,7 @@ public class GalleriesFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(WeightliftingApp.TAG, "Showing Gallery fragment");
+        //Log.d(WeightliftingApp.TAG, "Showing Gallery fragment");
 
         fragment = inflater.inflate(R.layout.fragment_galleries, container, false);
         app = (WeightliftingApp) getActivity().getApplicationContext();
@@ -44,7 +44,7 @@ public class GalleriesFragment extends Fragment {
         Galleries galleries = app.getGalleries(WeightliftingApp.UPDATE_IF_NECESSARY);
         if (galleries.getItems().size() == 0) {
             // No news items yet
-            Log.d(WeightliftingApp.TAG, "Waiting for galleries...");
+            //Log.d(WeightliftingApp.TAG, "Waiting for galleries...");
 
             // Check again in a few seconds
             Runnable refreshRunnable = new Runnable() {

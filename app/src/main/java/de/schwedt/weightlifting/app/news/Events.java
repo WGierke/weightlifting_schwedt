@@ -75,7 +75,7 @@ public class Events extends UpdateableWrapper {
     }
 
     public void parseFromString(String jsonString) {
-        Log.d(WeightliftingApp.TAG, "Parsing events JSON...");
+        //Log.d(WeightliftingApp.TAG, "Parsing events JSON...");
         try {
             ArrayList<UpdateableItem> newItems = new ArrayList<>();
 

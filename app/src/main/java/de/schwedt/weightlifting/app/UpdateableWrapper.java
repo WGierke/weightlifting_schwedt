@@ -88,13 +88,13 @@ public abstract class UpdateableWrapper {
                     Bundle data = msg.getData();
                     String result = data.getString("result");
                     if (result == null || result.equals("")) {
-                        Log.d(WeightliftingApp.TAG, TAG + " returned nothing");
+                        //Log.d(WeightliftingApp.TAG, TAG + " returned nothing");
                         isUpdating = false;
                         updateFailed = true;
                         return;
                     }
                     if(WeightliftingApp.mContext == null)
-                        Log.d(WeightliftingApp.TAG, "mContext is null");
+                        //Log.d(WeightliftingApp.TAG, "mContext is null");
                     DataHelper.saveIntern(result, FILENAME, WeightliftingApp.mContext);
 
                     updateWrapper(result);

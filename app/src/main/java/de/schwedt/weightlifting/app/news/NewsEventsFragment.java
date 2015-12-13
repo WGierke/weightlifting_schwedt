@@ -25,7 +25,7 @@ public class NewsEventsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(WeightliftingApp.TAG, "Showing News Event fragment");
+        //Log.d(WeightliftingApp.TAG, "Showing News Event fragment");
 
         View fragment = inflater.inflate(R.layout.news_events, container, false);
         app = (WeightliftingApp) getActivity().getApplicationContext();
@@ -44,7 +44,7 @@ public class NewsEventsFragment extends Fragment {
         events = app.getEvents(WeightliftingApp.UPDATE_IF_NECESSARY);
         if (events.getItems().size() == 0) {
             // No events items yet
-            Log.d(WeightliftingApp.TAG, "Waiting for events...");
+            //Log.d(WeightliftingApp.TAG, "Waiting for events...");
 
             // Check again in a few seconds
             Runnable refreshRunnable = new Runnable() {

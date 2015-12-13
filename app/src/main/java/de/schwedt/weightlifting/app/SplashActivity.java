@@ -55,7 +55,7 @@ public class SplashActivity extends Activity {
         callbackHandler = new android.os.Handler() {
             @Override
             public void handleMessage(Message msg) {
-                Log.d(WeightliftingApp.TAG, "splashCallBackHandler received a message");
+                //Log.d(WeightliftingApp.TAG, "splashCallBackHandler received a message");
                 try {
                     Bundle data = msg.getData();
 
@@ -63,12 +63,12 @@ public class SplashActivity extends Activity {
                     int callbackStatus = data.getInt(KEY_STATUS);
                     switch (callbackStatus) {
                         case SplashActivity.STATUS_OK: {
-                            Log.d(WeightliftingApp.TAG, "Status: OK");
+                            //Log.d(WeightliftingApp.TAG, "Status: OK");
                             setStatusText("");
                             break;
                         }
                         case SplashActivity.STATUS_ERROR_NETWORK: {
-                            Log.d(WeightliftingApp.TAG, "Status: Network error");
+                            //Log.d(WeightliftingApp.TAG, "Status: Network error");
                             showError(getString(R.string.error_network));
                             break;
                         }

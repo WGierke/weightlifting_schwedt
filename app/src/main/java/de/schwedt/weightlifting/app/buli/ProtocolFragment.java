@@ -16,7 +16,7 @@ public class ProtocolFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(WeightliftingApp.TAG, "Showing Protocol fragment");
+        //Log.d(WeightliftingApp.TAG, "Showing Protocol fragment");
 
         View fragment = inflater.inflate(R.layout.buli_competition_protocol, container, false);
 

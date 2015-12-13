@@ -64,7 +64,7 @@ public class Competitions extends UpdateableWrapper {
     }
 
     public void parseFromString(String jsonString) {
-        Log.d(WeightliftingApp.TAG, "Parsing competitions JSON...");
+        //Log.d(WeightliftingApp.TAG, "Parsing competitions JSON...");
         try {
             ArrayList<UpdateableItem> newItems = new ArrayList<>();
 
@@ -73,7 +73,7 @@ public class Competitions extends UpdateableWrapper {
 
             // parse past competitions
             JSONArray competitions = jsonParser.getJsonArray("past_competitions");
-            Log.d(WeightliftingApp.TAG, competitions.length() + " competitions found");
+            //Log.d(WeightliftingApp.TAG, competitions.length() + " competitions found");
             for (int i = 0; i < competitions.length(); i++) {
                 try {
                     JSONObject jsonCompoetition = competitions.getJSONObject(i);

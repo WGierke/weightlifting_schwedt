@@ -20,7 +20,7 @@ public class FilterCompetitionsFragment extends CompetitionsFragment {
     protected void getCompetitions() {
         competitions = app.getCompetitions(WeightliftingApp.UPDATE_IF_NECESSARY);
         if (competitions.getItems().size() == 0) {
-            Log.d(WeightliftingApp.TAG, "Waiting for Competitions...");
+            //Log.d(WeightliftingApp.TAG, "Waiting for Competitions...");
 
             Runnable refreshRunnable = new Runnable() {
                 @Override

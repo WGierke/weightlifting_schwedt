@@ -53,7 +53,7 @@ public class RegistrationIntentService extends IntentService {
             sharedPreferences.edit().putBoolean(GCMPreferences.SENT_TOKEN_TO_SERVER, true).apply();
 
         } catch (Exception e) {
-            Log.d(TAG, "Failed to complete token refresh", e);
+            //Log.d(TAG, "Failed to complete token refresh", e);
             sharedPreferences.edit().putBoolean(GCMPreferences.SENT_TOKEN_TO_SERVER, false).apply();
         }
         // Notify UI that registration has completed, so the progress indicator can be hidden.

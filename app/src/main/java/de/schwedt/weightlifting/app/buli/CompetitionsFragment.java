@@ -27,7 +27,7 @@ public class CompetitionsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(WeightliftingApp.TAG, "Showing Buli Competitions fragment");
+        //Log.d(WeightliftingApp.TAG, "Showing Buli Competitions fragment");
 
         fragment = inflater.inflate(R.layout.buli_page, container, false);
         app = (WeightliftingApp) getActivity().getApplicationContext();
@@ -46,7 +46,7 @@ public class CompetitionsFragment extends Fragment {
         competitions = app.getCompetitions(WeightliftingApp.UPDATE_IF_NECESSARY);
         if (competitions.getItems().size() == 0) {
             // No news items yet
-            Log.d(WeightliftingApp.TAG, "Waiting for competitions...");
+            //Log.d(WeightliftingApp.TAG, "Waiting for competitions...");
 
             // Check again in a few seconds
             Runnable refreshRunnable = new Runnable() {

@@ -96,16 +96,16 @@ public class WeightliftingApp extends Application {
                         updateSplashScreen();
                     }
                 };
-                Log.d(TAG, "Update status: pending");
+                //Log.d(TAG, "Update status: pending");
                 Handler refreshHandler = new Handler();
                 refreshHandler.postDelayed(refreshRunnable, 200);
                 break;
             case UPDATE_STATUS_SUCCESSFUL:
-                Log.d(TAG, "Update status: Success");
+                //Log.d(TAG, "Update status: Success");
                 DataHelper.sendMessage(splashCallbackHandler, SplashActivity.KEY_MESSAGE, SplashActivity.MESSAGE_INITIALIZED);
                 break;
             case UPDATE_STATUS_FAILED:
-                Log.d(TAG, "Update status: Failed");
+                //Log.d(TAG, "Update status: Failed");
                 DataHelper.sendMessage(splashCallbackHandler, SplashActivity.KEY_STATUS, SplashActivity.STATUS_ERROR_NETWORK);
                 break;
         }
@@ -122,7 +122,7 @@ public class WeightliftingApp extends Application {
 
     public void updateDataForcefully() {
         //Update everything and save it on storage
-        Log.d(TAG, "updating everything");
+        //Log.d(TAG, "updating everything");
         getNews(UPDATE_FORCEFULLY);
         getEvents(UPDATE_FORCEFULLY);
         getTeam(UPDATE_FORCEFULLY);
@@ -132,7 +132,7 @@ public class WeightliftingApp extends Application {
     }
 
     public int getUpdateStatus() {
-        Log.d(WeightliftingApp.TAG, news.isUpToDate + " " + events.isUpToDate + " " + team.isUpToDate + " " + competitions.isUpToDate + " " + table.isUpToDate + " " + galleries.isUpToDate);
+        //Log.d(WeightliftingApp.TAG, news.isUpToDate + " " + events.isUpToDate + " " + team.isUpToDate + " " + competitions.isUpToDate + " " + table.isUpToDate + " " + galleries.isUpToDate);
         if (news.updateFailed || events.updateFailed || team.updateFailed || competitions.updateFailed || table.updateFailed || galleries.updateFailed) {
             isUpdatingAll = false;
             return UPDATE_STATUS_FAILED;
@@ -148,7 +148,7 @@ public class WeightliftingApp extends Application {
         if (news != null)
             news.isUpToDate = value;
         else
-            Log.d(TAG, "news is null");
+            //Log.d(TAG, "news is null");
         if (events != null)
             events.isUpToDate = value;
         if (team != null)
@@ -167,7 +167,7 @@ public class WeightliftingApp extends Application {
                 myInstance = (UpdateableWrapper) myClass.newInstance();
 
             if (mode == UPDATE_FORCEFULLY) {
-                Log.d(TAG, "started forced update for " + myClass.getName());
+                //Log.d(TAG, "started forced update for " + myClass.getName());
                 myInstance.refreshItems();
                 return myInstance;
             }
@@ -180,7 +180,7 @@ public class WeightliftingApp extends Application {
                     if (!fileContent.equals("")) {
                         myInstance.parseFromString(fileContent);
                         myInstance.setLastUpdate(new File(getFilesDir() + "/" + fileName).lastModified());
-                        Log.d(TAG, myClass.getName() + ": read from memory:" + fileContent.substring(0, 20) + "...");
+                        //Log.d(TAG, myClass.getName() + ": read from memory:" + fileContent.substring(0, 20) + "...");
                     }
                 }
             }
@@ -191,7 +191,7 @@ public class WeightliftingApp extends Application {
                 }
             }
         } catch (Exception e) {
-            Log.d(TAG, "Error in getWrapperItems");
+            //Log.d(TAG, "Error in getWrapperItems");
             e.printStackTrace();
         }
         return myInstance;

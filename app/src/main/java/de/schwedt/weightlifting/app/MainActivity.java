@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         if (extras != null) {
             int fragmentId = extras.getInt("fragmentId");
             if (fragmentId != 0) {
-                Log.d(WeightliftingApp.TAG, "Fragment to open: " + fragmentId);
+                //Log.d(WeightliftingApp.TAG, "Fragment to open: " + fragmentId);
                 showFragment(fragmentId);
             }
         }
@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
                         app.updateDataForcefully();
                         showAsyncUpdateResults();
                     } catch (Exception e) {
-                        Log.d(WeightliftingApp.TAG, "Error while updating all");
+                        //Log.d(WeightliftingApp.TAG, "Error while updating all");
                         e.printStackTrace();
                         UiHelper.showToast(getResources().getString(R.string.updated_all_unsuccessfully), getApplicationContext());
                     }
@@ -263,6 +263,6 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         showFragmentFromBundle();
-        Log.d(WeightliftingApp.TAG, "resumed");
+        //Log.d(WeightliftingApp.TAG, "resumed");
     }
 }
