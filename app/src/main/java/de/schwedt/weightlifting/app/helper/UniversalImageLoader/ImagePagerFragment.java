@@ -58,7 +58,7 @@ public class ImagePagerFragment extends Fragment {
         int galleryPosition = bundle.getInt("GALLERY_POSITION");
 
         WeightliftingApp app = (WeightliftingApp) getActivity().getApplicationContext();
-        Galleries galleries = app.getGalleries();
+        Galleries galleries = app.getGalleries(WeightliftingApp.UPDATE_IF_NECESSARY);
         imageUrls = Galleries.casteArray(galleries.getItems()).get(galleryPosition).getImageUrls();
 
         super.onCreate(savedInstanceState);

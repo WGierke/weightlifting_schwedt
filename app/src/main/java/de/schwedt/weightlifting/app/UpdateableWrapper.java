@@ -22,24 +22,15 @@ public abstract class UpdateableWrapper {
 
     // If not yet ready, try again in 30 seconds
     public static final long TIMER_RETRY = 1000 * 30;
-    public static ArrayList<UpdateableItem> itemsToMark = new ArrayList<UpdateableItem>();
-
+    public static ArrayList<UpdateableItem> itemsToMark = new ArrayList<>();
     protected boolean isUpdating = false;
     protected boolean updateFailed = false;
-    protected boolean finishedUpdate = false;
-
+    protected boolean isUpToDate = false;
     protected long lastUpdate = 0;
-
-    protected String UPDATE_URL;
-
     protected ArrayList<UpdateableItem> items;
 
     public UpdateableWrapper() {
-        items = new ArrayList<UpdateableItem>();
-    }
-
-    public long getLastUpdate() {
-        return lastUpdate;
+        items = new ArrayList<>();
     }
 
     public void setLastUpdate(long lastUpdate) {
@@ -61,12 +52,7 @@ public abstract class UpdateableWrapper {
     public boolean needsUpdate() {
         // Update only if last refresh is older than 30 minutes
         long now = new Date().getTime();
-
-        if ((lastUpdate < now - TIMER_INVALIDATE)) {
-            return true;
-        } else {
-            return false;
-        }
+        return (lastUpdate < now - TIMER_INVALIDATE);
     }
 
     /**
@@ -75,6 +61,10 @@ public abstract class UpdateableWrapper {
      * @param jsonResult JSON string to parse
      */
     protected abstract void updateWrapper(String jsonResult);
+
+    protected abstract void parseFromString(String jsonString);
+
+    protected abstract void refreshItems();
 
     /**
      * Download the JSON result from the given URL to the specified file
@@ -86,6 +76,7 @@ public abstract class UpdateableWrapper {
     protected void update(String url, String fileName, String tag) {
         final String FILENAME = fileName;
         final String TAG = tag;
+
         Log.i(WeightliftingApp.TAG, "Updating " + TAG + " ...");
         isUpdating = true;
         updateFailed = false;
@@ -97,21 +88,23 @@ public abstract class UpdateableWrapper {
                     Bundle data = msg.getData();
                     String result = data.getString("result");
                     if (result == null || result.equals("")) {
-                        Log.d(WeightliftingApp.TAG, TAG + " returned nothing");
+                        //Log.d(WeightliftingApp.TAG, TAG + " returned nothing");
                         isUpdating = false;
                         updateFailed = true;
                         return;
                     }
+                    if(WeightliftingApp.mContext == null)
+                        //Log.d(WeightliftingApp.TAG, "mContext is null");
                     DataHelper.saveIntern(result, FILENAME, WeightliftingApp.mContext);
 
                     updateWrapper(result);
 
                     Log.i(WeightliftingApp.TAG, TAG + " updated");
                 } catch (Exception ex) {
-                    Log.e(WeightliftingApp.TAG, TAG + " update failed");
+                    Log.e(WeightliftingApp.TAG, TAG + " update failed: " + ex.getMessage());
                     ex.printStackTrace();
                 }
-                finishedUpdate = true;
+                isUpToDate = true;
                 isUpdating = false;
             }
         };

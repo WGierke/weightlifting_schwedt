@@ -11,26 +11,12 @@ public class NavDrawerItem {
         this.icon = icon;
     }
 
-    public NavDrawerItem(String title, int icon, int count) {
-        this.title = title;
-        this.icon = icon;
-        this.count = count;
-    }
-
     public String getTitle() {
         return this.title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public int getIcon() {
         return this.icon;
-    }
-
-    public void setIcon(int icon) {
-        this.icon = icon;
     }
 
     public int getCount() {

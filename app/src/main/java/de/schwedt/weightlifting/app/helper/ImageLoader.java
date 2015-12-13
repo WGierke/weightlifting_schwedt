@@ -41,7 +41,7 @@ public class ImageLoader {
         imageViews.put(imageView, url);
         Bitmap bitmap = memoryCache.get(url);
         if (bitmap != null) {
-            //Log.d(WeightliftingApp.TAG, "Loading drawable from cache: " + url);
+            ////Log.d(WeightliftingApp.TAG, "Loading drawable from cache: " + url);
             imageView.setImageBitmap(bitmap);
         } else {
             queuePhoto(url, imageView);
@@ -49,25 +49,8 @@ public class ImageLoader {
         }
     }
 
-    public boolean isImageReady(String url) {
-        Bitmap bitmap = memoryCache.get(url);
-        if (bitmap != null) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public void preloadImage(String url) {
-        // download image if not yet cached
-        Bitmap bitmap = memoryCache.get(url);
-        if (bitmap == null) {
-            queuePhoto(url, null);
-        }
-    }
-
     private void queuePhoto(String url, ImageView imageView) {
-        //Log.d(WeightliftingApp.TAG, "Image added to queue: " + url);
+        ////Log.d(WeightliftingApp.TAG, "Image added to queue: " + url);
         PhotoToLoad p = new PhotoToLoad(url, imageView);
         executorService.submit(new PhotosLoader(p));
     }
@@ -86,7 +69,7 @@ public class ImageLoader {
 
         //from web
         try {
-            Bitmap bitmap = null;
+            Bitmap bitmap;
             String path = url.substring(0, url.lastIndexOf("/") + 1);
             String file = url.substring(url.lastIndexOf("/") + 1);
             URL imageUrl = new URL(path + URLEncoder.encode(file, "utf-8"));
@@ -137,15 +120,7 @@ public class ImageLoader {
 
     boolean imageViewReused(PhotoToLoad photoToLoad) {
         String tag = imageViews.get(photoToLoad.imageView);
-        if ((tag == null || !tag.equals(photoToLoad.url)) && photoToLoad.imageView != null) {
-            return true;
-        }
-        return false;
-    }
-
-    public void clearCache() {
-        memoryCache.clear();
-        fileCache.clear();
+        return (tag == null || !tag.equals(photoToLoad.url)) && photoToLoad.imageView != null;
     }
 
     //Task for the queue
@@ -172,7 +147,7 @@ public class ImageLoader {
                 return;
             Bitmap bmp = getBitmap(photoToLoad.url);
             memoryCache.put(photoToLoad.url, bmp);
-            //Log.d(WeightliftingApp.TAG, "Image loaded: " + photoToLoad.url);
+            ////Log.d(WeightliftingApp.TAG, "Image loaded: " + photoToLoad.url);
 
             BitmapDisplayer bd = new BitmapDisplayer(bmp, photoToLoad);
             Activity a = (Activity) photoToLoad.imageView.getContext();

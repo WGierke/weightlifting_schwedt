@@ -1,45 +1,35 @@
 package de.schwedt.weightlifting.app;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Toast;
 
-import com.parse.Parse;
-import com.parse.ParseAnalytics;
-import com.parse.ParseCrashReporting;
-
-import java.util.ArrayList;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import de.schwedt.weightlifting.app.buli.Competitions;
 import de.schwedt.weightlifting.app.buli.Table;
 import de.schwedt.weightlifting.app.buli.Team;
 import de.schwedt.weightlifting.app.gallery.Galleries;
-import de.schwedt.weightlifting.app.helper.Keys;
+import de.schwedt.weightlifting.app.helper.UiHelper;
 import de.schwedt.weightlifting.app.news.Events;
 import de.schwedt.weightlifting.app.news.News;
-import de.schwedt.weightlifting.app.service.GCMPreferences;
 import de.schwedt.weightlifting.app.service.RegistrationIntentService;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends AppCompatActivity {
 
     public static final int FRAGMENT_HOME = 0;
     public static final int FRAGMENT_NEWS = 1;
@@ -49,17 +39,9 @@ public class MainActivity extends FragmentActivity {
     public static final int FRAGMENT_CONTACT = 5;
     //home, (news, events), (team, competitions, table), (gallery)
     public static int counter[][] = {{}, {0, 0}, {0, 0, 0}, {0}};
-    public static ArrayList<NavDrawerItem> navDrawerItems = new ArrayList<NavDrawerItem>();
     private WeightliftingApp app;
-    private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
-    private ActionBarDrawerToggle mDrawerToggle;
-    // nav drawer title
-    private CharSequence mDrawerTitle;
-    // used to store app title
+    private Toolbar mToolbar;
     private CharSequence mTitle;
-    private NavDrawerListAdapter adapter;
-    private BroadcastReceiver mRegistrationBroadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,80 +51,69 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setProgressBarIndeterminateVisibility(false);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        setSupportActionBar(mToolbar);
 
         app = (WeightliftingApp) getApplicationContext();
-        if (!app.isInitialized) {
-            app.initialize(this);
-        }
-
-        mTitle = mDrawerTitle = getTitle();
+        app.setActivity(this);
 
         initNavigation(savedInstanceState);
 
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this, Keys.CONFIG_APP_ID, Keys.CONFIG_CLIENT_KEY);
+        showFragmentFromBundle();
+    }
 
-        ParseAnalytics.trackAppOpenedInBackground(getIntent());
+    private void showFragmentFromBundle() {
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            int fragmentId = extras.getInt("fragmentId");
+            if (fragmentId != 0) {
+                //Log.d(WeightliftingApp.TAG, "Fragment to open: " + fragmentId);
+                showFragment(fragmentId);
+            }
+        }
     }
 
     private void initNavigation(Bundle savedInstanceState) {
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.list_slider);
 
-        navDrawerItems = new ArrayList<NavDrawerItem>();
+        PrimaryDrawerItem nav_home = new PrimaryDrawerItem().withName(R.string.nav_home).withIcon(R.drawable.nav_home);
+        PrimaryDrawerItem nav_news = new PrimaryDrawerItem().withName(R.string.nav_news).withIcon(R.drawable.nav_news);
+        PrimaryDrawerItem nav_buli = new PrimaryDrawerItem().withName(R.string.nav_buli).withIcon(R.drawable.nav_buli);
+        PrimaryDrawerItem nav_gallery = new PrimaryDrawerItem().withName(R.string.nav_gallery).withIcon(R.drawable.nav_gallery);
+        PrimaryDrawerItem nav_faq = new PrimaryDrawerItem().withName(R.string.nav_faq).withIcon(R.drawable.nav_help);
+        PrimaryDrawerItem nav_contact = new PrimaryDrawerItem().withName(R.string.nav_contact).withIcon(R.drawable.nav_contact);
 
-        // adding nav drawer items to array
-        navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_home), R.drawable.nav_home));
-        navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_news), R.drawable.nav_news));
-        navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_buli), R.drawable.nav_buli));
-        navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_gallery), R.drawable.nav_gallery));
-        navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_faq), R.drawable.nav_help));
-        navDrawerItems.add(new NavDrawerItem(getString(R.string.nav_contact), R.drawable.nav_contact));
-
-        mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
-
-        // setting the nav drawer list adapter
-        adapter = new NavDrawerListAdapter(getApplicationContext(), navDrawerItems);
-        mDrawerList.setAdapter(adapter);
-
-        // enabling action bar app icon and behaving it as toggle button
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
-
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.drawable.ic_drawer, //nav toggle icon
-                R.string.app_name, // nav drawer open - description for accessibility
-                R.string.app_name // nav drawer close - description for accessibility
-        ) {
-            public void onDrawerClosed(View view) {
-                getActionBar().setTitle(mTitle);
-                // calling onPrepareOptionsMenu() to show action bar icons
-                invalidateOptionsMenu();
-            }
-
-            public void onDrawerOpened(View drawerView) {
-                getActionBar().setTitle(mDrawerTitle);
-                // calling onPrepareOptionsMenu() to hide action bar icons
-                invalidateOptionsMenu();
-            }
-        };
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        Drawer result = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(mToolbar)
+                .addDrawerItems(
+                        nav_home,
+                        new DividerDrawerItem(),
+                        nav_news,
+                        new DividerDrawerItem(),
+                        nav_buli,
+                        new DividerDrawerItem(),
+                        nav_gallery,
+                        new DividerDrawerItem(),
+                        nav_faq,
+                        new DividerDrawerItem(),
+                        nav_contact,
+                        new DividerDrawerItem()
+                ).withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        showFragment(position / 2);
+                        return false;
+                    }
+                })
+                .build();
 
         if (savedInstanceState == null) {
             // on first time display view for first nav item
             showFragment(FRAGMENT_HOME);
+            setTitle(R.string.app_name);
         }
 
-        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                SharedPreferences sharedPreferences =
-                        PreferenceManager.getDefaultSharedPreferences(context);
-                boolean sentToken = sharedPreferences
-                        .getBoolean(GCMPreferences.SENT_TOKEN_TO_SERVER, false);
-            }
-        };
         Intent intent = new Intent(this, RegistrationIntentService.class);
         startService(intent);
     }
@@ -150,87 +121,61 @@ public class MainActivity extends FragmentActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
-        menu.findItem(R.id.action_refresh).setVisible(true);
         return true;
     }
 
     private void showAsyncUpdateResults() {
-        //Log
-        Log.d(WeightliftingApp.TAG, app.news.finishedUpdate + " " + app.events.finishedUpdate + " " + app.team.finishedUpdate + " " + app.competitions.finishedUpdate + " " + app.table.finishedUpdate + " " + app.galleries.finishedUpdate);
-        // if one update failed show the number of new elements until now and return
-        if (app.news.updateFailed || app.events.updateFailed || app.team.updateFailed || app.competitions.updateFailed || app.table.updateFailed || app.galleries.updateFailed) {
-            showCountedNewElements(false);
-            app.isUpdatingAll = false;
-            return;
+        switch (app.getUpdateStatus()) {
+            case WeightliftingApp.UPDATE_STATUS_PENDING:
+                Runnable refreshRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        showAsyncUpdateResults();
+                    }
+                };
+                Handler refreshHandler = new Handler();
+                refreshHandler.postDelayed(refreshRunnable, 200);
+                return;
+            case WeightliftingApp.UPDATE_STATUS_SUCCESSFUL:
+                showCountedNewElements(true);
+                break;
+            case WeightliftingApp.UPDATE_STATUS_FAILED:
+                showCountedNewElements(false);
+                break;
         }
-        // if one update isn't ready yet check again in 200 ms
-        if (!app.news.finishedUpdate || !app.events.finishedUpdate || !app.team.finishedUpdate || !app.competitions.finishedUpdate || !app.table.finishedUpdate || !app.galleries.finishedUpdate) {
-            Runnable refreshRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    showAsyncUpdateResults();
-                }
-            };
-            Handler refreshHandler = new Handler();
-            refreshHandler.postDelayed(refreshRunnable, 200);
-            return;
-        }
-        showCountedNewElements(true);
-        app.isUpdatingAll = false;
     }
 
     private void showCountedNewElements(boolean updatedSuccessfully) {
         int newElements = News.itemsToMark.size() + Events.itemsToMark.size() + Team.itemsToMark.size() + Competitions.itemsToMark.size() + Table.itemsToMark.size() + Galleries.itemsToMark.size();
         if (updatedSuccessfully)
-            Toast.makeText(getApplicationContext(), getResources().getString(R.string.updated_all_successfully), Toast.LENGTH_SHORT).show();
+            UiHelper.showToast(getResources().getString(R.string.updated_all_successfully), getApplicationContext());
         else
-            Toast.makeText(getApplicationContext(), getResources().getString(R.string.updated_all_unsuccessfully), Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(), getResources().getQuantityString(R.plurals.new_elements, newElements, newElements), Toast.LENGTH_SHORT).show();
+            UiHelper.showToast(getResources().getString(R.string.updated_all_unsuccessfully), getApplicationContext());
+        UiHelper.showToast(getResources().getQuantityString(R.plurals.new_elements, newElements, newElements), getApplicationContext());
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // toggle nav drawer on selecting action bar app icon/title
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        // Handle action bar actions click
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                if (app.isUpdatingAll) {
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.updating_in_progress), Toast.LENGTH_LONG).show();
+                if (WeightliftingApp.isUpdatingAll) {
+                    UiHelper.showToast(getResources().getString(R.string.updating_in_progress), getApplicationContext());
                 } else {
-                    app.isUpdatingAll = true;
-                    app.news.finishedUpdate = false;
-                    app.events.finishedUpdate = false;
-                    app.team.finishedUpdate = false;
-                    app.competitions.finishedUpdate = false;
-                    app.table.finishedUpdate = false;
-                    app.galleries.finishedUpdate = false;
+                    WeightliftingApp.isUpdatingAll = true;
+                    app.setFinishUpdateFlags(false);
                     try {
-                        app.updateData();
+                        app.updateDataForcefully();
                         showAsyncUpdateResults();
                     } catch (Exception e) {
-                        Log.d(app.TAG, "Error while updating all");
+                        //Log.d(WeightliftingApp.TAG, "Error while updating all");
                         e.printStackTrace();
-                        Toast.makeText(getApplicationContext(), R.string.updated_all_unsuccessfully, Toast.LENGTH_LONG).show();
+                        UiHelper.showToast(getResources().getString(R.string.updated_all_unsuccessfully), getApplicationContext());
                     }
                 }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    /**
-     * Called when invalidateOptionsMenu() is triggered
-     */
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // if nav drawer is opened, hide the action items
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        //menu.findItem(R.id.action_refresh).setVisible(!drawerOpen);
-        return super.onPrepareOptionsMenu(menu);
     }
 
     /**
@@ -271,10 +216,6 @@ public class MainActivity extends FragmentActivity {
 
         replaceFragment(fragment, mTitle.toString());
 
-        // update selected item and title, then close the drawer
-        mDrawerList.setItemChecked(position, true);
-        mDrawerList.setSelection(position);
-        mDrawerLayout.closeDrawer(mDrawerList);
         invalidateOptionsMenu();
     }
 
@@ -284,7 +225,7 @@ public class MainActivity extends FragmentActivity {
             FragmentTransaction transaction = fragmentManager.beginTransaction();
 
             transaction.replace(R.id.frame_container, fragment, title);
-            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             transaction.commit();
             setTitle(title);
             fragmentManager.popBackStack();
@@ -307,7 +248,6 @@ public class MainActivity extends FragmentActivity {
             transaction.commit();
 
             setTitle(title);
-            mDrawerLayout.closeDrawer(mDrawerList);
         } else {
             Log.e(WeightliftingApp.TAG, "Fragment is null");
         }
@@ -316,50 +256,13 @@ public class MainActivity extends FragmentActivity {
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;
-        getActionBar().setTitle(mTitle);
-    }
-
-    /**
-     * When using the ActionBarDrawerToggle, you must call it during
-     * onPostCreate() and onConfigurationChanged()...
-     */
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggls
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        app.isInForeground = false;
+        getSupportActionBar().setTitle(mTitle);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        app.isInForeground = true;
+        showFragmentFromBundle();
+        //Log.d(WeightliftingApp.TAG, "resumed");
     }
-
-    /**
-     * Slide menu item click listener
-     */
-    private class SlideMenuClickListener implements
-            ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            showFragment(position);
-        }
-    }
-
-
 }

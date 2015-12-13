@@ -53,7 +53,7 @@ public class RegistrationIntentService extends IntentService {
             sharedPreferences.edit().putBoolean(GCMPreferences.SENT_TOKEN_TO_SERVER, true).apply();
 
         } catch (Exception e) {
-            Log.d(TAG, "Failed to complete token refresh", e);
+            //Log.d(TAG, "Failed to complete token refresh", e);
             sharedPreferences.edit().putBoolean(GCMPreferences.SENT_TOKEN_TO_SERVER, false).apply();
         }
         // Notify UI that registration has completed, so the progress indicator can be hidden.
@@ -63,11 +63,12 @@ public class RegistrationIntentService extends IntentService {
 
     /**
      * Persist registration to third-party servers.
-     * @param token The new token.
+     *
+     * @param token      The new token.
      * @param sent_token Flag that indicates if token was already sent
      */
     private void sendRegistrationToServer(String token, boolean sent_token) {
-        if(!sent_token) {
+        if (!sent_token) {
             Log.i(TAG, "Sent token");
             ParseObject GcmToken = new ParseObject("GcmToken");
             GcmToken.put("token", token);

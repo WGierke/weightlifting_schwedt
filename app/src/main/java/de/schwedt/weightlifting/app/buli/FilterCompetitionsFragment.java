@@ -15,14 +15,12 @@ import de.schwedt.weightlifting.app.WeightliftingApp;
 
 public class FilterCompetitionsFragment extends CompetitionsFragment {
 
-    private String clubName;
     private ArrayList<PastCompetition> filteredCompetitions;
 
     protected void getCompetitions() {
-        competitions = app.getCompetitions();
+        competitions = app.getCompetitions(WeightliftingApp.UPDATE_IF_NECESSARY);
         if (competitions.getItems().size() == 0) {
-            app.setLoading(true);
-            Log.d(WeightliftingApp.TAG, "Waiting for Competitions...");
+            //Log.d(WeightliftingApp.TAG, "Waiting for Competitions...");
 
             Runnable refreshRunnable = new Runnable() {
                 @Override
@@ -33,10 +31,9 @@ public class FilterCompetitionsFragment extends CompetitionsFragment {
             Handler refreshHandler = new Handler();
             refreshHandler.postDelayed(refreshRunnable, Competitions.TIMER_RETRY);
         } else {
-            app.setLoading(false);
             try {
                 Bundle bundle = this.getArguments();
-                clubName = bundle.getString("club-name");
+                String clubName = bundle.getString("club-name");
                 filteredCompetitions = filter(Competitions.casteArray(competitions.getItems()), clubName);
                 CompetitionsListAdapter adapter = new CompetitionsListAdapter(filteredCompetitions, getActivity());
                 listViewCompetitions.setAdapter(adapter);
@@ -58,7 +55,7 @@ public class FilterCompetitionsFragment extends CompetitionsFragment {
     }
 
     private ArrayList<PastCompetition> filter(ArrayList<PastCompetition> items, String name) {
-        ArrayList<PastCompetition> result = new ArrayList<PastCompetition>();
+        ArrayList<PastCompetition> result = new ArrayList<>();
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).getHome().equals(name) || items.get(i).getGuest().equals(name)) {
                 result.add(items.get(i));

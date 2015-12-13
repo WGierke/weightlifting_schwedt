@@ -22,4 +22,12 @@
     <!-- Galleries -->
     <color name="white">#ffffff</color>
 
+    <!--<color name="colorPrimary">#125688</color>-->
+    <color name="colorPrimary">@color/tsv_blue</color>
+    <color name="colorPrimaryDark">@color/tsv_blue</color>
+    <color name="textColorPrimary">#FFFFFF</color>
+    <color name="windowBackground">#FFFFFF</color>
+    <color name="navigationBarColor">@color/white</color>
+    <color name="colorAccent">@color/tsv_light_blue</color>
+
 </resources>

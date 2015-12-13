@@ -13,37 +13,27 @@ import de.schwedt.weightlifting.app.UpdateableItem;
 import de.schwedt.weightlifting.app.UpdateableWrapper;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.JsonParser;
-import de.schwedt.weightlifting.app.helper.UiHelper;
 
 public class Competitions extends UpdateableWrapper {
 
-    public static final String fileName = "competitions.json";
-
-    public static ArrayList<PastCompetition> itemsToMark = new ArrayList<PastCompetition>();
-
+    public static final String FILE_NAME = "competitions.json";
+    public final static int navigationPosition = MainActivity.FRAGMENT_BULI;
+    public final static int subPosition = 1;
+    public static ArrayList<PastCompetition> itemsToMark = new ArrayList<>();
     private final String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/past_competitions.json";
+    private final String TAG = "Competitions";
 
     public static ArrayList<PastCompetition> casteArray(ArrayList<UpdateableItem> array) {
-        ArrayList<PastCompetition> convertedItems = new ArrayList<PastCompetition>();
+        ArrayList<PastCompetition> convertedItems = new ArrayList<>();
         for (int i = 0; i < array.size(); i++) {
             convertedItems.add((PastCompetition) array.get(i));
         }
         return convertedItems;
     }
 
-    public static String getNotificationMessage() {
-        String content = "";
-        for (PastCompetition item : itemsToMark) {
-            content += item.getHome() + " vs. " + item.getGuest() + "|";
-        }
-        return content;
-    }
-
-    public static void markNewItems(ArrayList<UpdateableItem> oldItems, ArrayList<UpdateableItem> newItems) {
+    public static void addItemsToMark(ArrayList<UpdateableItem> oldItems, ArrayList<UpdateableItem> newItems) {
         ArrayList<PastCompetition> oldCompetitionItems = casteArray(oldItems);
         ArrayList<PastCompetition> newCompetitionItems = casteArray(newItems);
-        int navigationPosition = MainActivity.FRAGMENT_BULI;
-        int subPosition = 1;
         for (int i = 0; i < newCompetitionItems.size(); i++) {
             boolean isNew = true;
             for (int j = 0; j < oldCompetitionItems.size(); j++) {
@@ -53,14 +43,14 @@ public class Competitions extends UpdateableWrapper {
                 }
             }
             if (isNew) {
+                Log.d("WeightliftingLog", "new competition: " + newCompetitionItems.get(i).getDate());
                 itemsToMark.add(newCompetitionItems.get(i));
             }
         }
-        UiHelper.refreshCounterNav(navigationPosition, subPosition, itemsToMark.size());
     }
 
-    public void update() {
-        super.update(UPDATE_URL, fileName, "Competitions");
+    public void refreshItems() {
+        super.update(UPDATE_URL, FILE_NAME, TAG);
     }
 
     protected void updateWrapper(String result) {
@@ -68,22 +58,22 @@ public class Competitions extends UpdateableWrapper {
         newItems.parseFromString(result);
         if (items.size() > 0) {
             keepOldReferences(items, newItems.getItems());
-            markNewItems(items, newItems.getItems());
+            addItemsToMark(items, newItems.getItems());
         }
         items = newItems.getItems();
     }
 
     public void parseFromString(String jsonString) {
-        Log.d(WeightliftingApp.TAG, "Parsing competitions JSON...");
+        //Log.d(WeightliftingApp.TAG, "Parsing competitions JSON...");
         try {
-            ArrayList<UpdateableItem> newItems = new ArrayList<UpdateableItem>();
+            ArrayList<UpdateableItem> newItems = new ArrayList<>();
 
             JsonParser jsonParser = new JsonParser();
             jsonParser.getJsonFromString(jsonString);
 
             // parse past competitions
             JSONArray competitions = jsonParser.getJsonArray("past_competitions");
-            Log.d(WeightliftingApp.TAG, competitions.length() + " competitions found");
+            //Log.d(WeightliftingApp.TAG, competitions.length() + " competitions found");
             for (int i = 0; i < competitions.length(); i++) {
                 try {
                     JSONObject jsonCompoetition = competitions.getJSONObject(i);

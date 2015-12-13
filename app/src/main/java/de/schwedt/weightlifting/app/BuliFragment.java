@@ -19,33 +19,18 @@ public class BuliFragment extends Fragment {
     private static final int FRAGMENT_TEAM = 0;
     private static final int FRAGMENT_COMPETITIONS = 1;
     private static final int FRAGMENT_TABLE = 2;
-    private BuliCollectionPagerAdapter mBuliCollectionPagerAdapter;
-    private ViewPager mViewPager;
-    private WeightliftingApp app;
-    private View fragment;
-
-    public BuliFragment() {
-        super();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(WeightliftingApp.TAG, "Showing Buli fragment");
+        //Log.d(WeightliftingApp.TAG, "Showing Buli fragment");
 
-        fragment = inflater.inflate(R.layout.pager_tab_strip, container, false);
-        app = (WeightliftingApp) getActivity().getApplicationContext();
+        View fragment = inflater.inflate(R.layout.pager_tab_strip, container, false);
 
-        mBuliCollectionPagerAdapter = new BuliCollectionPagerAdapter(getActivity().getSupportFragmentManager());
-        mViewPager = (ViewPager) fragment.findViewById(R.id.pager);
+        BuliCollectionPagerAdapter mBuliCollectionPagerAdapter = new BuliCollectionPagerAdapter(getActivity().getSupportFragmentManager());
+        ViewPager mViewPager = (ViewPager) fragment.findViewById(R.id.pager);
         mViewPager.setAdapter(mBuliCollectionPagerAdapter);
 
         return fragment;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        getActivity().getActionBar().setTitle(getString(R.string.nav_buli));
     }
 
     public class BuliCollectionPagerAdapter extends FragmentStatePagerAdapter {
@@ -55,7 +40,7 @@ public class BuliFragment extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            Fragment fragment = null;
+            Fragment fragment;
 
             switch (position) {
                 case FRAGMENT_TEAM:

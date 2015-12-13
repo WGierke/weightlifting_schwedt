@@ -5,6 +5,9 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -17,7 +20,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
-import java.util.Properties;
 
 import de.schwedt.weightlifting.app.WeightliftingApp;
 
@@ -117,59 +119,55 @@ public class DataHelper {
     }
 
     public static void setPreference(String prev_name, String prev_value, Application application) {
-        SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, application.MODE_PRIVATE);
+        SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(prev_name, prev_value);
         editor.commit();
     }
 
     public static void setPreference(String prev_name, Boolean prev_value, Application application) {
-        SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, application.MODE_PRIVATE);
+        SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(prev_name, prev_value);
         editor.commit();
     }
 
     public static void deletePreference(String prev_name, Application application) {
-        SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, application.MODE_PRIVATE);
+        SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.remove(prev_name);
         editor.commit();
     }
 
     public static Boolean checkPreference(String prev_name, Application application) {
-        SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, application.MODE_PRIVATE);
+        SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         return preferences.contains(prev_name);
     }
 
     public static String getPreference(String prev_name, Application application) {
-        SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, application.MODE_PRIVATE);
-        String storedPreference = preferences.getString(prev_name, null);
-        return storedPreference;
+        SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
+        return preferences.getString(prev_name, null);
     }
 
     public static Boolean getPreference(String prev_name, Boolean prev_default, Application application) {
-        SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, application.MODE_PRIVATE);
-        Boolean storedPreference = preferences.getBoolean(prev_name, prev_default);
-        return storedPreference;
+        SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
+        return preferences.getBoolean(prev_name, prev_default);
     }
 
     public static String getSetting(String prev_name, Application application) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(application);
-        String storedPreference = sharedPref.getString(prev_name, null);
-        return storedPreference;
+        return sharedPref.getString(prev_name, null);
     }
 
     public static Boolean getSetting(String prev_name, Boolean prev_default, Application application) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(application);
-        Boolean storedPreference = sharedPref.getBoolean(prev_name, prev_default);
-        return storedPreference;
+        return sharedPref.getBoolean(prev_name, prev_default);
     }
 
     public static int sumOfArray(int[] array) {
         int n = 0;
-        for (int i = 0; i < array.length; i++) {
-            n += array[i];
+        for (int elem : array) {
+            n += elem;
         }
         return n;
     }
@@ -184,7 +182,7 @@ public class DataHelper {
             while ((line = bufferedReader.readLine()) != null) {
                 sb.append(line);
             }
-            Log.d(WeightliftingApp.TAG, "read from " + fileName + " following content: " + sb.toString());
+            //Log.d(WeightliftingApp.TAG, "read from " + fileName + " " + sb.toString().substring(0, 20) + "...");
             return sb.toString();
         } catch (Exception e) {
             e.printStackTrace();
@@ -197,9 +195,27 @@ public class DataHelper {
             FileOutputStream fos = context.getApplicationContext().openFileOutput(fileName, Context.MODE_PRIVATE);
             fos.write(content.getBytes());
             fos.close();
-            Log.d(WeightliftingApp.TAG, "saved in " + fileName + " content: " + content);
+            //Log.d(WeightliftingApp.TAG, "saved in " + fileName + " content: " + content.substring(0, 20) + "...");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public static void sendMessage(Handler mHandler, String key, String value) {
+        //Log.d(WeightliftingApp.TAG, "Sending message to handler: [" + key + "] " + value);
+        Bundle data = new Bundle();
+        data.putString(key, value);
+        Message message = new Message();
+        message.setData(data);
+        mHandler.sendMessage(message);
+    }
+
+    public static void sendMessage(Handler mHandler, String key, int value) {
+        //Log.d(WeightliftingApp.TAG, "Sending message to handler: [" + key + "] " + String.valueOf(value));
+        Bundle data = new Bundle();
+        data.putInt(key, value);
+        Message message = new Message();
+        message.setData(data);
+        mHandler.sendMessage(message);
     }
 }

@@ -13,37 +13,27 @@ import de.schwedt.weightlifting.app.UpdateableItem;
 import de.schwedt.weightlifting.app.UpdateableWrapper;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.JsonParser;
-import de.schwedt.weightlifting.app.helper.UiHelper;
 
 public class Table extends UpdateableWrapper {
 
-    public static final String fileName = "table.json";
-
-    public static ArrayList<TableEntry> itemsToMark = new ArrayList<TableEntry>();
-
+    public static final String FILE_NAME = "table.json";
+    public static ArrayList<TableEntry> itemsToMark = new ArrayList<>();
+    public final static int navigationPosition = MainActivity.FRAGMENT_BULI;
+    public final static int subPosition = 2;
     private final String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/table.json";
+    private final String TAG = "Table";
 
     public static ArrayList<TableEntry> casteArray(ArrayList<UpdateableItem> array) {
-        ArrayList<TableEntry> convertedItems = new ArrayList<TableEntry>();
+        ArrayList<TableEntry> convertedItems = new ArrayList<>();
         for (int i = 0; i < array.size(); i++) {
             convertedItems.add((TableEntry) array.get(i));
         }
         return convertedItems;
     }
 
-    public static String getNotificationMessage() {
-        String content = "";
-        for (TableEntry item : itemsToMark) {
-            content += item.getPlace() + ". " + item.getClub() + "|";
-        }
-        return content;
-    }
-
     public static void markNewItems(ArrayList<UpdateableItem> oldItems, ArrayList<UpdateableItem> newItems) {
         ArrayList<TableEntry> oldTableItems = casteArray(oldItems);
         ArrayList<TableEntry> newTableItems = casteArray(newItems);
-        int navigationPosition = MainActivity.FRAGMENT_BULI;
-        int subPosition = 2;
         for (int i = 0; i < newTableItems.size(); i++) {
             boolean isNew = true;
             for (int j = 0; j < oldTableItems.size(); j++) {
@@ -56,12 +46,9 @@ public class Table extends UpdateableWrapper {
                 itemsToMark.add(newTableItems.get(i));
             }
         }
-        UiHelper.refreshCounterNav(navigationPosition, subPosition, itemsToMark.size());
     }
 
-    public void update() {
-        super.update(UPDATE_URL, fileName, "Table");
-    }
+    public void refreshItems() { super.update(UPDATE_URL, FILE_NAME, TAG); }
 
     protected void updateWrapper(String result) {
         Table newItems = new Table();
@@ -74,15 +61,15 @@ public class Table extends UpdateableWrapper {
     }
 
     public void parseFromString(String jsonString) {
-        Log.d(WeightliftingApp.TAG, "Parsing buli table JSON...");
+        //Log.d(WeightliftingApp.TAG, "Parsing buli table JSON...");
         try {
-            ArrayList<UpdateableItem> newBuliTableItems = new ArrayList<UpdateableItem>();
+            ArrayList<UpdateableItem> newBuliTableItems = new ArrayList<>();
 
             JsonParser jsonParser = new JsonParser();
             jsonParser.getJsonFromString(jsonString);
 
             JSONArray table = jsonParser.getJsonArray("table");
-            Log.d(WeightliftingApp.TAG, table.length() + " table entries found");
+            //Log.d(WeightliftingApp.TAG, table.length() + " table entries found");
             for (int i = 0; i < table.length(); i++) {
                 try {
                     JSONObject jsonTableEntry = table.getJSONObject(i);

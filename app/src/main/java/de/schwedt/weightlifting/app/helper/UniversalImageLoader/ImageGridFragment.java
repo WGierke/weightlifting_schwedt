@@ -67,7 +67,7 @@ public class ImageGridFragment extends Fragment {
         galleryPosition = bundle.getInt("GALLERY_POSITION");
 
         WeightliftingApp app = (WeightliftingApp) getActivity().getApplicationContext();
-        Galleries galleries = app.getGalleries();
+        Galleries galleries = app.getGalleries(WeightliftingApp.UPDATE_IF_NECESSARY);
         imageUrls = Galleries.casteArray(galleries.getItems()).get(galleryPosition).getImageUrls();
 
         super.onCreate(savedInstanceState);
@@ -87,7 +87,7 @@ public class ImageGridFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.gallery_pictures, container, false);
         listView = (GridView) rootView.findViewById(R.id.grid);
-        ((GridView) listView).setAdapter(new ImageAdapter());
+        listView.setAdapter(new ImageAdapter());
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -99,7 +99,7 @@ public class ImageGridFragment extends Fragment {
                 bundle.putInt("IMAGE_POSITION", position);
                 fr.setArguments(bundle);
                 WeightliftingApp app = (WeightliftingApp) getActivity().getApplicationContext();
-                GalleryItem currentGallery = (GalleryItem) app.getGalleries().getItem(galleryPosition);
+                GalleryItem currentGallery = (GalleryItem) app.getGalleries(WeightliftingApp.UPDATE_IF_NECESSARY).getItem(galleryPosition);
                 String tag = currentGallery.getTitle();
 
                 ((MainActivity) getActivity()).addFragment(fr, tag, false);

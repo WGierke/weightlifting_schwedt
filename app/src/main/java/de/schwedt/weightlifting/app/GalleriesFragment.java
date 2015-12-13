@@ -20,15 +20,10 @@ public class GalleriesFragment extends Fragment {
 
     private WeightliftingApp app;
     private View fragment;
-    private Galleries galleries;
-
-    public GalleriesFragment() {
-        super();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(WeightliftingApp.TAG, "Showing Gallery fragment");
+        //Log.d(WeightliftingApp.TAG, "Showing Gallery fragment");
 
         fragment = inflater.inflate(R.layout.fragment_galleries, container, false);
         app = (WeightliftingApp) getActivity().getApplicationContext();
@@ -45,18 +40,11 @@ public class GalleriesFragment extends Fragment {
         return fragment;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        getActivity().getActionBar().setTitle(R.string.nav_gallery);
-    }
-
     private void getGalleries() {
-        galleries = app.getGalleries();
+        Galleries galleries = app.getGalleries(WeightliftingApp.UPDATE_IF_NECESSARY);
         if (galleries.getItems().size() == 0) {
             // No news items yet
-            app.setLoading(true);
-            Log.d(WeightliftingApp.TAG, "Waiting for galleries...");
+            //Log.d(WeightliftingApp.TAG, "Waiting for galleries...");
 
             // Check again in a few seconds
             Runnable refreshRunnable = new Runnable() {
@@ -69,7 +57,6 @@ public class GalleriesFragment extends Fragment {
             refreshHandler.postDelayed(refreshRunnable, News.TIMER_RETRY);
         } else {
             // We have news items to display
-            app.setLoading(false);
             try {
                 ListView listViewGalleries = (ListView) fragment.findViewById(R.id.listView_galleries);
                 GalleryOverviewAdapter adapter = new GalleryOverviewAdapter(Galleries.casteArray(galleries.getItems()), getActivity());

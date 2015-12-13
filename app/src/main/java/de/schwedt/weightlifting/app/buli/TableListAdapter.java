@@ -29,22 +29,6 @@ public class TableListAdapter extends BaseAdapter {
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public ArrayList<TableEntry> getItems() {
-        return items;
-    }
-
-    public void setItems(ArrayList<TableEntry> items) {
-        this.items = items;
-    }
-
-    public Activity getActivity() {
-        return activity;
-    }
-
-    public void setActivity(Activity activity) {
-        this.activity = activity;
-    }
-
     @Override
     public int getCount() {
         return items.size();
@@ -89,7 +73,6 @@ public class TableListAdapter extends BaseAdapter {
         if (Table.itemsToMark.contains(items.get(position))) {
             UiHelper.colorFade(view, activity.getResources());
             Table.itemsToMark.remove(items.get(position));
-            UiHelper.refreshCounterNav(MainActivity.FRAGMENT_BULI, 2, Table.itemsToMark.size());
         }
 
         return view;

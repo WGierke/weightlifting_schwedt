@@ -26,22 +26,6 @@ public class GalleryOverviewAdapter extends BaseAdapter {
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public ArrayList<GalleryItem> getItems() {
-        return items;
-    }
-
-    public void setItems(ArrayList<GalleryItem> items) {
-        this.items = items;
-    }
-
-    public Activity getActivity() {
-        return activity;
-    }
-
-    public void setActivity(Activity activity) {
-        this.activity = activity;
-    }
-
     @Override
     public int getCount() {
         return items.size();
@@ -70,7 +54,6 @@ public class GalleryOverviewAdapter extends BaseAdapter {
         if (Galleries.itemsToMark.contains(items.get(position))) {
             UiHelper.colorFade(view, activity.getResources());
             Galleries.itemsToMark.remove(items.get(position));
-            UiHelper.refreshCounterNav(MainActivity.FRAGMENT_GALLERY, 0, Galleries.itemsToMark.size());
         }
 
         return view;

@@ -3,6 +3,7 @@ package de.schwedt.weightlifting.app.buli;
 import android.app.Activity;
 import android.content.Context;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,22 +27,6 @@ public class CompetitionsListAdapter extends BaseAdapter {
         this.items = items;
         this.activity = activity;
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }
-
-    public ArrayList<PastCompetition> getItems() {
-        return items;
-    }
-
-    public void setItems(ArrayList<PastCompetition> items) {
-        this.items = items;
-    }
-
-    public Activity getActivity() {
-        return activity;
-    }
-
-    public void setActivity(Activity activity) {
-        this.activity = activity;
     }
 
     @Override
@@ -85,12 +70,16 @@ public class CompetitionsListAdapter extends BaseAdapter {
         TextView location = (TextView) view.findViewById(R.id.buli_competition_location);
         location.setText(items.get(position).getLocation());
 
-        if (Competitions.itemsToMark.contains(items.get(position))) {
-            UiHelper.colorFade(view, activity.getResources());
-            Competitions.itemsToMark.remove(items.get(position));
-            UiHelper.refreshCounterNav(MainActivity.FRAGMENT_BULI, 1, Competitions.itemsToMark.size());
+        //Log.d(WeightliftingApp.TAG, "Competition Date: " + items.get(position).getDate() + " " + items.get(position).getHome());
+        for(PastCompetition p : Competitions.itemsToMark) {
+            //Log.d(WeightliftingApp.TAG, p.getDate() + " " + p.getHome());
         }
 
+        if (Competitions.itemsToMark.contains(items.get(position))) {
+            //Log.d(WeightliftingApp.TAG, "item to mark is being displayed");
+            UiHelper.colorFade(view, activity.getResources());
+            Competitions.itemsToMark.remove(items.get(position));
+        }
         return view;
     }
 }

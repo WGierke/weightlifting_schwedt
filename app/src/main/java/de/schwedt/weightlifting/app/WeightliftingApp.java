@@ -1,16 +1,12 @@
 package de.schwedt.weightlifting.app;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.parse.Parse;
-import com.parse.ParseObject;
-import com.parse.ParseCrashReporting;
 
 import java.io.File;
 import java.util.Date;
@@ -22,7 +18,6 @@ import de.schwedt.weightlifting.app.faq.FaqItem;
 import de.schwedt.weightlifting.app.gallery.Galleries;
 import de.schwedt.weightlifting.app.helper.DataHelper;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
-import de.schwedt.weightlifting.app.helper.Keys;
 import de.schwedt.weightlifting.app.helper.MemoryCache;
 import de.schwedt.weightlifting.app.news.Events;
 import de.schwedt.weightlifting.app.news.News;
@@ -32,35 +27,41 @@ public class WeightliftingApp extends Application {
     public static final String TAG = "WeightliftingLog";
     public static final String TEAM_NAME = "Oder-Sund-Team";
     public static final int DISPLAY_DELAY = 500;
+    public final static int UPDATE_STATUS_SUCCESSFUL = 200;
+    public final static int UPDATE_STATUS_FAILED = 201;
+    public final static int UPDATE_STATUS_PENDING = 202;
+    public final static int UPDATE_FORCEFULLY = 1;
+    public final static int UPDATE_IF_NECESSARY = 2;
+    public final static int LOAD_FROM_FILE = 3;
     public static Context mContext;
     public static boolean isUpdatingAll = false;
-    public boolean isInForeground = true;
+    private static MainActivity mActivity;
     public boolean isInitialized = false;
+    public boolean initializedParse = false;
     public MemoryCache memoryCache;
     public ImageLoader imageLoader;
-
     public News news;
     public Events events;
     public Team team;
     public Competitions competitions;
     public Table table;
     public Galleries galleries;
-    public MainActivity mainActivity;
+    public Handler splashCallbackHandler;
 
-    public void initialize(Activity activity) {
+    public void initialize(Handler callbackHandler) {
+        splashCallbackHandler = callbackHandler;
+        DataHelper.sendMessage(splashCallbackHandler, SplashActivity.KEY_MESSAGE, getString(R.string.loading_data));
+
         Log.i(TAG, "Initializing...");
         long dateStart = new Date().getTime();
 
-        mainActivity = (MainActivity) activity;
         memoryCache = new MemoryCache();
-        imageLoader = new ImageLoader(activity);
+        imageLoader = new ImageLoader(getApplicationContext());
 
         FaqFragment.faqEntries.add(new FaqItem(getString(R.string.faq_off_signal_heading), getString(R.string.faq_off_signal_question), getString(R.string.faq_off_signal_answer)));
         FaqFragment.faqEntries.add(new FaqItem(getString(R.string.faq_bad_attempt_jerking_heading), getString(R.string.faq_bad_attempt_jerking_question), getString(R.string.faq_bad_attempt_jerking_answer)));
         FaqFragment.faqEntries.add(new FaqItem(getString(R.string.winner_single_competition_heading), getString(R.string.winner_single_competition_question), getString(R.string.winner_single_competition_answer)));
         FaqFragment.faqEntries.add(new FaqItem(getString(R.string.winner_team_competition_heading), getString(R.string.winner_team_competition_question), getString(R.string.winner_team_competition_answer)));
-
-        loadSettings();
 
         long dateDiff = (new Date().getTime() - dateStart);
 
@@ -75,209 +76,164 @@ public class WeightliftingApp extends Application {
 
         mContext = getApplicationContext();
 
-        getData();
+        loadDataFromStorage();
+
+        updateDataForcefully();
+
+        updateSplashScreen();
 
         isInitialized = true;
 
         Log.i(TAG, "Initialized (" + String.valueOf(dateDiff) + "ms)");
     }
 
-    public void loadSettings() {
-        // Restore user data
+    private void updateSplashScreen() {
+        switch (getUpdateStatus()) {
+            case UPDATE_STATUS_PENDING:
+                Runnable refreshRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        updateSplashScreen();
+                    }
+                };
+                //Log.d(TAG, "Update status: pending");
+                Handler refreshHandler = new Handler();
+                refreshHandler.postDelayed(refreshRunnable, 200);
+                break;
+            case UPDATE_STATUS_SUCCESSFUL:
+                //Log.d(TAG, "Update status: Success");
+                DataHelper.sendMessage(splashCallbackHandler, SplashActivity.KEY_MESSAGE, SplashActivity.MESSAGE_INITIALIZED);
+                break;
+            case UPDATE_STATUS_FAILED:
+                //Log.d(TAG, "Update status: Failed");
+                DataHelper.sendMessage(splashCallbackHandler, SplashActivity.KEY_STATUS, SplashActivity.STATUS_ERROR_NETWORK);
+                break;
+        }
     }
 
-    public void getData() {
-        //load data either from storage or from the internet
-        getNews();
-        getEvents();
-        getTeam();
-        getCompetitions();
-        getTable();
-        getGalleries();
+    public void loadDataFromStorage() {
+        getNews(LOAD_FROM_FILE);
+        getEvents(LOAD_FROM_FILE);
+        getTeam(LOAD_FROM_FILE);
+        getCompetitions(LOAD_FROM_FILE);
+        getTable(LOAD_FROM_FILE);
+        getGalleries(LOAD_FROM_FILE);
     }
 
-    public void updateData() {
+    public void updateDataForcefully() {
         //Update everything and save it on storage
-        Log.d(TAG, "updating everything");
-        news.update();
-        events.update();
-        team.update();
-        competitions.update();
-        table.update();
-        galleries.update();
+        //Log.d(TAG, "updating everything");
+        getNews(UPDATE_FORCEFULLY);
+        getEvents(UPDATE_FORCEFULLY);
+        getTeam(UPDATE_FORCEFULLY);
+        getCompetitions(UPDATE_FORCEFULLY);
+        getTable(UPDATE_FORCEFULLY);
+        getGalleries(UPDATE_FORCEFULLY);
     }
 
-    public News getNews() {
-        if (news == null) {
-            news = new News();
-            File file = getApplicationContext().getFileStreamPath(News.fileName);
-            if (file.exists()) {
-                String newsFileContent = DataHelper.readIntern(News.fileName, getApplicationContext());
-                if (!newsFileContent.equals("")) {
-                    news.parseFromString(newsFileContent);
-                    news.setLastUpdate(new File(getFilesDir() + "/" + News.fileName).lastModified());
-                    Log.d(TAG, "News: read from memory:" + newsFileContent);
-                }
-            }
+    public int getUpdateStatus() {
+        //Log.d(WeightliftingApp.TAG, news.isUpToDate + " " + events.isUpToDate + " " + team.isUpToDate + " " + competitions.isUpToDate + " " + table.isUpToDate + " " + galleries.isUpToDate);
+        if (news.updateFailed || events.updateFailed || team.updateFailed || competitions.updateFailed || table.updateFailed || galleries.updateFailed) {
+            isUpdatingAll = false;
+            return UPDATE_STATUS_FAILED;
         }
+        if (news.isUpToDate && events.isUpToDate && team.isUpToDate && competitions.isUpToDate && table.isUpToDate && galleries.isUpToDate) {
+            isUpdatingAll = false;
+            return UPDATE_STATUS_SUCCESSFUL;
+        } else
+            return UPDATE_STATUS_PENDING;
+    }
 
-        if (news.needsUpdate() && !news.isUpdating && !isUpdatingAll) {
-            setLoading(true);
-            news.update();
-            setLoading(false);
-            if (news.updateFailed) {
-                if (isInForeground) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Neuigkeiten"), Toast.LENGTH_LONG).show();
-                }
-                news.updateFailed = false;
+    public void setFinishUpdateFlags(boolean value) {
+        if (news != null)
+            news.isUpToDate = value;
+        else
+            //Log.d(TAG, "news is null");
+        if (events != null)
+            events.isUpToDate = value;
+        if (team != null)
+            team.isUpToDate = value;
+        if (competitions != null)
+            competitions.isUpToDate = value;
+        if (table != null)
+            table.isUpToDate = value;
+        if (galleries != null)
+            galleries.isUpToDate = value;
+    }
+
+    public UpdateableWrapper getWrapperItems(UpdateableWrapper myInstance, Class<?> myClass, int mode) {
+        try {
+            if (myInstance == null)
+                myInstance = (UpdateableWrapper) myClass.newInstance();
+
+            if (mode == UPDATE_FORCEFULLY) {
+                //Log.d(TAG, "started forced update for " + myClass.getName());
+                myInstance.refreshItems();
+                return myInstance;
             }
+
+            if (mode == LOAD_FROM_FILE) {
+                String fileName = myClass.getDeclaredField("FILE_NAME").get(myInstance).toString();
+                File file = getApplicationContext().getFileStreamPath(fileName);
+                if (file.exists()) {
+                    String fileContent = DataHelper.readIntern(fileName, getApplicationContext());
+                    if (!fileContent.equals("")) {
+                        myInstance.parseFromString(fileContent);
+                        myInstance.setLastUpdate(new File(getFilesDir() + "/" + fileName).lastModified());
+                        //Log.d(TAG, myClass.getName() + ": read from memory:" + fileContent.substring(0, 20) + "...");
+                    }
+                }
+            }
+
+            if (mode == UPDATE_IF_NECESSARY) {
+                if (myInstance.needsUpdate() && !myInstance.isUpdating && !isUpdatingAll) {
+                    myInstance.refreshItems();
+                }
+            }
+        } catch (Exception e) {
+            //Log.d(TAG, "Error in getWrapperItems");
+            e.printStackTrace();
         }
+        return myInstance;
+    }
+
+    public News getNews(int updateMode) {
+        news = (News) getWrapperItems(news, News.class, updateMode);
         return news;
     }
 
-    public Events getEvents() {
-        if (events == null) {
-            events = new Events();
-            File file = getApplicationContext().getFileStreamPath(Events.fileName);
-            if (file.exists()) {
-                String eventsFileContent = DataHelper.readIntern(Events.fileName, getApplicationContext());
-                if (eventsFileContent != "") {
-                    events.parseFromString(eventsFileContent);
-                    events.setLastUpdate(new File(getFilesDir() + "/" + Events.fileName).lastModified());
-                    Log.d(TAG, "Events: read from memory:" + eventsFileContent);
-                }
-            }
-        }
-
-        if (events.needsUpdate() && !events.isUpdating && !isUpdatingAll) {
-            setLoading(true);
-            events.update();
-            setLoading(false);
-            if (events.updateFailed) {
-                if (isInForeground) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Veranstaltungs"), Toast.LENGTH_LONG).show();
-                }
-                events.updateFailed = false;
-            }
-        }
+    public Events getEvents(int updateMode) {
+        events = (Events) getWrapperItems(events, Events.class, updateMode);
         return events;
     }
 
-    public Team getTeam() {
-        if (team == null) {
-            team = new Team();
-            File file = getApplicationContext().getFileStreamPath(Team.fileName);
-            if (file.exists()) {
-                String teamFileContent = DataHelper.readIntern(Team.fileName, getApplicationContext());
-                if (teamFileContent != "") {
-                    team.parseFromString(teamFileContent);
-                    team.setLastUpdate(new File(getFilesDir() + "/" + Team.fileName).lastModified());
-                    Log.d(TAG, "Team: read from memory:" + teamFileContent);
-                }
-            }
-        }
-
-        if (team.needsUpdate() && !team.isUpdating && !isUpdatingAll) {
-            setLoading(true);
-            team.update();
-            setLoading(false);
-            if (team.updateFailed) {
-                if (isInForeground) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Team"), Toast.LENGTH_LONG).show();
-                }
-                team.updateFailed = false;
-            }
-        }
+    public Team getTeam(int updateMode) {
+        team = (Team) getWrapperItems(team, Team.class, updateMode);
         return team;
     }
 
-    public Competitions getCompetitions() {
-        if (competitions == null) {
-            competitions = new Competitions();
-            File file = getApplicationContext().getFileStreamPath(Competitions.fileName);
-            if (file.exists()) {
-                String competitionsFileContent = DataHelper.readIntern(Competitions.fileName, getApplicationContext());
-                if (competitionsFileContent != "") {
-                    competitions.parseFromString(competitionsFileContent);
-                    competitions.setLastUpdate(new File(getFilesDir() + "/" + Competitions.fileName).lastModified());
-                    Log.d(TAG, "Competitions: read from memory:" + competitionsFileContent);
-                }
-            }
-        }
-
-        if (competitions.needsUpdate() && !competitions.isUpdating && !isUpdatingAll) {
-            setLoading(true);
-            competitions.update();
-            setLoading(false);
-            if (competitions.updateFailed) {
-                if (isInForeground) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Wettkampf"), Toast.LENGTH_LONG).show();
-                }
-                competitions.updateFailed = false;
-            }
-        }
+    public Competitions getCompetitions(int updateMode) {
+        competitions = (Competitions) getWrapperItems(competitions, Competitions.class, updateMode);
         return competitions;
     }
 
-    public Table getTable() {
-        if (table == null) {
-            table = new Table();
-            File file = getApplicationContext().getFileStreamPath(Table.fileName);
-            if (file.exists()) {
-                String tableFileContent = DataHelper.readIntern(Table.fileName, getApplicationContext());
-                if (tableFileContent != "") {
-                    table.parseFromString(tableFileContent);
-                    table.setLastUpdate(new File(getFilesDir() + "/" + Table.fileName).lastModified());
-                    Log.d(TAG, "Table: read from memory:" + tableFileContent);
-                }
-            }
-        }
-
-        if (table.needsUpdate() && !table.isUpdating && !isUpdatingAll) {
-            setLoading(true);
-            table.update();
-            setLoading(false);
-            if (table.updateFailed) {
-                if (isInForeground) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Tabellen"), Toast.LENGTH_LONG).show();
-                }
-                table.updateFailed = false;
-            }
-        }
+    public Table getTable(int updateMode) {
+        table = (Table) getWrapperItems(table, Table.class, updateMode);
         return table;
     }
 
-    public Galleries getGalleries() {
-        if (galleries == null) {
-            galleries = new Galleries();
-            File file = getApplicationContext().getFileStreamPath(Galleries.fileName);
-            if (file.exists()) {
-                String galleriesFileContent = DataHelper.readIntern(Galleries.fileName, getApplicationContext());
-                if (galleriesFileContent != "") {
-                    galleries.parseFromString(galleriesFileContent);
-                    galleries.setLastUpdate(new File(getFilesDir() + "/" + Galleries.fileName).lastModified());
-                    Log.d(TAG, "Galleries: read from memory:" + galleriesFileContent);
-                }
-            }
-        }
-
-        if (galleries.needsUpdate() && !galleries.isUpdating && !isUpdatingAll) {
-            galleries.update();
-            if (galleries.updateFailed) {
-                if (isInForeground) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.update_failed, "Galerien"), Toast.LENGTH_LONG).show();
-                }
-                galleries.updateFailed = false;
-            }
-        }
+    public Galleries getGalleries(int updateMode) {
+        galleries = (Galleries) getWrapperItems(galleries, Galleries.class, updateMode);
         return galleries;
     }
 
-    public void setLoading(boolean value) {
-        try {
-            mainActivity.setProgressBarIndeterminateVisibility(value);
-        } catch (Exception ex) {
-            // Not supported. Wayne.
-        }
+    public void setActivity(MainActivity activity) {
+        mActivity = activity;
+    }
+
+    public ImageLoader getImageLoader() {
+        if (imageLoader == null)
+            imageLoader = new ImageLoader(getApplicationContext());
+        return imageLoader;
     }
 }

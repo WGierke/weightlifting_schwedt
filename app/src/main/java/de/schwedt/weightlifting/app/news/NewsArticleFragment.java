@@ -1,7 +1,6 @@
 package de.schwedt.weightlifting.app.news;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.util.Log;
@@ -9,17 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
+import de.schwedt.weightlifting.app.ImageFragment;
+import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
-import de.schwedt.weightlifting.app.helper.DataHelper;
 
 public class NewsArticleFragment extends Fragment {
 
     private WeightliftingApp app;
-    private View fragment;
     private NewsItem article;
 
     private TextView heading;
@@ -27,17 +25,12 @@ public class NewsArticleFragment extends Fragment {
     private TextView date;
     private TextView url;
     private ImageView cover;
-    private ScrollView scrollView;
-
-    public NewsArticleFragment() {
-        super();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(WeightliftingApp.TAG, "Showing Article fragment");
+        //Log.d(WeightliftingApp.TAG, "Showing Article fragment");
 
-        fragment = inflater.inflate(R.layout.news_article, container, false);
+        View fragment = inflater.inflate(R.layout.news_article, container, false);
         app = (WeightliftingApp) getActivity().getApplicationContext();
 
         heading = (TextView) fragment.findViewById(R.id.article_title);
@@ -46,13 +39,11 @@ public class NewsArticleFragment extends Fragment {
         url = (TextView) fragment.findViewById(R.id.article_url);
         cover = (ImageView) fragment.findViewById(R.id.article_cover);
 
-        scrollView = (ScrollView) fragment.findViewById(R.id.article_scrollView);
-
         // Get article information from bundle
         try {
             Bundle bundle = this.getArguments();
             int position = bundle.getInt("item");
-            article = (NewsItem) app.getNews().getItem(position);
+            article = (NewsItem) app.getNews(WeightliftingApp.UPDATE_IF_NECESSARY).getItem(position);
             showArticle();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -62,82 +53,16 @@ public class NewsArticleFragment extends Fragment {
         cover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (DataHelper.pxToDip(cover.getLayoutParams().height, getActivity()) > 250) {
-                    animateCoverHeight(150);
-                } else {
-                    animateCoverHeight(300);
-                }
+                Fragment fr = new ImageFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("imageURL", article.getImageURL());
+                fr.setArguments(bundle);
+                ((MainActivity) getActivity()).addFragment(fr, getString(R.string.nav_news), true);
             }
         });
 
-        setCoverHeight(0);
-
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                //scrollView.scrollTo(0, DataHelper.dipToPx(100, getActivity()));
-                animateCoverHeight(150);
-            }
-        }, 1);
-
         return fragment;
     }
-
-    private void setCoverHeightDip(int height) {
-        int pixels = DataHelper.dipToPx(height, getActivity());
-        ViewGroup.LayoutParams layoutParams = cover.getLayoutParams();
-        layoutParams.height = pixels;
-        cover.setLayoutParams(layoutParams);
-    }
-
-    private void setCoverHeight(int height) {
-        ViewGroup.LayoutParams layoutParams = cover.getLayoutParams();
-        layoutParams.height = height;
-        cover.setLayoutParams(layoutParams);
-    }
-
-    private void animateCoverHeight(int height) {
-        int newHeight = DataHelper.dipToPx(height, getActivity());
-        int currentHeight = cover.getLayoutParams().height;
-
-        int steps;
-        int increment;
-
-        // increase or decrease height?
-        if (currentHeight > newHeight) {
-            steps = currentHeight - newHeight;
-            increment = -1;
-        } else {
-            steps = newHeight - currentHeight;
-            increment = 1;
-        }
-
-        final int count = steps;
-        final int change = increment;
-        final int current = currentHeight;
-
-        // set height in thread
-        final Handler handler = new Handler();
-        (new Thread() {
-            @Override
-            public void run() {
-                for (int i = 0; i < count; i++) {
-                    final int new_height = current + (i * change);
-                    handler.post(new Runnable() {
-                        public void run() {
-                            setCoverHeight(new_height);
-                        }
-                    });
-                    try {
-                        sleep(1);
-                    } catch (Exception ex) {
-                        break;
-                    }
-                }
-            }
-        }).start();
-    }
-
 
     private void showArticle() {
         heading.setText(article.getHeading());
@@ -146,14 +71,10 @@ public class NewsArticleFragment extends Fragment {
         url.setText(Html.fromHtml("<a href=\"" + article.getURL() + "\">" + getString(R.string.news_article_url) + "</a>"));
         url.setMovementMethod(android.text.method.LinkMovementMethod.getInstance());
 
-        if (article.getImage() != null) {
-            cover.setImageDrawable(article.getImage());
+        if (article.getImageURL() != null) {
+            app.getImageLoader().displayImage(article.getImageURL(), cover);
         } else {
-            if (article.getImageURL() != null) {
-                app.imageLoader.displayImage(article.getImageURL(), cover);
-            } else {
-                cover.setImageDrawable(getResources().getDrawable(R.drawable.cover_home));
-            }
+            cover.setImageDrawable(getResources().getDrawable(R.drawable.cover_home));
         }
     }
 

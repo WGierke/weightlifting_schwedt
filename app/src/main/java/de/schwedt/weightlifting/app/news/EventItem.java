@@ -14,13 +14,6 @@ public class EventItem extends UpdateableItem {
 
     }
 
-    public EventItem(String heading, String content, String date, String location) {
-        this.title = heading;
-        this.date = date;
-        this.location = location;
-        setPreview(DataHelper.trimString(content, 150));
-    }
-
     public boolean equals(EventItem item2) {
         return title.equals(item2.getTitle()) && date.equals(item2.getDate()) && location.equals(item2.getLocation()) && preview.equals(item2.getPreview());
     }

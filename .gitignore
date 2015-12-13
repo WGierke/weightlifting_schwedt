@@ -44,5 +44,6 @@ build/
 
 *config.ini
 *Keys.java
+keystore.jks
 app/libs/*
 server/push_messages.txt

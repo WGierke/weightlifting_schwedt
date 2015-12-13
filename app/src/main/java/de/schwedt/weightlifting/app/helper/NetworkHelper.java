@@ -20,14 +20,13 @@ public class NetworkHelper {
             public void run() {
                 Bundle data = new Bundle();
                 try {
-                    Log.d(WeightliftingApp.TAG, "Requesting " + url);
+                    //Log.d(WeightliftingApp.TAG, "Requesting " + url);
                     String result = getRequest(url);
-                    Log.d(WeightliftingApp.TAG, result);
-                    if (result.indexOf("!DOCTYPE") != -1)
+                    if (result.contains("!DOCTYPE"))
                         result = null;
                     data.putString("result", result);
                 } catch (Exception ex) {
-                    Log.d(WeightliftingApp.TAG, "Error while fetching " + url + ":" + ex.getMessage());
+                    //Log.d(WeightliftingApp.TAG, "Error while fetching " + url + ":" + ex.getMessage());
                     data.putString("result", "");
                 }
                 Message message = new Message();
@@ -38,8 +37,8 @@ public class NetworkHelper {
     }
 
     public static String getRequest(String myurl) throws Exception {
-        InputStream is = null;
-        String result = null;
+        InputStream is;
+        String result;
 
         URL url = new URL(myurl);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();

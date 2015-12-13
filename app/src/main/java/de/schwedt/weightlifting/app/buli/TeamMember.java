@@ -1,7 +1,5 @@
 package de.schwedt.weightlifting.app.buli;
 
-import android.graphics.drawable.Drawable;
-
 import de.schwedt.weightlifting.app.UpdateableItem;
 
 public class TeamMember extends UpdateableItem {
@@ -12,7 +10,6 @@ public class TeamMember extends UpdateableItem {
     private String jerking;
     private String max_score;
     private String imageURL;
-    private Drawable image;
 
     public TeamMember() {
 
@@ -66,18 +63,9 @@ public class TeamMember extends UpdateableItem {
         this.imageURL = imageURL;
     }
 
-    public Drawable getImage() {
-        return image;
-    }
-
-    public void setImage(Drawable image) {
-        this.image = image;
-    }
-
     public boolean equals(TeamMember item2) {
         return name.equals(item2.getName()) && year.equals(item2.getYear())
                 && snatching.equals(item2.getSnatching()) && jerking.equals(item2.getJerking())
-                && max_score.equals(item2.getMaxScore()) && imageURL.equals(item2.getImageURL())
-                && ((image == null && item2.getImage() == null) || image.equals(item2.getImage()));
+                && max_score.equals(item2.getMaxScore()) && imageURL.equals(item2.getImageURL());
     }
 }

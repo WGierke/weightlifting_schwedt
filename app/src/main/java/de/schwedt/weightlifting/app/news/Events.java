@@ -13,40 +13,27 @@ import de.schwedt.weightlifting.app.UpdateableItem;
 import de.schwedt.weightlifting.app.UpdateableWrapper;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.JsonParser;
-import de.schwedt.weightlifting.app.helper.UiHelper;
 
 public class Events extends UpdateableWrapper {
 
-    public final static String fileName = "events.json";
-
-    public static ArrayList<EventItem> itemsToMark = new ArrayList<EventItem>();
-
+    public final static String FILE_NAME = "events.json";
+    public static final int navigationPosition = MainActivity.FRAGMENT_NEWS;
+    public final static int subPosition = 1;
+    public static ArrayList<EventItem> itemsToMark = new ArrayList<>();
     private final String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/events.json";
+    private final String TAG = "Events";
 
     public static ArrayList<EventItem> casteArray(ArrayList<UpdateableItem> array) {
-        ArrayList<EventItem> convertedItems = new ArrayList<EventItem>();
+        ArrayList<EventItem> convertedItems = new ArrayList<>();
         for (int i = 0; i < array.size(); i++) {
             convertedItems.add((EventItem) array.get(i));
         }
         return convertedItems;
     }
 
-    public static String getNotificationMessage() {
-        String content = "";
-        for (EventItem item : itemsToMark) {
-            if (item.getLocation().length() > 0)
-                content += item.getTitle() + " in " + item.getLocation() + "|";
-            else
-                content += item.getTitle() + "|";
-        }
-        return content;
-    }
-
     public static void markNewItems(ArrayList<UpdateableItem> oldItems, ArrayList<UpdateableItem> newItems) {
         ArrayList<EventItem> oldEventItems = casteArray(oldItems);
         ArrayList<EventItem> newEventItems = casteArray(newItems);
-        int navigationPosition = MainActivity.FRAGMENT_NEWS;
-        int subPosition = 1;
         for (int i = 0; i < newEventItems.size(); i++) {
             boolean isNew = true;
             for (int j = 0; j < oldEventItems.size(); j++) {
@@ -59,11 +46,10 @@ public class Events extends UpdateableWrapper {
                 itemsToMark.add(newEventItems.get(i));
             }
         }
-        UiHelper.refreshCounterNav(navigationPosition, subPosition, itemsToMark.size());
     }
 
-    public void update() {
-        super.update(UPDATE_URL, fileName, "Events");
+    public void refreshItems() {
+        super.update(UPDATE_URL, FILE_NAME, TAG);
     }
 
     protected void updateWrapper(String result) {
@@ -89,9 +75,9 @@ public class Events extends UpdateableWrapper {
     }
 
     public void parseFromString(String jsonString) {
-        Log.d(WeightliftingApp.TAG, "Parsing events JSON...");
+        //Log.d(WeightliftingApp.TAG, "Parsing events JSON...");
         try {
-            ArrayList<UpdateableItem> newItems = new ArrayList<UpdateableItem>();
+            ArrayList<UpdateableItem> newItems = new ArrayList<>();
 
             JsonParser jsonParser = new JsonParser();
             jsonParser.getJsonFromString(jsonString);
