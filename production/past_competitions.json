@@ -1,6 +1,14 @@
 [{
     "past_competitions": [
         {
+            "date": "19.12.2015",
+            "guest": "SG Fortschritt Eibau",
+            "home": "SSV Samswegen",
+            "location": "Samswegen",
+            "score": "664.4 : 574.0",
+            "url": "https://www.iat.uni-leipzig.de/datenbanken/blgew1516/start.php?pid='123'&protokoll=1&wkid=43B6771949FE48E9967F2832276084B3"
+        },
+        {
             "date": "05.12.2015",
             "guest": "AC Mei\u00dfen",
             "home": "Athletenteam Vogtland",
@@ -42,6 +50,14 @@
         },
         {
             "date": "17.10.2015",
+            "guest": "SSV Samswegen",
+            "home": "Chemnitzer AC",
+            "location": "Chemnitz",
+            "score": "847.8 : 675.8",
+            "url": "https://www.iat.uni-leipzig.de/datenbanken/blgew1516/start.php?pid='123'&protokoll=1&wkid=D70DECBFD6B440AF998B9E684CE9C57F"
+        },
+        {
+            "date": "17.10.2015",
             "guest": "Oder-Sund-Team ",
             "home": "Athletenteam Vogtland",
             "location": "Plauen/Rodewisch",
@@ -55,14 +71,6 @@
             "location": "Mei\u00dfen",
             "score": "613.0 : 603.2",
             "url": "https://www.iat.uni-leipzig.de/datenbanken/blgew1516/start.php?pid='123'&protokoll=1&wkid=4CE2EF8EC5A84D8CA67D1E280041AF04"
-        },
-        {
-            "date": "17.10.2015",
-            "guest": "SSV Samswegen",
-            "home": "Chemnitzer AC",
-            "location": "Chemnitz",
-            "score": "847.8 : 675.8",
-            "url": "https://www.iat.uni-leipzig.de/datenbanken/blgew1516/start.php?pid='123'&protokoll=1&wkid=D70DECBFD6B440AF998B9E684CE9C57F"
         },
         {
             "date": "26.09.2015",
