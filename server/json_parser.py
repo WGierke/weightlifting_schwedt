@@ -14,6 +14,7 @@ class BuliParser:
         self.iat_competitions_url = "{0}start.php?pid=%27123%27&resultate=1&bl={1}&staffel={2}".format(self.iat_season_base, league, relay)
         self.iat_table_url = "{0}start.php?pid=%27123%27&tabelle=1&bl={1}&staffel={2}".format(self.iat_season_base, league, relay)
         self.error_occured = False
+        self.TIMEOUT = 15
 
         # Helper functions
 
@@ -32,12 +33,11 @@ class BuliParser:
 
     # Main functions
 
-
     def create_competitions_file(self):
         """Save past competitions in past_competitions.json"""
         print "Parsing competitions ..."
         try:
-            competitions = urllib2.urlopen(self.iat_competitions_url).read().split("</TABLE>")[0]
+            competitions = urllib2.urlopen(self.iat_competitions_url, timeout=self.TIMEOUT).read().split("</TABLE>")[0]
         except Exception, e:
             print 'Error while downloading competitions ', e
             self.error_occured = True
@@ -91,7 +91,7 @@ class BuliParser:
         """Save table entries in table.json"""
         print "Parsing table ..."
         try:
-            table = urllib2.urlopen(self.iat_table_url).read().split("</TABLE>")[0]
+            table = urllib2.urlopen(self.iat_table_url, timeout=self.TIMEOUT).read().split("</TABLE>")[0]
         except Exception, e:
             print 'Error while downloading table ', e
             self.error_occured = True
@@ -169,7 +169,7 @@ class SchwedtBuliParser(BuliParser):
         total_links = []
         current_url = gallery_entry["url"]
         try:
-            page = urllib2.urlopen(current_url).read()
+            page = urllib2.urlopen(current_url, timeout=self.TIMEOUT).read()
         except Exception, e:
             print 'Error while downloading gallery site ', e
             return
@@ -187,7 +187,7 @@ class SchwedtBuliParser(BuliParser):
                 n += 1
                 current_url = re.sub(ur'(?<=page\/)\d+', str(n), current_url)
                 try:
-                    page = urllib2.urlopen(current_url).read()
+                    page = urllib2.urlopen(current_url, timeout=self.TIMEOUT).read()
                 except Exception, e:
                     print 'Error while downloading gallery site ', e
                     return
@@ -219,7 +219,7 @@ class SchwedtBuliParser(BuliParser):
 
         try:
             # Check if a new article appeared.
-            page = urllib2.urlopen(basic_url + str(1)).read()
+            page = urllib2.urlopen(basic_url + str(1), timeout=self.TIMEOUT).read()
             first_post = page.split('id="pagenavi"')[0].split('<div class="post"')[1]
             first_url = re.findall(re_href, first_post)[0]
             with open('production/news.json') as news_json:
@@ -231,7 +231,7 @@ class SchwedtBuliParser(BuliParser):
                 return
 
             n = 1
-            page = urllib2.urlopen(basic_url + str(n)).read()
+            page = urllib2.urlopen(basic_url + str(n), timeout=self.TIMEOUT).read()
             while page.find('Willkommen auf der 404 Fehlerseite') == -1:
                 print "News page " + str(n)
                 posts = page.split('id="pagenavi"')[0].split('<div class="post"')[1:]
@@ -245,7 +245,7 @@ class SchwedtBuliParser(BuliParser):
                     article["heading"] = post[post.find('"bookmark">')+len('"bookmark">'):post.find('</a>')].replace('&#8211;', '-')
 
                     if post.find("Mehr&#8230;") != -1:
-                        post = urllib2.urlopen(article["url"]).read()
+                        post = urllib2.urlopen(article["url"], timeout=self.TIMEOUT).read()
                         post = post.replace('"content">', '', 2)
 
                     post = post[post.find('"content">')+len('"content">'):post.find('class="under"')]
@@ -253,7 +253,7 @@ class SchwedtBuliParser(BuliParser):
                     articles.append(article)
 
                 n += 1
-                page = urllib2.urlopen(basic_url + str(n)).read()
+                page = urllib2.urlopen(basic_url + str(n), timeout=self.TIMEOUT).read()
         except Exception, e:
             if e.code == 404 and articles[len(articles)-1]["heading"] == "Qualifikation DM C-Jugend":
                 pass
@@ -286,7 +286,7 @@ class SchwedtBuliParser(BuliParser):
         """Save events in events.json"""
         print "Parsing events ..."
         try:
-            months_data = urllib2.urlopen("http://gewichtheben.blauweiss65-schwedt.de/?page_id=31").read().replace('<div class="content">', '').split('<div class="content">')[0].split('<strong>')[1:]
+            months_data = urllib2.urlopen("http://gewichtheben.blauweiss65-schwedt.de/?page_id=31", timeout=self.TIMEOUT).read().replace('<div class="content">', '').split('<div class="content">')[0].split('<strong>')[1:]
             months_data[-1] = months_data[-1].split('<div class="fixed">')[0]
         except Exception, e:
             print 'Error while downloading events ', e
@@ -336,7 +336,7 @@ class SchwedtBuliParser(BuliParser):
         """Save gallery images in galleries.json"""
         try:
             print "Parsing galleries ..."
-            page = urllib2.urlopen("http://www.gewichtheben-schwedt.de").read().split('class="page_item page-item-28 page_item_has_children">')[1].split("javascript:void(0);")[0]
+            page = urllib2.urlopen("http://www.gewichtheben-schwedt.de", timeout=self.TIMEOUT).read().split('class="page_item page-item-28 page_item_has_children">')[1].split("javascript:void(0);")[0]
         except Exception, e:
             print 'Error while downloading galleries ', e
             self.error_occured = True
