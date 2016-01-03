@@ -1,6 +1,8 @@
 while true
 do
 	date +"%T"
+	git fetch --all
+	git reset --hard origin/updates
 	python server/json_parser.py
 	CHANGES=$(git status | grep modified: | awk '{split($0,a,"/"); print a[2]}' | sed 's/\.json//' | tr '\n' ' ')
 	git add --all
