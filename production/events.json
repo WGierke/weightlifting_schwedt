@@ -1,69 +1,179 @@
 [{
     "events": [
         {
-            "date": "19. September",
-            "location": "Rovaniemi/FIN",
-            "title": "WM Masters"
-        },
-        {
-            "date": "19. September",
-            "location": "Schwedt",
-            "title": "2. Durchgang Athletikliga"
-        },
-        {
-            "date": "26. September",
+            "date": "09. Januar",
             "location": "",
-            "title": "1./2. Bundesliga"
+            "title": "09.WK-Tag 1./ Bundesliga"
         },
         {
-            "date": "10. Oktober",
-            "location": "Frankfurt/Oder",
-            "title": "LM Jugend bis Masters"
-        },
-        {
-            "date": "17. Oktober",
+            "date": "16. Januar",
             "location": "",
-            "title": "1./2. Bundesliga"
+            "title": "16.internationales Jugenturnier in Kopenhabegn D\u00e4nemark"
         },
         {
-            "date": "31. Oktober",
-            "location": "Chemnitz",
-            "title": "DM M\u00e4nner und Frauen"
-        },
-        {
-            "date": "07. November",
+            "date": "22. Januar",
             "location": "",
-            "title": "1./2. Bundesliga"
+            "title": "22./23.BGFV Weiterbildung Kampfrichter/Trainer/ \u00dcbungsleiter"
         },
         {
-            "date": "21. November",
-            "location": "Rodewisch",
+            "date": "30. Januar",
+            "location": "",
+            "title": "30.WK-Tag 1./BundesligaSG Fortschritt Eibau - Oder Sund Team Gewichtheben"
+        },
+        {
+            "date": "13. Februar",
+            "location": "",
+            "title": "13.WK-Tag 1./ Bundesliga"
+        },
+        {
+            "date": "13. Februar",
+            "location": "",
+            "title": "WK-Tag Landesliga AC Heros Berlin vs. TSV Blau Wei\u00df 65 Schwedt/ ACP vs. ASK"
+        },
+        {
+            "date": "20. Februar",
+            "location": "",
+            "title": "WK-Tag Landesliga TSV Cottbus vs. AC Potsdam"
+        },
+        {
+            "date": "27. Februar",
+            "location": "",
+            "title": "Lothar Treder Pokalturnier Angerm\u00fcnde"
+        },
+        {
+            "date": "05. M\u00e4rz",
+            "location": "",
+            "title": "WK-Tag 1./2. Bundesliga TSC Berlin- Oder Sund Team Gewichtheben"
+        },
+        {
+            "date": "12. M\u00e4rz",
+            "location": "",
+            "title": "Athletikliga 1. Durchgang"
+        },
+        {
+            "date": "19. M\u00e4rz",
+            "location": "",
+            "title": "Bundesliga Finale/ Platzierungswettk\u00e4mpfe"
+        },
+        {
+            "date": "02. April",
+            "location": "",
+            "title": "WK-Tag 2. Bundesliga"
+        },
+        {
+            "date": "02. April",
+            "location": "",
+            "title": "WK-Tag Landesliga TSV Blau Wei\u00df 65SDT vs. USC Viadrina/ TSV CB/ ASK vs. Heros"
+        },
+        {
+            "date": "09. April",
+            "location": " Sachsen",
+            "title": "Ostdeutsche Mehrkampfmeisterschaften"
+        },
+        {
+            "date": "11. April",
+            "location": "Forde/Norwegen",
+            "title": "11.-17.Europameisterschaften Senioren"
+        },
+        {
+            "date": "16. April",
+            "location": "",
+            "title": "16.Jugendpokal der DGJ"
+        },
+        {
+            "date": "21. April",
+            "location": "",
+            "title": "21.-24 DM der Masters in Rodewisch"
+        },
+        {
+            "date": "23. April",
+            "location": "",
+            "title": "WK-Tag 2. Bundesliga"
+        },
+        {
+            "date": "30. April",
+            "location": "",
+            "title": "Frank Mehner Turnier Cottbus"
+        },
+        {
+            "date": "07. Mai",
+            "location": "",
+            "title": "2. Bundesliga Finale"
+        },
+        {
+            "date": "14. Mai",
+            "location": "",
+            "title": "14.Landesmeisterschaften der Kinder in Angerm\u00fcnde"
+        },
+        {
+            "date": "21. Mai",
+            "location": "",
+            "title": "Europameisterschaften der Masters in Nkchivan/ AZE"
+        },
+        {
+            "date": "21. Mai",
+            "location": "",
+            "title": "internationales Turnier Kaliningrad"
+        },
+        {
+            "date": "11. Juni",
+            "location": "",
+            "title": "Landesmeisterschaften Sch\u00fcler in Potsdam"
+        },
+        {
+            "date": "18. Juni",
+            "location": "",
+            "title": "13. Internationaler ELEIKO Woman Grand Prix"
+        },
+        {
+            "date": "25. Juni",
+            "location": "",
+            "title": "DM Sch\u00fcler in Frankfurt/Oder"
+        },
+        {
+            "date": "01. Juli",
+            "location": "",
+            "title": "01.-11. Kinder und Jugendsportspiele in Brandenburg"
+        },
+        {
+            "date": "02. Juli",
+            "location": "",
+            "title": "DM Jugend"
+        },
+        {
+            "date": "02. Juli",
+            "location": "",
+            "title": "Olympia Testwettkampf in Heidelberg"
+        },
+        {
+            "date": "05. August",
+            "location": "BRA",
+            "title": "05.-Olympische Spiele in Rio de Janeiro"
+        },
+        {
+            "date": "11. September",
+            "location": "POL",
+            "title": "11.-Europameisterschaften U 15/ U 17 in Nowy Tomysl"
+        },
+        {
+            "date": "01. Oktober",
+            "location": "",
+            "title": "01.-Weltmeisterschaften der Masters in Heinsheim/ Deutschland"
+        },
+        {
+            "date": "19. November",
+            "location": "",
             "title": "Sch\u00fclerpokal der Deutschen Gewichtheberjugend"
         },
         {
-            "date": "28. November",
-            "location": "Frankfurt/Oder",
-            "title": "Internationale Deutsche Jugend-Mehrkampfmeisterschaft / Oderpokal"
-        },
-        {
-            "date": "28. November",
-            "location": "USA",
-            "title": "WM M\u00e4nner und Frauen"
-        },
-        {
-            "date": "05. Dezember",
-            "location": "Schwedt",
-            "title": "1. Bundesliga"
-        },
-        {
-            "date": "05. Dezember",
+            "date": "26. November",
             "location": "",
-            "title": "Landesliga"
+            "title": "Internationale Deutsche Jugend-Mehrkampfmeisterschaft"
         },
         {
             "date": "12. Dezember",
-            "location": "Schwedt",
-            "title": "Finale Athletikliga"
+            "location": "",
+            "title": "Europameisterschaft Junioren/U 23 in Eilat /ISR"
         }
     ]
 }]
