@@ -303,10 +303,12 @@ class SchwedtBuliParser(BuliParser):
             month_events = filter(lambda x: x != "&nbsp;</p>\n", month_events)
             for j in range(len(month_events)):
                 event_entry = {}
-                event = month_events[j].replace('&#8221;', '"').replace('&#8220;', '"').replace('&#8211;', '-').replace('\xa0', '').replace('\xc2', '')
+                event = month_events[j]
+                event = event.replace('&#8221;', '"').replace('&#8220;', '"').replace('&#8211;', '-').replace('&#8221;', '"')
+                event_entry["title"] = re.sub('(^\w*\.(-\w*\.)?)[^\w]{4,}', '', event.split("</p>")[0]).replace('\xa0', '').replace('\xc2', '').split(' (')[0]
+                event = event.replace('\xa0', '').replace('\xc2', '')
                 event_entry["date"] = event.split(".")[0] + ". " + month
                 event_entry["location"] = event.split('(')[1].split(')')[0] if event.find(")") != -1 else ''
-                event_entry["title"] = re.sub('\d+\.\s+', '', event.split("</p>")[0], 1).split(' (')[0]
                 final_events.append(event_entry)
 
         with open("production/events.json", "r") as f:
