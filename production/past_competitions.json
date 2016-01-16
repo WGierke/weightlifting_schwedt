@@ -1,6 +1,14 @@
 [{
     "past_competitions": [
         {
+            "date": "30.01.2016",
+            "guest": "Athletenteam Vogtland",
+            "home": "Chemnitzer AC",
+            "location": "Chemnitz",
+            "score": "703.6 : 485.6",
+            "url": "https://www.iat.uni-leipzig.de/datenbanken/blgew1516/start.php?pid='123'&protokoll=1&wkid=7B5DAE9FC69345C1B24B9194C5F4F62F"
+        },
+        {
             "date": "19.12.2015",
             "guest": "SG Fortschritt Eibau",
             "home": "SSV Samswegen",
@@ -50,6 +58,14 @@
         },
         {
             "date": "17.10.2015",
+            "guest": "SG Fortschritt Eibau",
+            "home": "AC Mei\u00dfen",
+            "location": "Mei\u00dfen",
+            "score": "613.0 : 603.2",
+            "url": "https://www.iat.uni-leipzig.de/datenbanken/blgew1516/start.php?pid='123'&protokoll=1&wkid=4CE2EF8EC5A84D8CA67D1E280041AF04"
+        },
+        {
+            "date": "17.10.2015",
             "guest": "SSV Samswegen",
             "home": "Chemnitzer AC",
             "location": "Chemnitz",
@@ -63,14 +79,6 @@
             "location": "Plauen/Rodewisch",
             "score": "624.6 : 589.2",
             "url": "https://www.iat.uni-leipzig.de/datenbanken/blgew1516/start.php?pid='123'&protokoll=1&wkid=A92150B895B140AC8016C0817D1975DD"
-        },
-        {
-            "date": "17.10.2015",
-            "guest": "SG Fortschritt Eibau",
-            "home": "AC Mei\u00dfen",
-            "location": "Mei\u00dfen",
-            "score": "613.0 : 603.2",
-            "url": "https://www.iat.uni-leipzig.de/datenbanken/blgew1516/start.php?pid='123'&protokoll=1&wkid=4CE2EF8EC5A84D8CA67D1E280041AF04"
         },
         {
             "date": "26.09.2015",
