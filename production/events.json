@@ -7,8 +7,8 @@
         },
         {
             "date": "16. Januar",
-            "location": "",
-            "title": "internationales Jugenturnier in Kopenhabegn D\u00e4nemark"
+            "location": "D\u00e4nemark",
+            "title": "Internationales Turnier in Kopenhagen"
         },
         {
             "date": "22. Januar",
@@ -37,8 +37,8 @@
         },
         {
             "date": "27. Februar",
-            "location": "",
-            "title": "Lothar Treder Pokalturnier Angerm\u00fcnde"
+            "location": "Angerm\u00fcnde",
+            "title": "Lothar Treder Pokalturnier"
         },
         {
             "date": "05. M\u00e4rz",
@@ -67,7 +67,7 @@
         },
         {
             "date": "09. April",
-            "location": " Sachsen",
+            "location": "Sachsen",
             "title": "Ostdeutsche Mehrkampfmeisterschaften"
         },
         {
@@ -82,8 +82,8 @@
         },
         {
             "date": "21. April",
-            "location": "",
-            "title": "21.-24 DM der Masters in Rodewisch"
+            "location": "Rodewisch",
+            "title": "21.-24 DM der Masters"
         },
         {
             "date": "23. April",
@@ -92,8 +92,8 @@
         },
         {
             "date": "30. April",
-            "location": "",
-            "title": "Frank Mehner Turnier Cottbus"
+            "location": "Cottbus",
+            "title": "Frank Mehner Turnier"
         },
         {
             "date": "07. Mai",
@@ -102,23 +102,23 @@
         },
         {
             "date": "14. Mai",
-            "location": "",
-            "title": "Landesmeisterschaften der Kinder in Angerm\u00fcnde"
+            "location": "Angerm\u00fcnde",
+            "title": "Landesmeisterschaften der Kinder"
         },
         {
             "date": "21. Mai",
-            "location": "",
-            "title": "Europameisterschaften der Masters in Nkchivan/ AZE"
+            "location": "Nakchivan/AZE",
+            "title": "Europameisterschaften der Masters"
         },
         {
             "date": "21. Mai",
-            "location": "",
-            "title": "internationales Turnier Kaliningrad"
+            "location": "Kaliningrad/RUS",
+            "title": "Internationales Turnier"
         },
         {
             "date": "11. Juni",
-            "location": "",
-            "title": "Landesmeisterschaften Sch\u00fcler in Potsdam"
+            "location": "Potsdam",
+            "title": "Landesmeisterschaften Sch\u00fcler"
         },
         {
             "date": "18. Juni",
@@ -127,13 +127,13 @@
         },
         {
             "date": "25. Juni",
-            "location": "",
-            "title": "DM Sch\u00fcler in Frankfurt/Oder"
+            "location": "Frankfurt/Oder",
+            "title": "DM Sch\u00fcler"
         },
         {
             "date": "01. Juli",
-            "location": "",
-            "title": "11. Kinder und Jugendsportspiele in Brandenburg"
+            "location": "Brandenburg",
+            "title": "11. Kinder und Jugendsportspiele"
         },
         {
             "date": "02. Juli",
@@ -142,8 +142,8 @@
         },
         {
             "date": "02. Juli",
-            "location": "",
-            "title": "Olympia Testwettkampf in Heidelberg"
+            "location": "Heidelberg",
+            "title": "Olympia Testwettkampf"
         },
         {
             "date": "05. August",
@@ -157,8 +157,8 @@
         },
         {
             "date": "01. Oktober",
-            "location": "",
-            "title": "Weltmeisterschaften der Masters in Heinsheim/ Deutschland"
+            "location": "Heinsheim",
+            "title": "Weltmeisterschaften der Masters"
         },
         {
             "date": "19. November",
@@ -172,8 +172,8 @@
         },
         {
             "date": "12. Dezember",
-            "location": "",
-            "title": "Europameisterschaft Junioren/U 23 in Eilat /ISR"
+            "location": "Eilat/ISR",
+            "title": "Europameisterschaft Junioren/U 23"
         }
     ]
 }]
