@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.parse.Parse;
 
 import java.io.File;
 import java.util.Date;
@@ -18,6 +19,7 @@ import de.schwedt.weightlifting.app.faq.FaqItem;
 import de.schwedt.weightlifting.app.gallery.Galleries;
 import de.schwedt.weightlifting.app.helper.DataHelper;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
+import de.schwedt.weightlifting.app.helper.Keys;
 import de.schwedt.weightlifting.app.helper.MemoryCache;
 import de.schwedt.weightlifting.app.news.Events;
 import de.schwedt.weightlifting.app.news.News;
@@ -73,6 +75,11 @@ public class WeightliftingApp extends Application {
                 .defaultDisplayImageOptions(defaultOptions)
                 .build();
         com.nostra13.universalimageloader.core.ImageLoader.getInstance().init(config);
+
+        try {
+            Parse.initialize(this, Keys.CONFIG_APP_ID, Keys.CONFIG_CLIENT_KEY);
+        } catch (Exception e) {
+        }
 
         mContext = getApplicationContext();
 
@@ -147,8 +154,6 @@ public class WeightliftingApp extends Application {
     public void setFinishUpdateFlags(boolean value) {
         if (news != null)
             news.isUpToDate = value;
-        else
-            //Log.d(TAG, "news is null");
         if (events != null)
             events.isUpToDate = value;
         if (team != null)

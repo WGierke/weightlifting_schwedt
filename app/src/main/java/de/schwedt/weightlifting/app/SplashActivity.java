@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
@@ -13,12 +12,12 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.parse.Parse;
-import com.parse.ParseAnalytics;
 import com.parse.ParseCrashReporting;
 
-import de.schwedt.weightlifting.app.helper.Keys;
 import de.schwedt.weightlifting.app.helper.UiHelper;
+import io.fabric.sdk.android.Fabric;
 
 public class SplashActivity extends Activity {
 
@@ -41,6 +40,7 @@ public class SplashActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_splash);
 
         app = (WeightliftingApp) getApplicationContext();
@@ -91,13 +91,14 @@ public class SplashActivity extends Activity {
                 }
             }
         };
-        if(!app.initializedParse) {
-            Parse.enableLocalDatastore(this);
-            ParseCrashReporting.enable(this);
-            app.initializedParse = true;
+        if (!app.initializedParse) {
+            try {
+                Parse.enableLocalDatastore(this);
+                ParseCrashReporting.enable(this);
+                app.initializedParse = true;
+            } catch (Exception e) {
+            }
         }
-        Parse.initialize(this, Keys.CONFIG_APP_ID, Keys.CONFIG_CLIENT_KEY);
-        ParseAnalytics.trackAppOpenedInBackground(getIntent());
     }
 
     @Override
@@ -124,7 +125,7 @@ public class SplashActivity extends Activity {
 
     private void switchToMainActivity() {
         Intent i = new Intent(this, MainActivity.class);
-        if(getIntent().getExtras() != null)
+        if (getIntent().getExtras() != null)
             i.putExtras(getIntent().getExtras());
         startActivity(i);
 

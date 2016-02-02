@@ -44,6 +44,7 @@ build/
 
 *config.ini
 *Keys.java
+fabric.properties
 keystore.jks
 app/libs/*
 server/push_messages.txt
