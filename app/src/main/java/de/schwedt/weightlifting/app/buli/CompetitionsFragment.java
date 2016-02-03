@@ -39,7 +39,9 @@ public class CompetitionsFragment extends ListViewFragment {
                         // Show the protocol which belongs to the competition
                         Fragment protocol = new ProtocolFragment();
                         Bundle bundle = new Bundle();
-                        bundle.putString("protocol-url", Competitions.casteArray(competitions.getItems()).get(position).getProtocolUrl());
+                        PastCompetition competition = Competitions.casteArray(competitions.getItems()).get(position);
+                        bundle.putString("protocol-url", competition.getProtocolUrl());
+                        bundle.putString("competition-parties", competition.getHome() + " vs. " + competition.getGuest() + ": " + competition.getScore());
                         protocol.setArguments(bundle);
                         ((MainActivity) getActivity()).addFragment(protocol, getString(R.string.nav_buli), true);
                     }
@@ -55,7 +57,7 @@ public class CompetitionsFragment extends ListViewFragment {
 
     @Override
     protected void setCoverImage() {
-        ImageView  cover = (ImageView) fragment.findViewById(R.id.cover_buli);
+        ImageView cover = (ImageView) fragment.findViewById(R.id.cover_buli);
         cover.setImageDrawable(getResources().getDrawable(R.drawable.cover_competition));
     }
 
