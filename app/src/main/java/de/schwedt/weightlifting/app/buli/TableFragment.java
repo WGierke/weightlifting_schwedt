@@ -9,72 +9,61 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.TextView;
 
 import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 
-public class TableFragment extends Fragment {
+public class TableFragment extends ListViewFragment {
 
-    private WeightliftingApp app;
-    private View fragment;
-    private Table buliTable;
+    private Table table;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //Log.d(WeightliftingApp.TAG, "Showing Buli Table fragment");
-
-        fragment = inflater.inflate(R.layout.buli_page, container, false);
-        app = (WeightliftingApp) getActivity().getApplicationContext();
-
-        ImageView cover = (ImageView) fragment.findViewById(R.id.cover_buli);
-        cover.setImageDrawable(getResources().getDrawable(R.drawable.cover_competition));
-
-        getTable();
-
-        return fragment;
-    }
-
-    private void getTable() {
-        buliTable = app.getTable(WeightliftingApp.UPDATE_IF_NECESSARY);
-        if (buliTable.getItems().size() == 0) {
-            // No table items yet
-            //Log.d(WeightliftingApp.TAG, "Waiting for buliTable...");
-
-            // Check again in a few seconds
+    protected void getBuliElements() {
+        table = app.getTable(WeightliftingApp.UPDATE_IF_NECESSARY);
+        if (table.getItems().size() == 0) {
             Runnable refreshRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    getTable();
+                    getBuliElements();
                 }
             };
             Handler refreshHandler = new Handler();
             refreshHandler.postDelayed(refreshRunnable, Table.TIMER_RETRY);
         } else {
-            // We have Table items to display
             try {
-                ListView listViewTable = (ListView) fragment.findViewById(R.id.listView_Buli);
-                TableListAdapter adapter = new TableListAdapter(Table.casteArray(buliTable.getItems()), getActivity());
-                listViewTable.setAdapter(adapter);
-                listViewTable.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                TableListAdapter adapter = new TableListAdapter(Table.casteArray(table.getItems()), getActivity());
+                listViewBuli.setAdapter(adapter);
+                listViewBuli.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        // Show the competitions the club already had
                         Fragment protocol = new FilterCompetitionsFragment();
                         Bundle bundle = new Bundle();
-                        TableEntry entry = (TableEntry) buliTable.getItem(position);
+                        TableEntry entry = (TableEntry) table.getItem(position);
                         bundle.putString("club-name", entry.getClub());
                         protocol.setArguments(bundle);
                         ((MainActivity) getActivity()).addFragment(protocol, entry.getClub(), true);
                     }
                 });
-
             } catch (Exception ex) {
-                Log.e(WeightliftingApp.TAG, "Showing Table failed");
+                Log.e(WeightliftingApp.TAG, "Showing table failed");
                 ex.toString();
             }
 
         }
+    }
+
+    @Override
+    protected void setCoverImage() {
+        ImageView cover = (ImageView) fragment.findViewById(R.id.cover_buli);
+        cover.setImageDrawable(getResources().getDrawable(R.drawable.cover_competition));
+    }
+
+    @Override
+    protected void setEmptyListItem() {
+        TextView emptyText = (TextView) fragment.findViewById(R.id.emptyTables);
+        emptyText.setVisibility(View.VISIBLE);
+        listViewBuli.setEmptyView(emptyText);
     }
 }

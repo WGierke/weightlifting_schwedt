@@ -79,6 +79,10 @@
     <string name="homepage_bvdg">Bundesverband Deutscher Gewichtheber \n bvdg-online.de</string>
     <string name="updating_in_progress">Update-Prozess wurde bereits gestartet.</string>
     <string name="error_network">Netzwerkfehler. Sind Sie online?</string>
+
     <string name="loading_data">Lade aktuellste Daten ...</string>
+    <string name="buli_no_team_member">Es konnten keine Teammitglieder gefunden werden.</string>
+    <string name="buli_no_competitions">Es konnten keine Wettkämpfe gefunden werden.</string>
+    <string name="buli_no_tables">Es konnten keine Tabellenergebnisse gefunden werden.</string>
 
 </resources>

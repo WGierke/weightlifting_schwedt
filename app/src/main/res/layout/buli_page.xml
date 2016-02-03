@@ -10,23 +10,40 @@
         style="@style/CoverImage"
         android:src="@drawable/cover_competition" />
 
-    <!--<TextView
-        android:id="@+id/buli_relay"
-        style="@style/NewsHeading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/buli_relay" />-->
-
     <ListView
-        android:id="@+id/listView_Buli"
+        android:id="@+id/listViewBuli"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:fadingEdgeLength="50dip"
-        android:requiresFadingEdge="vertical">
+        android:requiresFadingEdge="vertical"/>
 
-    </ListView>
+    <TextView
+        android:id="@+id/emptyTeam"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:text="@string/buli_no_team_member"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/emptyCompetitions"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:text="@string/buli_no_competitions"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/emptyTables"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:text="@string/buli_no_tables"
+        android:visibility="gone" />
 
 
 </LinearLayout>

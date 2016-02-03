@@ -17,15 +17,13 @@ public class FilterCompetitionsFragment extends CompetitionsFragment {
 
     private ArrayList<PastCompetition> filteredCompetitions;
 
-    protected void getCompetitions() {
+    protected void getBuliElements() {
         competitions = app.getCompetitions(WeightliftingApp.UPDATE_IF_NECESSARY);
         if (competitions.getItems().size() == 0) {
-            //Log.d(WeightliftingApp.TAG, "Waiting for Competitions...");
-
             Runnable refreshRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    getCompetitions();
+                    getBuliElements();
                 }
             };
             Handler refreshHandler = new Handler();
@@ -36,8 +34,8 @@ public class FilterCompetitionsFragment extends CompetitionsFragment {
                 String clubName = bundle.getString("club-name");
                 filteredCompetitions = filter(Competitions.casteArray(competitions.getItems()), clubName);
                 CompetitionsListAdapter adapter = new CompetitionsListAdapter(filteredCompetitions, getActivity());
-                listViewCompetitions.setAdapter(adapter);
-                listViewCompetitions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                listViewBuli.setAdapter(adapter);
+                listViewBuli.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Fragment protocol = new ProtocolFragment();
