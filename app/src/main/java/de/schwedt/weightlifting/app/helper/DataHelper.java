@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -21,40 +20,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
-import de.schwedt.weightlifting.app.WeightliftingApp;
-
 public class DataHelper {
-
-    public static final String PREF_FILE_NAME = "hpi_preferences";
-    private static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
-
-    public static byte[] encodeUTF8(String string) {
-        return string.getBytes(UTF8_CHARSET);
-    }
-
-    public static String decodeUTF8(byte[] data) {
-        return new String(data, UTF8_CHARSET);
-    }
-
-    public static int dipToPx(int value, Activity activity) {
-        final float scale = activity.getResources().getDisplayMetrics().density;
-        return (int) (value * scale + 0.5f);
-    }
-
-    public static int pxToDip(int value, Activity activity) {
-        final float scale = activity.getResources().getDisplayMetrics().density;
-        return (int) ((value - 0.5f) / scale);
-    }
-
-    public static byte[] inputStreamToByte(InputStream is) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        int reads = is.read();
-        while (reads != -1) {
-            baos.write(reads);
-            reads = is.read();
-        }
-        return baos.toByteArray();
-    }
 
     public static String inputStreamToString(InputStream stream) throws IOException {
         BufferedReader r = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
@@ -92,84 +58,6 @@ public class DataHelper {
         } else {
             return string;
         }
-    }
-
-    public static String getDeviceName() {
-        return android.os.Build.MODEL;
-    }
-
-    public static String getDeviceOs() {
-        return "Android " + android.os.Build.VERSION.RELEASE;
-    }
-
-    public static String getAppVersion(Application application) {
-        try {
-            return application.getPackageManager().getPackageInfo(application.getPackageName(), 0).versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            return "n.a.";
-        }
-    }
-
-    public static int getAppVersionCode(Application application) {
-        try {
-            return application.getPackageManager().getPackageInfo(application.getPackageName(), 0).versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            return 0;
-        }
-    }
-
-    public static void setPreference(String prev_name, String prev_value, Application application) {
-        SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(prev_name, prev_value);
-        editor.commit();
-    }
-
-    public static void setPreference(String prev_name, Boolean prev_value, Application application) {
-        SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean(prev_name, prev_value);
-        editor.commit();
-    }
-
-    public static void deletePreference(String prev_name, Application application) {
-        SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.remove(prev_name);
-        editor.commit();
-    }
-
-    public static Boolean checkPreference(String prev_name, Application application) {
-        SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
-        return preferences.contains(prev_name);
-    }
-
-    public static String getPreference(String prev_name, Application application) {
-        SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
-        return preferences.getString(prev_name, null);
-    }
-
-    public static Boolean getPreference(String prev_name, Boolean prev_default, Application application) {
-        SharedPreferences preferences = application.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
-        return preferences.getBoolean(prev_name, prev_default);
-    }
-
-    public static String getSetting(String prev_name, Application application) {
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(application);
-        return sharedPref.getString(prev_name, null);
-    }
-
-    public static Boolean getSetting(String prev_name, Boolean prev_default, Application application) {
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(application);
-        return sharedPref.getBoolean(prev_name, prev_default);
-    }
-
-    public static int sumOfArray(int[] array) {
-        int n = 0;
-        for (int elem : array) {
-            n += elem;
-        }
-        return n;
     }
 
     public static String readIntern(String fileName, Context context) {

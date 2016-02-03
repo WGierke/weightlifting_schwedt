@@ -40,7 +40,6 @@ public class WeightliftingApp extends Application {
     public final static int LOAD_FROM_FILE = 3;
     public static Context mContext;
     public static boolean isUpdatingAll = false;
-    private static MainActivity mActivity;
     public boolean isInitialized = false;
     public boolean initializedParse = false;
     public MemoryCache memoryCache;
@@ -237,7 +236,7 @@ public class WeightliftingApp extends Application {
     }
 
     public void setActivity(MainActivity activity) {
-        mActivity = activity;
+        MainActivity mActivity = activity;
     }
 
     public ImageLoader getImageLoader() {

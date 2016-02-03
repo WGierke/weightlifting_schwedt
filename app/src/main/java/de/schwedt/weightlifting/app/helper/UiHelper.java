@@ -10,11 +10,8 @@ import android.content.res.Resources;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.SplashActivity;
 

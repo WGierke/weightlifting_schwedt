@@ -3,13 +3,10 @@ package de.schwedt.weightlifting.app.helper;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
-import de.schwedt.weightlifting.app.WeightliftingApp;
 
 public class NetworkHelper {
 

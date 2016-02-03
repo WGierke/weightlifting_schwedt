@@ -20,8 +20,6 @@ public class Table extends UpdateableWrapper {
     public static ArrayList<TableEntry> itemsToMark = new ArrayList<>();
     public final static int navigationPosition = MainActivity.FRAGMENT_BULI;
     public final static int subPosition = 2;
-    private final String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/table.json";
-    private final String TAG = "Table";
 
     public static ArrayList<TableEntry> casteArray(ArrayList<UpdateableItem> array) {
         ArrayList<TableEntry> convertedItems = new ArrayList<>();
@@ -48,7 +46,10 @@ public class Table extends UpdateableWrapper {
         }
     }
 
-    public void refreshItems() { super.update(UPDATE_URL, FILE_NAME, TAG); }
+    public void refreshItems() {
+        String TAG = "Table";
+        String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/table.json";
+        super.update(UPDATE_URL, FILE_NAME, TAG); }
 
     protected void updateWrapper(String result) {
         Table newItems = new Table();

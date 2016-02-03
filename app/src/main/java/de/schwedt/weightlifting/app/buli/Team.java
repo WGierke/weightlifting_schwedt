@@ -20,8 +20,6 @@ public class Team extends UpdateableWrapper {
     public static ArrayList<TeamMember> itemsToMark = new ArrayList<>();
     public final static int navigationPosition = MainActivity.FRAGMENT_BULI;
     public final static int subPosition = 0;
-    private final String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/team.json";
-    private final String TAG = "Team";
 
     public static ArrayList<TeamMember> casteArray(ArrayList<UpdateableItem> array) {
         ArrayList<TeamMember> convertedItems = new ArrayList<>();
@@ -48,7 +46,10 @@ public class Team extends UpdateableWrapper {
         }
     }
 
-    public void refreshItems() { super.update(UPDATE_URL, FILE_NAME, TAG); }
+    public void refreshItems() {
+        String TAG = "Team";
+        String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/team.json";
+        super.update(UPDATE_URL, FILE_NAME, TAG); }
 
     protected void updateWrapper(String result) {
         Team newItems = new Team();

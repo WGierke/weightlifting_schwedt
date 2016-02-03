@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.UiHelper;
@@ -22,7 +21,6 @@ public class TeamListAdapter extends BaseAdapter {
     private ArrayList<TeamMember> items;
     private Activity activity;
     private LayoutInflater inflater;
-    private TeamMember item;
 
     public TeamListAdapter(ArrayList<TeamMember> items, Activity activity) {
         this.items = items;
@@ -48,7 +46,7 @@ public class TeamListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
-        item = items.get(position);
+        TeamMember item = items.get(position);
         if (convertView == null) {
             view = inflater.inflate(R.layout.buli_team_item, null);
         }

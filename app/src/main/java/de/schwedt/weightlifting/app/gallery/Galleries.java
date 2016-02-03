@@ -22,8 +22,6 @@ public class Galleries extends UpdateableWrapper {
     public static ArrayList<GalleryItem> itemsToMark = new ArrayList<>();
     public final static int navigationPosition = MainActivity.FRAGMENT_GALLERY;
     public final static int subPosition = 0;
-    private final String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/galleries.json";
-    private final String TAG = "Galleries";
 
     public static ArrayList<GalleryItem> casteArray(ArrayList<UpdateableItem> array) {
         ArrayList<GalleryItem> convertedItems = new ArrayList<>();
@@ -51,6 +49,8 @@ public class Galleries extends UpdateableWrapper {
     }
 
     public void refreshItems() {
+        String TAG = "Galleries";
+        String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/galleries.json";
         super.update(UPDATE_URL, FILE_NAME, TAG);
     }
 

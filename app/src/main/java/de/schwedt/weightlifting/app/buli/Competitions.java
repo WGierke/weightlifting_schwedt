@@ -20,8 +20,6 @@ public class Competitions extends UpdateableWrapper {
     public final static int navigationPosition = MainActivity.FRAGMENT_BULI;
     public final static int subPosition = 1;
     public static ArrayList<PastCompetition> itemsToMark = new ArrayList<>();
-    private final String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/past_competitions.json";
-    private final String TAG = "Competitions";
 
     public static ArrayList<PastCompetition> casteArray(ArrayList<UpdateableItem> array) {
         ArrayList<PastCompetition> convertedItems = new ArrayList<>();
@@ -50,6 +48,8 @@ public class Competitions extends UpdateableWrapper {
     }
 
     public void refreshItems() {
+        String TAG = "Competitions";
+        String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/past_competitions.json";
         super.update(UPDATE_URL, FILE_NAME, TAG);
     }
 

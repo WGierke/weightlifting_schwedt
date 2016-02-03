@@ -20,8 +20,6 @@ public class Events extends UpdateableWrapper {
     public static final int navigationPosition = MainActivity.FRAGMENT_NEWS;
     public final static int subPosition = 1;
     public static ArrayList<EventItem> itemsToMark = new ArrayList<>();
-    private final String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/events.json";
-    private final String TAG = "Events";
 
     public static ArrayList<EventItem> casteArray(ArrayList<UpdateableItem> array) {
         ArrayList<EventItem> convertedItems = new ArrayList<>();
@@ -49,6 +47,8 @@ public class Events extends UpdateableWrapper {
     }
 
     public void refreshItems() {
+        String TAG = "Events";
+        String UPDATE_URL = "https://raw.githubusercontent.com/WGierke/weightlifting_schwedt/updates/production/events.json";
         super.update(UPDATE_URL, FILE_NAME, TAG);
     }
 

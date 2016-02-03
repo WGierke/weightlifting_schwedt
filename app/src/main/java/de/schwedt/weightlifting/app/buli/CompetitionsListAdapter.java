@@ -3,7 +3,6 @@ package de.schwedt.weightlifting.app.buli;
 import android.app.Activity;
 import android.content.Context;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.UiHelper;
@@ -69,11 +67,6 @@ public class CompetitionsListAdapter extends BaseAdapter {
 
         TextView location = (TextView) view.findViewById(R.id.buli_competition_location);
         location.setText(items.get(position).getLocation());
-
-        //Log.d(WeightliftingApp.TAG, "Competition Date: " + items.get(position).getDate() + " " + items.get(position).getHome());
-        for(PastCompetition p : Competitions.itemsToMark) {
-            //Log.d(WeightliftingApp.TAG, p.getDate() + " " + p.getHome());
-        }
 
         if (Competitions.itemsToMark.contains(items.get(position))) {
             //Log.d(WeightliftingApp.TAG, "item to mark is being displayed");
