@@ -84,5 +84,7 @@
     <string name="buli_no_team_member">Es konnten keine Teammitglieder gefunden werden.</string>
     <string name="buli_no_competitions">Es konnten keine Wettkämpfe gefunden werden.</string>
     <string name="buli_no_tables">Es konnten keine Tabellenergebnisse gefunden werden.</string>
+    <string name="news_no_articles">Es konnten keine Artikel gefunden werden.</string>
+    <string name="news_no_events">Es konnten keine Veranstaltungen gefunden werden.</string>
 
 </resources>

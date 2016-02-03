@@ -2,18 +2,27 @@ package de.schwedt.weightlifting.app.news;
 
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-import de.schwedt.weightlifting.app.NewsListFragment;
+import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 
 public class NewsEventsFragment extends NewsListFragment {
 
     private Events events;
+
+    @Override
+    protected void setEmptyListItem() {
+        TextView emptyText = (TextView) fragment.findViewById(R.id.emptyEvents);
+        emptyText.setVisibility(View.VISIBLE);
+        listViewNews.setEmptyView(emptyText);
+    }
 
     @Override
     protected void postItemsFetching() {

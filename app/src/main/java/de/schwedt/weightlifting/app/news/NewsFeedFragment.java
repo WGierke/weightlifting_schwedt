@@ -7,9 +7,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.TextView;
 
 import de.schwedt.weightlifting.app.MainActivity;
-import de.schwedt.weightlifting.app.NewsListFragment;
 import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 
@@ -19,6 +19,13 @@ public class NewsFeedFragment extends NewsListFragment {
     private NewsFeedListAdapter adapter;
     private boolean is_loading = false;
     private int visibleItems = 5;
+
+    @Override
+    protected void setEmptyListItem() {
+        TextView emptyText = (TextView) fragment.findViewById(R.id.emptyArticles);
+        emptyText.setVisibility(View.VISIBLE);
+        listViewNews.setEmptyView(emptyText);
+    }
 
     @Override
     protected void postItemsFetching() {

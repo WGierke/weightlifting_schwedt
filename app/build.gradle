@@ -43,18 +43,6 @@ android {
     }
 }
 
-afterEvaluate {
-    tasks.matching {
-        it.name.startsWith('dex')
-    }.each { dx ->
-        if (dx.additionalParameters == null) {
-            dx.additionalParameters = ['--multi-dex']
-        } else {
-            dx.additionalParameters += '--multi-dex'
-        }
-    }
-}
-
 dependencies {
     compile 'com.google.android.gms:play-services:8.3.0'
     compile 'com.google.android.gms:play-services-analytics:8.3.0'
