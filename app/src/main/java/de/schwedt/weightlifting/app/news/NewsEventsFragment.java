@@ -1,65 +1,43 @@
 package de.schwedt.weightlifting.app.news;
 
-import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-import de.schwedt.weightlifting.app.R;
+import de.schwedt.weightlifting.app.NewsListFragment;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 
-public class NewsEventsFragment extends Fragment {
+public class NewsEventsFragment extends NewsListFragment {
 
-    private WeightliftingApp app;
     private Events events;
-    private ListView listViewEvents;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //Log.d(WeightliftingApp.TAG, "Showing News Event fragment");
-
-        View fragment = inflater.inflate(R.layout.news_events, container, false);
-        app = (WeightliftingApp) getActivity().getApplicationContext();
-
-        listViewEvents = (ListView) fragment.findViewById(R.id.listView_News);
-
-        getEvents();
+    protected void postItemsFetching() {
         int nextEvent = getNextEvent();
         if (nextEvent > 0) nextEvent -= 1; //previous event fades now
-        listViewEvents.setSelection(nextEvent);
-
-        return fragment;
+        listViewNews.setSelection(nextEvent);
     }
 
-    private void getEvents() {
+    @Override
+    protected void getNewsItems() {
         events = app.getEvents(WeightliftingApp.UPDATE_IF_NECESSARY);
         if (events.getItems().size() == 0) {
-            // No events items yet
-            //Log.d(WeightliftingApp.TAG, "Waiting for events...");
-
-            // Check again in a few seconds
             Runnable refreshRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    getEvents();
+                    getNewsItems();
                 }
             };
             Handler refreshHandler = new Handler();
             refreshHandler.postDelayed(refreshRunnable, News.TIMER_RETRY);
         } else {
-            // We have events items to display
             try {
                 NewsEventsListAdapter adapter = new NewsEventsListAdapter(events.getItems(), getActivity());
-                listViewEvents.setAdapter(adapter);
+                listViewNews.setAdapter(adapter);
             } catch (Exception ex) {
                 Log.e(WeightliftingApp.TAG, "Showing events failed");
                 ex.toString();
@@ -96,6 +74,4 @@ public class NewsEventsFragment extends Fragment {
         }
         return 0;
     }
-
-
 }

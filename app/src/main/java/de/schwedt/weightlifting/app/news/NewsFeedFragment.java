@@ -4,60 +4,34 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ListView;
 
 import de.schwedt.weightlifting.app.MainActivity;
+import de.schwedt.weightlifting.app.NewsListFragment;
 import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
-import de.schwedt.weightlifting.app.helper.UiHelper;
 
-public class NewsFeedFragment extends Fragment {
+public class NewsFeedFragment extends NewsListFragment {
 
     public News news;
-    private WeightliftingApp app;
-    private ListView listViewNews;
     private NewsFeedListAdapter adapter;
     private boolean is_loading = false;
     private int visibleItems = 5;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //Log.d(WeightliftingApp.TAG, "Showing News Feed fragment");
-
-        View fragment = inflater.inflate(R.layout.news_feed, container, false);
-        app = (WeightliftingApp) getActivity().getApplicationContext();
-
-        listViewNews = (ListView) fragment.findViewById(R.id.listView_News);
-        //listViewNews = UiHelper.enableUpScrolling(listViewNews);
-
-        Runnable refreshRunnable = new Runnable() {
-            @Override
-            public void run() {
-                getNews();
-            }
-        };
-        Handler refreshHandler = new Handler();
-        refreshHandler.postDelayed(refreshRunnable, WeightliftingApp.DISPLAY_DELAY);
-
-        return fragment;
+    protected void postItemsFetching() {
     }
 
-    private void getNews() {
+    @Override
+    protected void getNewsItems() {
         news = app.getNews(WeightliftingApp.UPDATE_IF_NECESSARY);
         if (news.getItems().size() == 0) {
-            // No news items yet
-            //Log.d(WeightliftingApp.TAG, "Waiting for news...");
-
-            // Check again in a few seconds
             Runnable refreshRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    getNews();
+                    getNewsItems();
                 }
             };
             Handler refreshHandler = new Handler();
@@ -80,21 +54,21 @@ public class NewsFeedFragment extends Fragment {
                 });
                 listViewNews.setOnScrollListener(new AbsListView.OnScrollListener() {
                     @Override
-                    public void onScrollStateChanged(AbsListView view, int scrollState) { }
+                    public void onScrollStateChanged(AbsListView view, int scrollState) {
+                    }
 
                     @Override
                     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
-                        if(firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount != 0) {
-                                if(!is_loading)
-                                {
-                                    is_loading = true;
-                                    addItems();
-                                }
+                        if (firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount != 0) {
+                            if (!is_loading) {
+                                is_loading = true;
+                                addItems();
                             }
                         }
-                    });
-        } catch (Exception ex) {
+                    }
+                });
+            } catch (Exception ex) {
                 Log.e(WeightliftingApp.TAG, "Showing news feed failed");
                 ex.toString();
             }
