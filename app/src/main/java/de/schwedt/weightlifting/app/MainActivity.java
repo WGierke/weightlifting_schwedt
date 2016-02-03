@@ -14,12 +14,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.parse.ParseAnalytics;
 
 import de.schwedt.weightlifting.app.buli.Competitions;
 import de.schwedt.weightlifting.app.buli.Table;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private WeightliftingApp app;
     private Toolbar mToolbar;
     private CharSequence mTitle;
+    private Tracker mTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,14 +61,11 @@ public class MainActivity extends AppCompatActivity {
         app = (WeightliftingApp) getApplicationContext();
         app.setActivity(this);
 
+        mTracker = app.getDefaultTracker();
+
         initNavigation(savedInstanceState);
 
         showFragmentFromBundle();
-
-        try {
-            ParseAnalytics.trackAppOpenedInBackground(getIntent());
-        } catch (Exception e) {
-        }
     }
 
     private void showFragmentFromBundle() {
@@ -219,6 +218,9 @@ public class MainActivity extends AppCompatActivity {
             default:
                 break;
         }
+
+        mTracker.setScreenName((String) mTitle);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         replaceFragment(fragment, mTitle.toString());
 

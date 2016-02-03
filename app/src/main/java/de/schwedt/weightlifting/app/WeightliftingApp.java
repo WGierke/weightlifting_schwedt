@@ -3,8 +3,11 @@ package de.schwedt.weightlifting.app;
 import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
+import android.support.multidex.MultiDex;
 import android.util.Log;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.parse.Parse;
@@ -49,6 +52,7 @@ public class WeightliftingApp extends Application {
     public Table table;
     public Galleries galleries;
     public Handler splashCallbackHandler;
+    private Tracker mTracker;
 
     public void initialize(Handler callbackHandler) {
         splashCallbackHandler = callbackHandler;
@@ -240,5 +244,25 @@ public class WeightliftingApp extends Application {
         if (imageLoader == null)
             imageLoader = new ImageLoader(getApplicationContext());
         return imageLoader;
+    }
+
+    /**
+     * Gets the default {@link Tracker} for this {@link Application}.
+     *
+     * @return tracker
+     */
+    synchronized public Tracker getDefaultTracker() {
+        if (mTracker == null) {
+            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+            // To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG
+            mTracker = analytics.newTracker(R.xml.global_tracker);
+        }
+        return mTracker;
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 }

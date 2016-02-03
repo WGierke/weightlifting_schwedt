@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.parse.Parse;
-import com.parse.ParseCrashReporting;
 
 import de.schwedt.weightlifting.app.helper.UiHelper;
 import io.fabric.sdk.android.Fabric;
@@ -94,7 +93,6 @@ public class SplashActivity extends Activity {
         if (!app.initializedParse) {
             try {
                 Parse.enableLocalDatastore(this);
-                ParseCrashReporting.enable(this);
                 app.initializedParse = true;
             } catch (Exception e) {
             }
