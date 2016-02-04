@@ -38,7 +38,8 @@ public class MainActivity extends AppCompatActivity {
     public static final int FRAGMENT_BULI = 2;
     public static final int FRAGMENT_GALLERY = 3;
     public static final int FRAGMENT_FAQ = 4;
-    public static final int FRAGMENT_CONTACT = 5;
+    public static final int FRAGMENT_ARCHIVE = 5;
+    public static final int FRAGMENT_CONTACT = 6;
     //home, (news, events), (team, competitions, table), (gallery)
     public static int counter[][] = {{}, {0, 0}, {0, 0, 0}, {0}};
     private WeightliftingApp app;
@@ -86,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         PrimaryDrawerItem nav_buli = new PrimaryDrawerItem().withName(R.string.nav_buli).withIcon(R.drawable.nav_buli);
         PrimaryDrawerItem nav_gallery = new PrimaryDrawerItem().withName(R.string.nav_gallery).withIcon(R.drawable.nav_gallery);
         PrimaryDrawerItem nav_faq = new PrimaryDrawerItem().withName(R.string.nav_faq).withIcon(R.drawable.nav_help);
+        PrimaryDrawerItem nav_archive = new PrimaryDrawerItem().withName(R.string.nav_faq).withIcon(R.drawable.nav_archive);
         PrimaryDrawerItem nav_contact = new PrimaryDrawerItem().withName(R.string.nav_contact).withIcon(R.drawable.nav_contact);
 
         Drawer result = new DrawerBuilder()
@@ -101,6 +103,8 @@ public class MainActivity extends AppCompatActivity {
                         nav_gallery,
                         new DividerDrawerItem(),
                         nav_faq,
+                        new DividerDrawerItem(),
+                        nav_archive,
                         new DividerDrawerItem(),
                         nav_contact,
                         new DividerDrawerItem()
@@ -210,6 +214,10 @@ public class MainActivity extends AppCompatActivity {
             case FRAGMENT_FAQ:
                 fragment = new FaqFragment();
                 setTitle(getString(R.string.nav_faq));
+                break;
+            case FRAGMENT_ARCHIVE:
+                fragment = new ArchiveFragment();
+                setTitle(getString(R.string.nav_archive));
                 break;
             case FRAGMENT_CONTACT:
                 fragment = new ContactFragment();

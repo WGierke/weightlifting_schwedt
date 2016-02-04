@@ -13,8 +13,12 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.parse.Parse;
 
 import java.io.File;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
 
+import de.schwedt.weightlifting.app.archive.ArchivedRelay;
+import de.schwedt.weightlifting.app.archive.ArchivedSeason;
 import de.schwedt.weightlifting.app.buli.Competitions;
 import de.schwedt.weightlifting.app.buli.Table;
 import de.schwedt.weightlifting.app.buli.Team;
@@ -63,10 +67,8 @@ public class WeightliftingApp extends Application {
         memoryCache = new MemoryCache();
         imageLoader = new ImageLoader(getApplicationContext());
 
-        FaqFragment.faqEntries.add(new FaqItem(getString(R.string.faq_off_signal_heading), getString(R.string.faq_off_signal_question), getString(R.string.faq_off_signal_answer)));
-        FaqFragment.faqEntries.add(new FaqItem(getString(R.string.faq_bad_attempt_jerking_heading), getString(R.string.faq_bad_attempt_jerking_question), getString(R.string.faq_bad_attempt_jerking_answer)));
-        FaqFragment.faqEntries.add(new FaqItem(getString(R.string.winner_single_competition_heading), getString(R.string.winner_single_competition_question), getString(R.string.winner_single_competition_answer)));
-        FaqFragment.faqEntries.add(new FaqItem(getString(R.string.winner_team_competition_heading), getString(R.string.winner_team_competition_question), getString(R.string.winner_team_competition_answer)));
+        initFaqs();
+        initArchive();
 
         long dateDiff = (new Date().getTime() - dateStart);
 
@@ -95,6 +97,31 @@ public class WeightliftingApp extends Application {
         isInitialized = true;
 
         Log.i(TAG, "Initialized (" + String.valueOf(dateDiff) + "ms)");
+    }
+
+    private void initFaqs() {
+        FaqFragment.faqEntries.add(new FaqItem(getString(R.string.faq_off_signal_heading), getString(R.string.faq_off_signal_question), getString(R.string.faq_off_signal_answer)));
+        FaqFragment.faqEntries.add(new FaqItem(getString(R.string.faq_bad_attempt_jerking_heading), getString(R.string.faq_bad_attempt_jerking_question), getString(R.string.faq_bad_attempt_jerking_answer)));
+        FaqFragment.faqEntries.add(new FaqItem(getString(R.string.winner_single_competition_heading), getString(R.string.winner_single_competition_question), getString(R.string.winner_single_competition_answer)));
+        FaqFragment.faqEntries.add(new FaqItem(getString(R.string.winner_team_competition_heading), getString(R.string.winner_team_competition_question), getString(R.string.winner_team_competition_answer)));
+    }
+
+    private void initArchive() {
+        ArrayList<ArchivedRelay> relays1112 = new ArrayList<>();
+        Competitions competitions_1north = new Competitions();
+        InputStream ins = getResources().openRawResource(
+                getResources().getIdentifier("r1112_1north_competitions",
+                        "raw", getPackageName()));
+        competitions_1north.parseFromString(DataHelper.getStringFromStream(ins));
+        Table table_1north = new Table();
+        ins = getResources().openRawResource(
+                getResources().getIdentifier("r1112_1north_table",
+                        "raw", getPackageName()));
+        table_1north.parseFromString(DataHelper.getStringFromStream(ins));
+
+
+        relays1112.add(new ArchivedRelay("1. BL - Nord", competitions_1north, table_1north));
+        ArchiveFragment.archivedSeasonEntries.add(new ArchivedSeason("2011/2012", relays1112));
     }
 
     private void updateSplashScreen() {
