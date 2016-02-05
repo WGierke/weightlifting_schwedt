@@ -13,12 +13,11 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.parse.Parse;
 
 import java.io.File;
-import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
-import de.schwedt.weightlifting.app.archive.ArchivedRelay;
-import de.schwedt.weightlifting.app.archive.ArchivedSeason;
 import de.schwedt.weightlifting.app.buli.Competitions;
 import de.schwedt.weightlifting.app.buli.Table;
 import de.schwedt.weightlifting.app.buli.Team;
@@ -107,21 +106,9 @@ public class WeightliftingApp extends Application {
     }
 
     private void initArchive() {
-        ArrayList<ArchivedRelay> relays1112 = new ArrayList<>();
-        Competitions competitions_1north = new Competitions();
-        InputStream ins = getResources().openRawResource(
-                getResources().getIdentifier("r1112_1north_competitions",
-                        "raw", getPackageName()));
-        competitions_1north.parseFromString(DataHelper.getStringFromStream(ins));
-        Table table_1north = new Table();
-        ins = getResources().openRawResource(
-                getResources().getIdentifier("r1112_1north_table",
-                        "raw", getPackageName()));
-        table_1north.parseFromString(DataHelper.getStringFromStream(ins));
-
-
-        relays1112.add(new ArchivedRelay("1. BL - Nord", competitions_1north, table_1north));
-        ArchiveFragment.archivedSeasonEntries.add(new ArchivedSeason("2011/2012", relays1112));
+        ArrayList<String> archivedSeasons = DataHelper.getSeasons();
+        Collections.reverse(archivedSeasons);
+        ArchiveFragment.archivedSeasonEntries = archivedSeasons;
     }
 
     private void updateSplashScreen() {

@@ -17,27 +17,26 @@ import de.schwedt.weightlifting.app.buli.CompetitionsListAdapter;
 import de.schwedt.weightlifting.app.buli.ListViewFragment;
 import de.schwedt.weightlifting.app.buli.PastCompetition;
 import de.schwedt.weightlifting.app.buli.ProtocolFragment;
+import de.schwedt.weightlifting.app.helper.Constants;
+import de.schwedt.weightlifting.app.helper.DataHelper;
 
 public class ArchivedFilterCompetitionsFragment extends ListViewFragment {
 
     private ArrayList<PastCompetition> filteredCompetitions;
-    private ArchivedRelay archivedRelay;
     private Competitions archivedCompetitions;
+    private Bundle bundle;
 
     protected void getBuliElements() {
         try {
-            Bundle bundle = this.getArguments();
-            int seasonPosition = bundle.getInt("seasonItem");
-            int relayPosition = bundle.getInt("relayItem");
-            archivedRelay = ArchiveFragment.archivedSeasonEntries.get(seasonPosition).getArchivedRelays().get(relayPosition);
-            archivedCompetitions = archivedRelay.getArchivedCompetitions();
+            bundle = this.getArguments();
+            archivedCompetitions = ArchivedCompetitionsFragment.archivedCompetitions;
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
         try {
-            Bundle bundle = this.getArguments();
-            String clubName = bundle.getString("club-name");
+            String clubName = bundle.getString(Constants.CLUB_NAME);
             filteredCompetitions = filter(Competitions.casteArray(archivedCompetitions.getItems()), clubName);
             CompetitionsListAdapter adapter = new CompetitionsListAdapter(filteredCompetitions, getActivity());
             listViewBuli.setAdapter(adapter);
@@ -46,13 +45,13 @@ public class ArchivedFilterCompetitionsFragment extends ListViewFragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Fragment protocol = new ProtocolFragment();
                     Bundle bundle = new Bundle();
-                    bundle.putString("protocol-url", filteredCompetitions.get(position).getProtocolUrl());
+                    bundle.putString(Constants.PROTOCOL_URL, filteredCompetitions.get(position).getProtocolUrl());
                     protocol.setArguments(bundle);
                     ((MainActivity) getActivity()).addFragment(protocol, getString(R.string.nav_buli), true);
                 }
             });
         } catch (Exception ex) {
-            Log.e(WeightliftingApp.TAG, "Showing competitions failed");
+            Log.e(WeightliftingApp.TAG, "Showing archived filter competitions failed");
             ex.toString();
         }
 

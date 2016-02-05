@@ -13,10 +13,12 @@ import java.util.ArrayList;
 import de.schwedt.weightlifting.app.ArchiveFragment;
 import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.R;
+import de.schwedt.weightlifting.app.helper.Constants;
+import de.schwedt.weightlifting.app.helper.DataHelper;
 
 public class ArchivedSeasonFragment extends Fragment {
 
-    public static ArrayList<ArchivedRelay> archivedRelayEntries = new ArrayList<>();
+    public static ArrayList<String> archivedRelayEntries = new ArrayList<>();
     private int seasonPosition;
 
     @Override
@@ -26,9 +28,9 @@ public class ArchivedSeasonFragment extends Fragment {
         // Get archived season information from bundle
         try {
             Bundle bundle = this.getArguments();
-            seasonPosition = bundle.getInt("seasonItem");
-            ArchivedSeason archivedSeason = ArchiveFragment.archivedSeasonEntries.get(seasonPosition);
-            archivedRelayEntries = archivedSeason.getArchivedRelays();
+            seasonPosition = bundle.getInt(Constants.SEASON_ITEM_POSITION);
+            String archivedSeason = ArchiveFragment.archivedSeasonEntries.get(seasonPosition);
+            archivedRelayEntries = DataHelper.getRelays(archivedSeason);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -43,10 +45,10 @@ public class ArchivedSeasonFragment extends Fragment {
                 // Show an archived relay fragment and put the selected index as argument
                 Fragment archivedRelayFragment = new ArchivedRelayFragment();
                 Bundle bundle = new Bundle();
-                bundle.putInt("seasonItem", seasonPosition);
-                bundle.putInt("relayItem", position);
+                bundle.putInt(Constants.SEASON_ITEM_POSITION, seasonPosition);
+                bundle.putInt(Constants.RELAY_ITEM_POSITION, position);
                 archivedRelayFragment.setArguments(bundle);
-                ((MainActivity) getActivity()).addFragment(archivedRelayFragment, getString(R.string.nav_faq), true);
+                ((MainActivity) getActivity()).addFragment(archivedRelayFragment, archivedRelayEntries.get(position), true);
             }
         });
 

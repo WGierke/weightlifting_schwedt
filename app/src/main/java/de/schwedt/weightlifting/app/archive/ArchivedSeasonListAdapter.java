@@ -9,16 +9,19 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
 
 import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.faq.FaqItem;
 
 public class ArchivedSeasonListAdapter extends BaseAdapter {
 
-    private ArrayList<ArchivedSeason> items;
+    private ArrayList<String> items;
     private LayoutInflater inflater;
 
-    public ArchivedSeasonListAdapter(ArrayList<ArchivedSeason> items, Activity activity) {
+    public ArchivedSeasonListAdapter(ArrayList<String> items, Activity activity) {
         this.items = items;
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -46,7 +49,7 @@ public class ArchivedSeasonListAdapter extends BaseAdapter {
         }
 
         TextView season = (TextView) view.findViewById(R.id.archive_item_season);
-        season.setText(items.get(position).getSeasonName());
+        season.setText(items.get(position));
 
         return view;
     }

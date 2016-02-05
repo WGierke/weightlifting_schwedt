@@ -10,13 +10,13 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-import de.schwedt.weightlifting.app.archive.ArchivedSeasonListAdapter;
-import de.schwedt.weightlifting.app.archive.ArchivedSeason;
 import de.schwedt.weightlifting.app.archive.ArchivedSeasonFragment;
+import de.schwedt.weightlifting.app.archive.ArchivedSeasonListAdapter;
+import de.schwedt.weightlifting.app.helper.Constants;
 
 public class ArchiveFragment extends Fragment {
 
-    public static ArrayList<ArchivedSeason> archivedSeasonEntries = new ArrayList<>();
+    public static ArrayList<String> archivedSeasonEntries = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -32,9 +32,9 @@ public class ArchiveFragment extends Fragment {
                 // Show an archived season fragment and put the selected index as argument
                 Fragment seasonFragment = new ArchivedSeasonFragment();
                 Bundle bundle = new Bundle();
-                bundle.putInt("seasonItem", position);
+                bundle.putInt(Constants.SEASON_ITEM_POSITION, position);
                 seasonFragment.setArguments(bundle);
-                ((MainActivity) getActivity()).addFragment(seasonFragment, getString(R.string.nav_faq), true);
+                ((MainActivity) getActivity()).addFragment(seasonFragment, archivedSeasonEntries.get(position), true);
             }
         });
 

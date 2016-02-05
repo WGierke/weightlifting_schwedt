@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         PrimaryDrawerItem nav_buli = new PrimaryDrawerItem().withName(R.string.nav_buli).withIcon(R.drawable.nav_buli);
         PrimaryDrawerItem nav_gallery = new PrimaryDrawerItem().withName(R.string.nav_gallery).withIcon(R.drawable.nav_gallery);
         PrimaryDrawerItem nav_faq = new PrimaryDrawerItem().withName(R.string.nav_faq).withIcon(R.drawable.nav_help);
-        PrimaryDrawerItem nav_archive = new PrimaryDrawerItem().withName(R.string.nav_faq).withIcon(R.drawable.nav_archive);
+        PrimaryDrawerItem nav_archive = new PrimaryDrawerItem().withName(R.string.nav_archive).withIcon(R.drawable.nav_archive);
         PrimaryDrawerItem nav_contact = new PrimaryDrawerItem().withName(R.string.nav_contact).withIcon(R.drawable.nav_contact);
 
         Drawer result = new DrawerBuilder()

@@ -12,6 +12,7 @@ import android.webkit.WebView;
 
 import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
+import de.schwedt.weightlifting.app.helper.Constants;
 
 public class ProtocolFragment extends Fragment {
 
@@ -28,8 +29,8 @@ public class ProtocolFragment extends Fragment {
         // Get protocol url from bundle
         try {
             Bundle bundle = this.getArguments();
-            protocolUrl = bundle.getString("protocol-url");
-            competitionParties = bundle.getString("competition-parties");
+            protocolUrl = bundle.getString(Constants.PROTOCOL_URL);
+            competitionParties = bundle.getString(Constants.COMPETITION_PARTIES);
             webview.loadUrl(protocolUrl);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -46,7 +47,7 @@ public class ProtocolFragment extends Fragment {
                     shareIntent.putExtra(Intent.EXTRA_TEXT, competitionParties + ". " + getString(R.string.buli_protocol) + ": " + protocolUrl);
                     shareIntent.setType("text/plain");
 
-                    Intent chooserIntent = Intent.createChooser(shareIntent, "Share file");
+                    Intent chooserIntent = Intent.createChooser(shareIntent, getString(R.string.share_this));
                     chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     app.startActivity(chooserIntent);
                 }

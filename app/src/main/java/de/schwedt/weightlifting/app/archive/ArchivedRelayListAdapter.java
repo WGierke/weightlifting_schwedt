@@ -14,10 +14,10 @@ import de.schwedt.weightlifting.app.R;
 
 public class ArchivedRelayListAdapter extends BaseAdapter {
 
-    private ArrayList<ArchivedRelay> items;
+    private ArrayList<String> items;
     private LayoutInflater inflater;
 
-    public ArchivedRelayListAdapter(ArrayList<ArchivedRelay> items, Activity activity) {
+    public ArchivedRelayListAdapter(ArrayList<String> items, Activity activity) {
         this.items = items;
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -45,7 +45,7 @@ public class ArchivedRelayListAdapter extends BaseAdapter {
         }
 
         TextView season = (TextView) view.findViewById(R.id.archive_item_season);
-        season.setText(items.get(position).getRelayName());
+        season.setText(items.get(position));
 
         return view;
     }

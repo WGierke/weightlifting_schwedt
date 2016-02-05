@@ -13,20 +13,23 @@ import de.schwedt.weightlifting.app.buli.ListViewFragment;
 import de.schwedt.weightlifting.app.buli.Table;
 import de.schwedt.weightlifting.app.buli.TableEntry;
 import de.schwedt.weightlifting.app.buli.TableListAdapter;
+import de.schwedt.weightlifting.app.helper.Constants;
+import de.schwedt.weightlifting.app.helper.DataHelper;
 
 public class ArchivedTableFragment extends ListViewFragment {
 
-    private ArchivedRelay archivedRelay;
     private Table archivedTable;
+    private Bundle bundle;
 
     @Override
     protected void setEmptyListItem() {
         try {
-            Bundle bundle = this.getArguments();
-            int seasonPosition = bundle.getInt("seasonItem");
-            int relayPosition = bundle.getInt("relayItem");
-            archivedRelay = ArchiveFragment.archivedSeasonEntries.get(seasonPosition).getArchivedRelays().get(relayPosition);
-            archivedTable = archivedRelay.getArchivedTable();
+            bundle = this.getArguments();
+            int seasonPosition = bundle.getInt(Constants.SEASON_ITEM_POSITION);
+            int relayPosition = bundle.getInt(Constants.RELAY_ITEM_POSITION);
+            String archivedSeason = ArchiveFragment.archivedSeasonEntries.get(seasonPosition);
+            String archivedRelay = ArchivedSeasonFragment.archivedRelayEntries.get(relayPosition);
+            archivedTable = DataHelper.getTableFromSeasonRelay(archivedSeason, archivedRelay, getActivity());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -38,9 +41,8 @@ public class ArchivedTableFragment extends ListViewFragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Fragment protocol = new ArchivedFilterCompetitionsFragment();
-                    Bundle bundle = new Bundle();
                     TableEntry entry = (TableEntry) archivedTable.getItem(position);
-                    bundle.putString("club-name", entry.getClub());
+                    bundle.putString(Constants.CLUB_NAME, entry.getClub());
                     protocol.setArguments(bundle);
                     ((MainActivity) getActivity()).addFragment(protocol, entry.getClub(), true);
                 }

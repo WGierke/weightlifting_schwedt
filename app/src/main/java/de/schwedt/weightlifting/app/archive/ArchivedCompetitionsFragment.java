@@ -15,20 +15,22 @@ import de.schwedt.weightlifting.app.buli.CompetitionsListAdapter;
 import de.schwedt.weightlifting.app.buli.ListViewFragment;
 import de.schwedt.weightlifting.app.buli.PastCompetition;
 import de.schwedt.weightlifting.app.buli.ProtocolFragment;
+import de.schwedt.weightlifting.app.helper.Constants;
+import de.schwedt.weightlifting.app.helper.DataHelper;
 
 public class ArchivedCompetitionsFragment extends ListViewFragment {
 
-    private ArchivedRelay archivedRelay;
-    private Competitions archivedCompetitions;
+    public static Competitions archivedCompetitions;
 
     @Override
-    protected void setEmptyListItem() {
+    protected void getBuliElements() {
         try {
             Bundle bundle = this.getArguments();
-            int seasonPosition = bundle.getInt("seasonItem");
-            int relayPosition = bundle.getInt("relayItem");
-            archivedRelay = ArchiveFragment.archivedSeasonEntries.get(seasonPosition).getArchivedRelays().get(relayPosition);
-            archivedCompetitions = archivedRelay.getArchivedCompetitions();
+            int seasonPosition = bundle.getInt(Constants.SEASON_ITEM_POSITION);
+            int relayPosition = bundle.getInt(Constants.RELAY_ITEM_POSITION);
+            String archivedSeason = ArchiveFragment.archivedSeasonEntries.get(seasonPosition);
+            String archivedRelay = ArchivedSeasonFragment.archivedRelayEntries.get(relayPosition);
+            archivedCompetitions = DataHelper.getCompetitionFromSeasonRelay(archivedSeason, archivedRelay, getActivity());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -41,10 +43,10 @@ public class ArchivedCompetitionsFragment extends ListViewFragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     // Show the protocol which belongs to the competition
                     Fragment protocol = new ProtocolFragment();
-                    Bundle bundle = new Bundle();
                     PastCompetition competition = Competitions.casteArray(archivedCompetitions.getItems()).get(position);
-                    bundle.putString("protocol-url", competition.getProtocolUrl());
-                    bundle.putString("competition-parties", competition.getHome() + " vs. " + competition.getGuest() + ": " + competition.getScore());
+                    Bundle bundle = new Bundle();
+                    bundle.putString(Constants.PROTOCOL_URL, competition.getProtocolUrl());
+                    bundle.putString(Constants.COMPETITION_PARTIES, competition.getHome() + " vs. " + competition.getGuest() + ": " + competition.getScore());
                     protocol.setArguments(bundle);
                     ((MainActivity) getActivity()).addFragment(protocol, getString(R.string.nav_buli), true);
                 }
@@ -57,8 +59,7 @@ public class ArchivedCompetitionsFragment extends ListViewFragment {
     }
 
     @Override
-    protected void getBuliElements() {
-
+    protected void setEmptyListItem() {
     }
 
     @Override
