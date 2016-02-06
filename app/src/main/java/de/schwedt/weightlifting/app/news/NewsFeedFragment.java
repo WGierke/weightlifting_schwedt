@@ -12,6 +12,7 @@ import android.widget.TextView;
 import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
+import de.schwedt.weightlifting.app.helper.Constants;
 
 public class NewsFeedFragment extends NewsListFragment {
 
@@ -54,7 +55,7 @@ public class NewsFeedFragment extends NewsListFragment {
                         // Show an article fragment and put the selected index as argument
                         Fragment article = new NewsArticleFragment();
                         Bundle bundle = new Bundle();
-                        bundle.putInt("item", position);
+                        bundle.putInt(Constants.ITEM, position);
                         article.setArguments(bundle);
                         ((MainActivity) getActivity()).addFragment(article, getString(R.string.nav_news), true);
                     }

@@ -25,6 +25,7 @@ import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.gallery.Galleries;
 import de.schwedt.weightlifting.app.gallery.GalleryItem;
+import de.schwedt.weightlifting.app.helper.Constants;
 
 /*******************************************************************************
  * Copyright 2011-2014 Sergey Tarasevich
@@ -64,7 +65,7 @@ public class ImageGridFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Bundle bundle = this.getArguments();
-        galleryPosition = bundle.getInt("GALLERY_POSITION");
+        galleryPosition = bundle.getInt(Constants.GALLERY_POSITION);
 
         WeightliftingApp app = (WeightliftingApp) getActivity().getApplicationContext();
         Galleries galleries = app.getGalleries(WeightliftingApp.UPDATE_IF_NECESSARY);
@@ -94,9 +95,9 @@ public class ImageGridFragment extends Fragment {
 
                 Fragment fr = new ImageControllerFragment();
                 Bundle bundle = new Bundle();
-                bundle.putInt("FRAGMENT_INDEX", ImagePagerFragment.INDEX);
-                bundle.putInt("GALLERY_POSITION", galleryPosition);
-                bundle.putInt("IMAGE_POSITION", position);
+                bundle.putInt(Constants.FRAGMENT_INDEX, ImagePagerFragment.INDEX);
+                bundle.putInt(Constants.GALLERY_POSITION, galleryPosition);
+                bundle.putInt(Constants.IMAGE_POSITION, position);
                 fr.setArguments(bundle);
                 WeightliftingApp app = (WeightliftingApp) getActivity().getApplicationContext();
                 GalleryItem currentGallery = (GalleryItem) app.getGalleries(WeightliftingApp.UPDATE_IF_NECESSARY).getItem(galleryPosition);

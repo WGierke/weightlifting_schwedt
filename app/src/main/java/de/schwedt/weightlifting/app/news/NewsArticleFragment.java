@@ -13,6 +13,7 @@ import de.schwedt.weightlifting.app.ImageFragment;
 import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
+import de.schwedt.weightlifting.app.helper.Constants;
 
 public class NewsArticleFragment extends Fragment {
 
@@ -41,7 +42,7 @@ public class NewsArticleFragment extends Fragment {
         // Get article information from bundle
         try {
             Bundle bundle = this.getArguments();
-            int position = bundle.getInt("item");
+            int position = bundle.getInt(Constants.ITEM);
             article = (NewsItem) app.getNews(WeightliftingApp.UPDATE_IF_NECESSARY).getItem(position);
             showArticle();
         } catch (Exception ex) {
@@ -54,7 +55,7 @@ public class NewsArticleFragment extends Fragment {
             public void onClick(View v) {
                 Fragment fr = new ImageFragment();
                 Bundle bundle = new Bundle();
-                bundle.putString("imageURL", article.getImageURL());
+                bundle.putString(Constants.IMAGE_URL, article.getImageURL());
                 fr.setArguments(bundle);
                 ((MainActivity) getActivity()).addFragment(fr, getString(R.string.nav_news), true);
             }

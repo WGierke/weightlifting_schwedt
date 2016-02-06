@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import de.schwedt.weightlifting.app.FaqFragment;
 import de.schwedt.weightlifting.app.R;
+import de.schwedt.weightlifting.app.helper.Constants;
 
 public class FaqAnswerFragment extends Fragment {
 
@@ -31,7 +32,7 @@ public class FaqAnswerFragment extends Fragment {
         // Get article information from bundle
         try {
             Bundle bundle = this.getArguments();
-            int position = bundle.getInt("item");
+            int position = bundle.getInt(Constants.ITEM);
             faq = FaqFragment.faqEntries.get(position);
             showAnswer();
         } catch (Exception ex) {

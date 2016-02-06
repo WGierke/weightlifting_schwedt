@@ -13,6 +13,7 @@ import de.schwedt.weightlifting.app.ImageFragment;
 import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
+import de.schwedt.weightlifting.app.helper.Constants;
 
 public class TeamFragment extends ListViewFragment {
 
@@ -39,7 +40,7 @@ public class TeamFragment extends ListViewFragment {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Fragment fr = new ImageFragment();
                         Bundle bundle = new Bundle();
-                        bundle.putString("imageURL", Team.casteArray(team.getItems()).get(position).getImageURL());
+                        bundle.putString(Constants.IMAGE_URL, Team.casteArray(team.getItems()).get(position).getImageURL());
                         fr.setArguments(bundle);
                         ((MainActivity) getActivity()).addFragment(fr, getString(R.string.nav_buli), true);
                     }

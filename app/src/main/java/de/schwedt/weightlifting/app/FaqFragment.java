@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import de.schwedt.weightlifting.app.faq.FaqAnswerFragment;
 import de.schwedt.weightlifting.app.faq.FaqItem;
 import de.schwedt.weightlifting.app.faq.FaqListAdapter;
+import de.schwedt.weightlifting.app.helper.Constants;
 
 public class FaqFragment extends Fragment {
 
@@ -34,7 +35,7 @@ public class FaqFragment extends Fragment {
                 // Show an article fragment and put the selected index as argument
                 Fragment faqAnswer = new FaqAnswerFragment();
                 Bundle bundle = new Bundle();
-                bundle.putInt("item", position);
+                bundle.putInt(Constants.ITEM, position);
                 faqAnswer.setArguments(bundle);
                 ((MainActivity) getActivity()).addFragment(faqAnswer, getString(R.string.nav_faq), true);
             }

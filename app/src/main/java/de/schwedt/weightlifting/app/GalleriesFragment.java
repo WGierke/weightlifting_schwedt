@@ -12,6 +12,7 @@ import android.widget.ListView;
 
 import de.schwedt.weightlifting.app.gallery.Galleries;
 import de.schwedt.weightlifting.app.gallery.GalleryOverviewAdapter;
+import de.schwedt.weightlifting.app.helper.Constants;
 import de.schwedt.weightlifting.app.helper.UniversalImageLoader.ImageControllerFragment;
 import de.schwedt.weightlifting.app.helper.UniversalImageLoader.ImageGridFragment;
 import de.schwedt.weightlifting.app.news.News;
@@ -67,8 +68,8 @@ public class GalleriesFragment extends Fragment {
 
                         Fragment imageController = new ImageControllerFragment();
                         Bundle bundle = new Bundle();
-                        bundle.putInt("FRAGMENT_INDEX", ImageGridFragment.INDEX);
-                        bundle.putInt("GALLERY_POSITION", position);
+                        bundle.putInt(Constants.FRAGMENT_INDEX, ImageGridFragment.INDEX);
+                        bundle.putInt(Constants.GALLERY_POSITION, position);
                         imageController.setArguments(bundle);
                         ((MainActivity) getActivity()).addFragment(imageController, getString(R.string.nav_gallery), true);
 

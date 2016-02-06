@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.gallery.GalleryItem;
+import de.schwedt.weightlifting.app.helper.Constants;
 
 
 /*******************************************************************************
@@ -45,7 +46,7 @@ public class ImageControllerFragment extends Fragment {
         WeightliftingApp app = (WeightliftingApp) getActivity().getApplicationContext();
 
         Bundle bundle = this.getArguments();
-        int frIndex = bundle.getInt("FRAGMENT_INDEX");
+        int frIndex = bundle.getInt(Constants.FRAGMENT_INDEX);
         Fragment fr;
         String tag;
         switch (frIndex) {
@@ -57,7 +58,7 @@ public class ImageControllerFragment extends Fragment {
                 if (fr == null) {
                     fr = new ImageGridFragment();
                     fr.setArguments(bundle);
-                    GalleryItem currentGallery = (GalleryItem) app.getGalleries(WeightliftingApp.UPDATE_IF_NECESSARY).getItem(bundle.getInt("GALLERY_POSITION"));
+                    GalleryItem currentGallery = (GalleryItem) app.getGalleries(WeightliftingApp.UPDATE_IF_NECESSARY).getItem(bundle.getInt(Constants.GALLERY_POSITION));
                     tag = currentGallery.getTitle();
                 }
                 break;
@@ -68,7 +69,7 @@ public class ImageControllerFragment extends Fragment {
                 if (fr == null) {
                     fr = new ImagePagerFragment();
                     fr.setArguments(bundle);
-                    GalleryItem currentGallery = (GalleryItem) app.getGalleries(WeightliftingApp.UPDATE_IF_NECESSARY).getItem(bundle.getInt("GALLERY_POSITION"));
+                    GalleryItem currentGallery = (GalleryItem) app.getGalleries(WeightliftingApp.UPDATE_IF_NECESSARY).getItem(bundle.getInt(Constants.GALLERY_POSITION));
                     tag = currentGallery.getTitle();
                 }
                 break;

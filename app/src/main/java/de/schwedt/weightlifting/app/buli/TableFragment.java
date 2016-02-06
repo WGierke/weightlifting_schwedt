@@ -19,11 +19,9 @@ import de.schwedt.weightlifting.app.helper.Constants;
 
 public class TableFragment extends ListViewFragment {
 
-    private Table table;
-
     @Override
     protected void getBuliElements() {
-        table = app.getTable(WeightliftingApp.UPDATE_IF_NECESSARY);
+        Table table = app.getTable(WeightliftingApp.UPDATE_IF_NECESSARY);
         if (table.getItems().size() == 0) {
             Runnable refreshRunnable = new Runnable() {
                 @Override
@@ -35,7 +33,7 @@ public class TableFragment extends ListViewFragment {
             refreshHandler.postDelayed(refreshRunnable, Table.TIMER_RETRY);
         } else {
             try {
-                setTableListAdapterWithFilterCompetitionsFragment(Table.casteArray(table.getItems()), getActivity());
+                setTableListAdapterWithFilterCompetitionsFragment(Table.casteArray(table.getItems()), getActivity(), FilterCompetitionsFragment.class);
             } catch (Exception ex) {
                 Log.e(WeightliftingApp.TAG, "Showing table failed");
                 ex.toString();
@@ -44,15 +42,24 @@ public class TableFragment extends ListViewFragment {
         }
     }
 
-    public void setTableListAdapterWithFilterCompetitionsFragment(final ArrayList<TableEntry> tableItems, Activity activity) {
+    public void setTableListAdapterWithFilterCompetitionsFragment(final ArrayList<TableEntry> tableItems, Activity activity, final Class filterCompetitionsFragmentClass) {
         TableListAdapter adapter = new TableListAdapter(tableItems, activity);
         listViewBuli.setAdapter(adapter);
         listViewBuli.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Fragment protocol = new FilterCompetitionsFragment();
+                Object filterCompetitionsFragment;
+                try {
+                    filterCompetitionsFragment = filterCompetitionsFragmentClass.newInstance();
+                } catch (java.lang.InstantiationException e) {
+                    e.printStackTrace();
+                    filterCompetitionsFragment = new FilterCompetitionsFragment();
+                } catch (IllegalAccessException e) {
+                    filterCompetitionsFragment = new FilterCompetitionsFragment();
+                }
+                Fragment protocol = (Fragment) filterCompetitionsFragment;
                 Bundle bundle = new Bundle();
-                TableEntry entry = (TableEntry) table.getItem(position);
+                TableEntry entry = tableItems.get(position);
                 bundle.putString(Constants.CLUB_NAME, entry.getClub());
                 protocol.setArguments(bundle);
                 ((MainActivity) getActivity()).addFragment(protocol, entry.getClub(), true);

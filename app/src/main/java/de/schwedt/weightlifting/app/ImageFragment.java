@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import de.schwedt.weightlifting.app.helper.Constants;
+
 public class ImageFragment extends Fragment {
 
     @Override
@@ -15,7 +17,7 @@ public class ImageFragment extends Fragment {
         WeightliftingApp app = (WeightliftingApp) getActivity().getApplicationContext();
 
         Bundle bundle = this.getArguments();
-        String imageURL = bundle.getString("imageURL");
+        String imageURL = bundle.getString(Constants.IMAGE_URL);
 
         ImageView imageView = (ImageView) fragment.findViewById(R.id.image);
         app.getImageLoader().displayImage(imageURL, imageView);

@@ -29,7 +29,7 @@ public class ArchivedTableFragment extends TableFragment {
         }
 
         try {
-            setTableListAdapterWithFilterCompetitionsFragment(Table.casteArray(archivedTable.getItems()), getActivity());
+            setTableListAdapterWithFilterCompetitionsFragment(Table.casteArray(archivedTable.getItems()), getActivity(), ArchivedFilterCompetitionsFragment.class);
         } catch (Exception ex) {
             Log.e(WeightliftingApp.TAG, "Showing archived table failed");
             ex.toString();

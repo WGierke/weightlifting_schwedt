@@ -210,7 +210,6 @@ public class DataHelper {
      */
     public static Competitions getCompetitionFromSeasonRelay(String filterSeason, String filterRelay, Context context) {
         String resourceName = getFileNamePrefixFromSeasonRelay(filterSeason, filterRelay) + "competitions";
-        Log.d(WeightliftingApp.TAG, resourceName);
         InputStream ins = context.getResources().openRawResource(
                 context.getResources().getIdentifier(resourceName, "raw", context.getPackageName()));
         String content = getStringFromStream(ins);
@@ -226,7 +225,6 @@ public class DataHelper {
      */
     public static Table getTableFromSeasonRelay(String filterSeason, String filterRelay, Context context) {
         String resourceName = getFileNamePrefixFromSeasonRelay(filterSeason, filterRelay) + "table";
-        Log.d(WeightliftingApp.TAG, resourceName);
         InputStream ins = context.getResources().openRawResource(
                 context.getResources().getIdentifier(resourceName, "raw", context.getPackageName()));
         String content = getStringFromStream(ins);
