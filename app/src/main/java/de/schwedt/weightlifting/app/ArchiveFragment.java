@@ -20,11 +20,11 @@ public class ArchiveFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View fragment = inflater.inflate(R.layout.fragment_faq, container, false);
+        View fragment = inflater.inflate(R.layout.list_view_no_cover, container, false);
 
         ArchivedSeasonListAdapter adapter = new ArchivedSeasonListAdapter(archivedSeasonEntries, getActivity());
 
-        ListView archivedSeasonList = (ListView) fragment.findViewById(R.id.listView_faqs);
+        ListView archivedSeasonList = (ListView) fragment.findViewById(R.id.list_view);
         archivedSeasonList.setAdapter(adapter);
         archivedSeasonList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

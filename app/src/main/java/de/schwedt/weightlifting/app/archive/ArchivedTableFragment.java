@@ -1,22 +1,16 @@
 package de.schwedt.weightlifting.app.archive;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 
 import de.schwedt.weightlifting.app.ArchiveFragment;
-import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.WeightliftingApp;
-import de.schwedt.weightlifting.app.buli.ListViewFragment;
 import de.schwedt.weightlifting.app.buli.Table;
-import de.schwedt.weightlifting.app.buli.TableEntry;
-import de.schwedt.weightlifting.app.buli.TableListAdapter;
+import de.schwedt.weightlifting.app.buli.TableFragment;
 import de.schwedt.weightlifting.app.helper.Constants;
 import de.schwedt.weightlifting.app.helper.DataHelper;
 
-public class ArchivedTableFragment extends ListViewFragment {
+public class ArchivedTableFragment extends TableFragment {
 
     private Table archivedTable;
     private Bundle bundle;
@@ -35,20 +29,9 @@ public class ArchivedTableFragment extends ListViewFragment {
         }
 
         try {
-            TableListAdapter adapter = new TableListAdapter(Table.casteArray(archivedTable.getItems()), getActivity());
-            listViewBuli.setAdapter(adapter);
-            listViewBuli.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Fragment protocol = new ArchivedFilterCompetitionsFragment();
-                    TableEntry entry = (TableEntry) archivedTable.getItem(position);
-                    bundle.putString(Constants.CLUB_NAME, entry.getClub());
-                    protocol.setArguments(bundle);
-                    ((MainActivity) getActivity()).addFragment(protocol, entry.getClub(), true);
-                }
-            });
+            setTableListAdapterWithFilterCompetitionsFragment(Table.casteArray(archivedTable.getItems()), getActivity());
         } catch (Exception ex) {
-            Log.e(WeightliftingApp.TAG, "Showing table failed");
+            Log.e(WeightliftingApp.TAG, "Showing archived table failed");
             ex.toString();
         }
     }

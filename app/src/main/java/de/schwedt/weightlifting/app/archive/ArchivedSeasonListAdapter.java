@@ -9,12 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
 
 import de.schwedt.weightlifting.app.R;
-import de.schwedt.weightlifting.app.faq.FaqItem;
 
 public class ArchivedSeasonListAdapter extends BaseAdapter {
 

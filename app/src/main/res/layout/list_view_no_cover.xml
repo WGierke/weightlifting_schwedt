@@ -12,7 +12,7 @@
         android:layout_height="match_parent">
 
         <ListView
-            android:id="@+id/listView_faqs"
+            android:id="@+id/list_view"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:divider="@android:color/transparent"

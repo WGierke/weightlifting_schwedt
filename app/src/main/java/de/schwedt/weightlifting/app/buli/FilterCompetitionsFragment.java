@@ -12,10 +12,9 @@ import java.util.ArrayList;
 import de.schwedt.weightlifting.app.MainActivity;
 import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
+import de.schwedt.weightlifting.app.helper.Constants;
 
 public class FilterCompetitionsFragment extends CompetitionsFragment {
-
-    private ArrayList<PastCompetition> filteredCompetitions;
 
     protected void getBuliElements() {
         competitions = app.getCompetitions(WeightliftingApp.UPDATE_IF_NECESSARY);
@@ -31,20 +30,9 @@ public class FilterCompetitionsFragment extends CompetitionsFragment {
         } else {
             try {
                 Bundle bundle = this.getArguments();
-                String clubName = bundle.getString("club-name");
-                filteredCompetitions = filter(Competitions.casteArray(competitions.getItems()), clubName);
-                CompetitionsListAdapter adapter = new CompetitionsListAdapter(filteredCompetitions, getActivity());
-                listViewBuli.setAdapter(adapter);
-                listViewBuli.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Fragment protocol = new ProtocolFragment();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("protocol-url", filteredCompetitions.get(position).getProtocolUrl());
-                        protocol.setArguments(bundle);
-                        ((MainActivity) getActivity()).addFragment(protocol, getString(R.string.nav_buli), true);
-                    }
-                });
+                String clubName = bundle.getString(Constants.CLUB_NAME);
+                ArrayList<PastCompetition> filteredCompetitions = filter(Competitions.casteArray(competitions.getItems()), clubName);
+                setCompetitionsListAdaptherWithProtocolFragment(filteredCompetitions, getActivity());
             } catch (Exception ex) {
                 Log.e(WeightliftingApp.TAG, "Showing competitions failed");
                 ex.toString();

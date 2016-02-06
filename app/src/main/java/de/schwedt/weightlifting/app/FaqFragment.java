@@ -22,11 +22,11 @@ public class FaqFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //Log.d(WeightliftingApp.TAG, "Showing Faq fragment");
 
-        View fragment = inflater.inflate(R.layout.fragment_faq, container, false);
+        View fragment = inflater.inflate(R.layout.list_view_no_cover, container, false);
 
         FaqListAdapter adapter = new FaqListAdapter(faqEntries, getActivity());
 
-        ListView faqMenu = (ListView) fragment.findViewById(R.id.listView_faqs);
+        ListView faqMenu = (ListView) fragment.findViewById(R.id.list_view);
         faqMenu.setAdapter(adapter);
         faqMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

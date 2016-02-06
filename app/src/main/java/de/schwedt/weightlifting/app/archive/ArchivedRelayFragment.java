@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import de.schwedt.weightlifting.app.R;
-import de.schwedt.weightlifting.app.buli.TableFragment;
 
 public class ArchivedRelayFragment extends Fragment {
 
