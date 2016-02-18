@@ -39,6 +39,7 @@ build/
 *~
 *.swp
 *.iml
+*.pyc
 
 !production/*.apk
 
@@ -48,3 +49,4 @@ fabric.properties
 keystore.jks
 app/libs/*
 server/push_messages.txt
+app.yaml
