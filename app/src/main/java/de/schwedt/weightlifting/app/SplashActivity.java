@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
-import com.parse.Parse;
 
 import de.schwedt.weightlifting.app.helper.UiHelper;
 import io.fabric.sdk.android.Fabric;
@@ -90,13 +89,6 @@ public class SplashActivity extends Activity {
                 }
             }
         };
-        if (!app.initializedParse) {
-            try {
-                Parse.enableLocalDatastore(this);
-                app.initializedParse = true;
-            } catch (Exception e) {
-            }
-        }
     }
 
     @Override

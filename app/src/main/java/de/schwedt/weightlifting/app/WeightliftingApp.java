@@ -10,10 +10,8 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.parse.Parse;
 
 import java.io.File;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -25,7 +23,6 @@ import de.schwedt.weightlifting.app.faq.FaqItem;
 import de.schwedt.weightlifting.app.gallery.Galleries;
 import de.schwedt.weightlifting.app.helper.DataHelper;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
-import de.schwedt.weightlifting.app.helper.Keys;
 import de.schwedt.weightlifting.app.helper.MemoryCache;
 import de.schwedt.weightlifting.app.news.Events;
 import de.schwedt.weightlifting.app.news.News;
@@ -44,7 +41,6 @@ public class WeightliftingApp extends Application {
     public static Context mContext;
     public static boolean isUpdatingAll = false;
     public boolean isInitialized = false;
-    public boolean initializedParse = false;
     public MemoryCache memoryCache;
     public ImageLoader imageLoader;
     public News news;
@@ -79,11 +75,6 @@ public class WeightliftingApp extends Application {
                 .defaultDisplayImageOptions(defaultOptions)
                 .build();
         com.nostra13.universalimageloader.core.ImageLoader.getInstance().init(config);
-
-        try {
-            Parse.initialize(this, Keys.CONFIG_APP_ID, Keys.CONFIG_CLIENT_KEY);
-        } catch (Exception e) {
-        }
 
         mContext = getApplicationContext();
 

@@ -49,9 +49,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-analytics:8.3.0'
     compile 'com.android.support:support-v4:23.+'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
-    compile 'com.parse.bolts:bolts-android:1.+'
-    compile fileTree(include: 'Parse-*.jar', dir: 'libs')
-    compile fileTree(dir: 'libs', include: 'ParseCrashReporting-*.jar')
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:design:23.0.1'
     compile 'com.android.support:multidex:1.0.1'

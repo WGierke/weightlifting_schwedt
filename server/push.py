@@ -7,10 +7,6 @@ import ConfigParser
 import os
 import sys
 
-def send_parse_api_request(method, url, app_id, rest_key):
-    request_method = getattr(requests, method)
-    return request_method(url, headers={"Content-Type": "application/json", "X-Parse-Application-Id": app_id, "X-Parse-REST-API-Key": rest_key}).content
-
 
 def send_appspot_get_request(url, secret_key):
     return requests.get("http://weightliftingschwedt.appspot.com/" + url, headers={"Content-Type": "application/json", "X-Secret-Key": secret_key}).content
@@ -22,8 +18,6 @@ def send_appspot_delete_request(url, secret_key, data):
 
 config = ConfigParser.RawConfigParser(allow_no_value=True)
 config.read('server/config.ini')
-application_id = config.get("parse", "X-Parse-Application-Id")
-rest_key = config.get("parse", "X-Parse-REST-API-Key")
 gcm_key = config.get("gcm", "API-Key")
 secret_key = config.get("appspot", "X-Secret-Key")
 push_messages_file = "server/push_messages.txt"
@@ -33,9 +27,6 @@ if os.path.isfile(push_messages_file):
 else:
     print "There is no file containing push messages that should be delivered."
     sys.exit()
-
-registration_ids_response = send_parse_api_request("get", "https://api.parse.com/1/classes/GcmToken", application_id, rest_key)
-gcm_token_objects = json.loads(registration_ids_response)["results"]
 
 appspot_response = send_appspot_get_request("get_tokens", secret_key)
 appspot_tokens = json.loads(appspot_response)["result"]
@@ -50,21 +41,6 @@ for line in push_messages:
     data = {'update': line.decode('utf-8')}
     sent_requests = 0
     receivers = []
-    for obj in gcm_token_objects:
-        reg_id = obj["token"]
-        if reg_id not in receivers:
-            gcm_push_response = gcm.json_request(registration_ids=[reg_id], data=data)
-            if bool(gcm_push_response):
-                print reg_id + " is invalid. Sending request to remove it."
-                send_parse_api_request("delete", "https://api.parse.com/1/classes/GcmToken/" + obj["objectId"], application_id, rest_key)
-            else:
-                print "Sent " + line.decode('utf-8') + " to " + reg_id
-                receivers.append(reg_id)
-                sent_requests += 1
-        else:
-            print reg_id + " is already saved. Sending request to remove it."
-            print send_parse_api_request("delete", "https://api.parse.com/1/classes/GcmToken/" + obj["objectId"], application_id, rest_key)
-
     for appspot_token in appspot_tokens:
         if appspot_token not in receivers:
             gcm_push_response = gcm.json_request(registration_ids=[appspot_token], data=data)
