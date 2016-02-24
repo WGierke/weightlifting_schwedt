@@ -23,7 +23,6 @@ import de.schwedt.weightlifting.app.faq.FaqItem;
 import de.schwedt.weightlifting.app.gallery.Galleries;
 import de.schwedt.weightlifting.app.helper.DataHelper;
 import de.schwedt.weightlifting.app.helper.ImageLoader;
-import de.schwedt.weightlifting.app.helper.MemoryCache;
 import de.schwedt.weightlifting.app.news.Events;
 import de.schwedt.weightlifting.app.news.News;
 
@@ -40,8 +39,6 @@ public class WeightliftingApp extends Application {
     public final static int LOAD_FROM_FILE = 3;
     public static Context mContext;
     public static boolean isUpdatingAll = false;
-    public boolean isInitialized = false;
-    public MemoryCache memoryCache;
     public ImageLoader imageLoader;
     public News news;
     public Events events;
@@ -59,7 +56,6 @@ public class WeightliftingApp extends Application {
         Log.i(TAG, "Initializing...");
         long dateStart = new Date().getTime();
 
-        memoryCache = new MemoryCache();
         imageLoader = new ImageLoader(getApplicationContext());
 
         initFaqs();
@@ -83,8 +79,6 @@ public class WeightliftingApp extends Application {
         updateDataForcefully();
 
         updateSplashScreen();
-
-        isInitialized = true;
 
         Log.i(TAG, "Initialized (" + String.valueOf(dateDiff) + "ms)");
     }
@@ -238,10 +232,6 @@ public class WeightliftingApp extends Application {
     public Galleries getGalleries(int updateMode) {
         galleries = (Galleries) getWrapperItems(galleries, Galleries.class, updateMode);
         return galleries;
-    }
-
-    public void setActivity(MainActivity activity) {
-        MainActivity mActivity = activity;
     }
 
     public ImageLoader getImageLoader() {

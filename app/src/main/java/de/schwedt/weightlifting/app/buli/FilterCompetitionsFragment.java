@@ -2,15 +2,10 @@ package de.schwedt.weightlifting.app.buli;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 
 import java.util.ArrayList;
 
-import de.schwedt.weightlifting.app.MainActivity;
-import de.schwedt.weightlifting.app.R;
 import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.helper.Constants;
 

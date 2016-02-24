@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -17,7 +16,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import de.schwedt.weightlifting.app.R;
-import de.schwedt.weightlifting.app.WeightliftingApp;
 import de.schwedt.weightlifting.app.buli.Competitions;
 import de.schwedt.weightlifting.app.buli.Table;
 

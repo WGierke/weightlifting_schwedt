@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
 
         app = (WeightliftingApp) getApplicationContext();
-        app.setActivity(this);
 
         mTracker = app.getDefaultTracker();
 
