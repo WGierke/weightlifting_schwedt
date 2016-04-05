@@ -1,61 +1,6 @@
 [{
     "events": [
         {
-            "date": "09. Januar",
-            "location": "",
-            "title": "WK-Tag 1./ 2. Bundesliga"
-        },
-        {
-            "date": "16. Januar",
-            "location": "D\u00e4nemark",
-            "title": "Internationales Turnier in Kopenhagen"
-        },
-        {
-            "date": "22. Januar",
-            "location": "",
-            "title": "22./23.BGFV Weiterbildung Kampfrichter/Trainer/ \u00dcbungsleiter"
-        },
-        {
-            "date": "30. Januar",
-            "location": "",
-            "title": "WK-Tag 1./2. BundesligaSG Fortschritt Eibau - Oder Sund Team Gewichtheben"
-        },
-        {
-            "date": "13. Februar",
-            "location": "",
-            "title": "WK-Tag 1./ 2. Bundesliga"
-        },
-        {
-            "date": "13. Februar",
-            "location": "",
-            "title": "WK-Tag Landesliga AC Heros Berlin vs. TSV Blau Wei\u00df 65 Schwedt/ ACP vs. ASK"
-        },
-        {
-            "date": "20. Februar",
-            "location": "",
-            "title": "WK-Tag Landesliga TSV Cottbus vs. AC Potsdam"
-        },
-        {
-            "date": "27. Februar",
-            "location": "Angerm\u00fcnde",
-            "title": "Lothar Treder Pokalturnier"
-        },
-        {
-            "date": "05. M\u00e4rz",
-            "location": "",
-            "title": "WK-Tag 1./2. Bundesliga TSC Berlin- Oder Sund Team Gewichtheben"
-        },
-        {
-            "date": "12. M\u00e4rz",
-            "location": "",
-            "title": "Athletikliga 1. Durchgang"
-        },
-        {
-            "date": "19. M\u00e4rz",
-            "location": "",
-            "title": "Bundesliga Finale/ Platzierungswettk\u00e4mpfe"
-        },
-        {
             "date": "02. April",
             "location": "",
             "title": "WK-Tag 2. Bundesliga"
@@ -118,7 +63,7 @@
         {
             "date": "11. Juni",
             "location": "Potsdam",
-            "title": "Landesmeisterschaften Sch\u00fcler"
+            "title": "Landesmeisterschaften Sch\u00fcler bis Masters(Potsdam)"
         },
         {
             "date": "18. Juni",
