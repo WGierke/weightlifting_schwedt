@@ -1,66 +1,6 @@
 [{
     "events": [
         {
-            "date": "02. April",
-            "location": "",
-            "title": "WK-Tag 2. Bundesliga"
-        },
-        {
-            "date": "02. April",
-            "location": "",
-            "title": "WK-Tag Landesliga TSV Blau Wei\u00df 65SDT vs. USC Viadrina/ TSV CB/ ASK vs. Heros"
-        },
-        {
-            "date": "09. April",
-            "location": "Sachsen",
-            "title": "Ostdeutsche Mehrkampfmeisterschaften"
-        },
-        {
-            "date": "11. April",
-            "location": "Forde/Norwegen",
-            "title": "Europameisterschaften Senioren"
-        },
-        {
-            "date": "16. April",
-            "location": "",
-            "title": "Jugendpokal der DGJ"
-        },
-        {
-            "date": "21. April",
-            "location": "Rodewisch",
-            "title": "21.-24 DM der Masters"
-        },
-        {
-            "date": "23. April",
-            "location": "",
-            "title": "WK-Tag 2. Bundesliga"
-        },
-        {
-            "date": "30. April",
-            "location": "Cottbus",
-            "title": "Frank Mehner Turnier"
-        },
-        {
-            "date": "07. Mai",
-            "location": "",
-            "title": "2. Bundesliga Finale"
-        },
-        {
-            "date": "14. Mai",
-            "location": "Angerm\u00fcnde",
-            "title": "Landesmeisterschaften der Kinder"
-        },
-        {
-            "date": "21. Mai",
-            "location": "Nakchivan/AZE",
-            "title": "Europameisterschaften der Masters"
-        },
-        {
-            "date": "21. Mai",
-            "location": "Kaliningrad/RUS",
-            "title": "Internationales Turnier"
-        },
-        {
             "date": "11. Juni",
             "location": "Potsdam",
             "title": "Landesmeisterschaften Sch\u00fcler bis Masters(Potsdam)"
